@@ -102,23 +102,10 @@ class Category extends React.Component {
   }
 
   onSelectCatagory() {
-    const { routes } = this.context;
-    if (this.state.typeIds.length === 0) {
-      Alert.alert('提示', '您确定不选择任何分类吗？', [
-        { text: '取消', style: 'cancel' },
-        {
-          text: '确定',
-          onPress: () => {
-            store.save('typeIds', this.state.typeIds);
-            routes.tabbar();
-          }
-        }
-      ]);
-    } else {
+      const { routes } = this.context;
       store.save('typeIds', this.state.typeIds);
       store.save('isInit', true);
       routes.tabbar();
-    }
   }
 
   onActionSelected() {
@@ -224,14 +211,14 @@ class Category extends React.Component {
                 { color: 'black', padding: 5, fontSize: 18 }
               ]}
             >
-              初次见面，请选择您感兴趣的1-5个类别
+              初次见面，欢迎使用本社交系统
             </Text>
           </View>
           {this.renderGridView()}
           <Button
             containerStyle={styles.sureBtn}
             style={styles.btnText}
-            text={'确认'}
+            text={'立即体验'}
             onPress={() => this.onSelectCatagory()}
           />
         </View>
@@ -241,7 +228,7 @@ class Category extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={[styles.btnText, { color: 'black' }]}>
-            请选择您感兴趣的1-5个类别
+            欢迎使用HOT社交
           </Text>
         </View>
         {this.renderGridView()}
