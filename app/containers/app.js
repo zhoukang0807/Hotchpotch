@@ -3,6 +3,7 @@ import {AppRegistry, Platform, StyleSheet, Text, View, StatusBar} from 'react-na
 import { Router, Scene, ActionConst } from 'react-native-router-flux';
 import TabIcon from '../components/TabIcon';
 import About from '../pages/About';
+import CategoryContainer from '../containers/CategoryContainer';
 import Main from '../pages/Main';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
@@ -36,7 +37,20 @@ class App extends React.Component {
                 backButtonImage={backButton}
             >
                 <Scene key="root">
-
+                    <Scene
+                        key="splash"
+                        component={Splash}
+                        hideNavBar
+                        hideTabBar
+                        initial
+                    />
+                    <Scene
+                        key="initCategory"
+                        component={CategoryContainer}
+                        hideNavBar
+                        hideTabBar
+                        type={ActionConst.REPLACE}
+                    />
                     <Scene
                         key="tabbar"
                         tabs
