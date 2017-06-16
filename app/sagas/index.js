@@ -19,8 +19,9 @@ import { fork } from 'redux-saga/effects'; //redux-saga 可以用 fork 和 call 
 import { watchRequestTypeList } from './category';
 import { watchRequestArticleList } from './read';
 
-export default function* rootSaga() {
-    yield [fork(watchRequestTypeList), fork(watchRequestArticleList)];
+export default function* rootSaga() {    //function* 这种声明方式(function关键字后跟一个星号）会定义一个生成器函数 (generator function)，它返回一个  Generator  对象。
+                                            //生成器函数在执行时能中途退出，后面又能重新进入继续执行。而且在函数内定义的变量的状态都会保留，不受中途退出的影响。
+    yield [fork(watchRequestTypeList), fork(watchRequestArticleList)]; //yield 异步的同步调用。。。依次执行后面的方法
 }
 
 //yield put({ type: 'CLICK_BTN' });作用和 redux 中的 dispatch 相同 //store.dispatch接受一个 Action 对象作为参数，将它发送出去。
