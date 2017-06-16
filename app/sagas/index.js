@@ -15,10 +15,22 @@
  * limitations under the License.
  *
  */
-import { fork } from 'redux-saga/effects';
+import { fork } from 'redux-saga/effects'; //redux-saga 可以用 fork 和 call 来调用子 saga ，其中 fork 是无阻塞型调用，call 是阻塞型调用。
 import { watchRequestTypeList } from './category';
 import { watchRequestArticleList } from './read';
 
 export default function* rootSaga() {
-  yield [fork(watchRequestTypeList), fork(watchRequestArticleList)];
+    yield [fork(watchRequestTypeList), fork(watchRequestArticleList)];
 }
+
+//yield put({ type: 'CLICK_BTN' });作用和 redux 中的 dispatch 相同 //store.dispatch接受一个 Action 对象作为参数，将它发送出去。
+//const id = yield select(state => state.id);作用和 redux thunk 中的 getState 相同。
+//有阻塞地调用 saga 或者返回 promise 的函数。
+
+
+// take 在这个例子中，先等待一个按钮点击的 action ，然后执行按钮点击的 saga：
+
+// while (true) {
+//     yield take('CLICK_BUTTON');
+//     yield fork(clickButtonSaga);
+// }

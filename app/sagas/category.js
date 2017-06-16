@@ -26,13 +26,14 @@ import { fetchTypeList, receiveTypeList } from '../actions/category';
 
 export function* requestTypeList() {
   try {
-    yield put(fetchTypeList());
-    const typeList = yield call(request, WEXIN_ARTICLE_TYPE, 'get');
+    yield put(fetchTypeList()); //fetchTypeList调用网络获取类别分类 receiveTypeList接受类别
+    const typeList = yield call(request, WEXIN_ARTICLE_TYPE, 'get');  //此处为阻塞调用，调用完成后执行下面操作，获取数据后进行存储
+      console.log(typeList)
     yield put(receiveTypeList(typeList.showapi_res_body.typeList));
-    yield call(store.save, 'typeList', typeList.showapi_res_body.typeList);
+    yield call(store.save, 'typeList', typeList.showapi_res_body.typeList); //将数据存储到store中
     const errorMessage = typeList.showapi_res_error;
     if (errorMessage && errorMessage !== '') {
-      yield toastShort(errorMessage);
+      yield toastShort(errorMessage); //toastShort安卓内提示用。提示错误信息
     }
   } catch (error) {
     yield put(receiveTypeList([]));
