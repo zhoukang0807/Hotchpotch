@@ -3,6 +3,7 @@ import {AppRegistry, Platform, StyleSheet, Text, View, StatusBar} from 'react-na
 import { Router, Scene, ActionConst } from 'react-native-router-flux';
 import TabIcon from '../components/TabIcon';
 import About from '../pages/About';
+import AV from 'leancloud-storage'; //云端保存数据
 import CategoryContainer from '../containers/CategoryContainer';
 import Main from '../pages/Main';
 import { connect } from 'react-redux';
@@ -28,6 +29,12 @@ const getSceneStyle = (props, computedProps) => {
 StatusBar.setHidden(true);
 //TabBarIOS管理两个模块:图书、电影
 class App extends React.Component {
+    componentDidMount() {
+        AV.init({
+            appId: 'Tfi1z7dN9sjMwSul8sYaTEvg-gzGzoHsz',
+            appKey: '57qmeEJonefntNqRe17dAgi4'
+        });
+    }
     render() {
         return (
             <RouterWithRedux

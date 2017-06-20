@@ -43,3 +43,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryContainer);
+//第一个（）是用来改变组件prop的方法，第二个（）是React组件，接受该组件的属性重绘
