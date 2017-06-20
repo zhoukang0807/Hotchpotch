@@ -24,6 +24,9 @@ export default function* rootSaga() {    //function* 这种声明方式(function
     yield [fork(watchRequestTypeList), fork(watchRequestArticleList)]; //yield 异步的同步调用。。。依次执行后面的方法
 }
 
+//yield 表达式
+//由于 Generator 函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield表达式就是暂停标志。
+
 //yield put({ type: 'CLICK_BTN' });作用和 redux 中的 dispatch 相同 //store.dispatch接受一个 Action 对象作为参数，将它发送出去。
 //const id = yield select(state => state.id);作用和 redux thunk 中的 getState 相同。
 //有阻塞地调用 saga 或者返回 promise 的函数。
@@ -35,3 +38,5 @@ export default function* rootSaga() {    //function* 这种声明方式(function
 //     yield take('CLICK_BUTTON');
 //     yield fork(clickButtonSaga);
 // }
+
+//在generator 函数中yield* foo(); 等同于 for (let v of foo()) {yield v;}  加*后面表示的是遍历器的对象 实际上，任何数据结构只要有 Iterator 接口，就可以被yield*遍历。 yield表达式返回整个字符串，yield*语句返回单个字符
