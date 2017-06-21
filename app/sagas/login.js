@@ -1,3 +1,4 @@
+/* eslint no-constant-condition: ["error", { "checkLoops": false }] */
 /**
  *
  * Copyright 2016-present reading
@@ -15,12 +16,21 @@
  * limitations under the License.
  *
  */
-export const REQUEST_ARTICLE_LIST = 'REQUEST_ARTICLE_LIST';
-export const FETCH_ARTICLE_LIST = 'FETCH_ARTICLE_LIST';
-export const RECEIVE_ARTICLE_LIST = 'RECEIVE_ARTICLE_LIST';
-export const REQUEST_TYPE_LIST = 'REQUEST_TYPE_LIST';
-export const FETCH_TYPE_LIST = 'FETCH_TYPE_LIST';
-export const RECEIVE_TYPE_LIST = 'RECEIVE_TYPE_LIST';
+import { put, take, call, fork } from 'redux-saga/effects';
+import * as types from '../constants/ActionTypes';
 
-export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export const RECEUVE_LOGIN = 'RECEUVE_LOGIN';
+
+export function* requestLogin() {
+    try {
+        console.log("进入登陆界面！")
+    } catch (error) {
+        console.log("登陆出错！")
+    }
+}
+
+export function* watchRequestLogin() {
+    while (true) {
+        yield take(types.REQUEST_LOGIN);
+        yield fork(requestLogin);
+    }
+}

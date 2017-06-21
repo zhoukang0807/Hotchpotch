@@ -1,3 +1,4 @@
+
 /**
  *
  * Copyright 2016-present reading
@@ -15,12 +16,25 @@
  * limitations under the License.
  *
  */
-export const REQUEST_ARTICLE_LIST = 'REQUEST_ARTICLE_LIST';
-export const FETCH_ARTICLE_LIST = 'FETCH_ARTICLE_LIST';
-export const RECEIVE_ARTICLE_LIST = 'RECEIVE_ARTICLE_LIST';
-export const REQUEST_TYPE_LIST = 'REQUEST_TYPE_LIST';
-export const FETCH_TYPE_LIST = 'FETCH_TYPE_LIST';
-export const RECEIVE_TYPE_LIST = 'RECEIVE_TYPE_LIST';
+import * as types from '../constants/ActionTypes';
 
-export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export const RECEUVE_LOGIN = 'RECEUVE_LOGIN';
+const initialState = {
+    loading: false,
+    loginInfo: {}
+};
+
+export default function login(state = initialState, action) {
+    switch (action.type) {
+        case types.REQUEST_LOGIN:
+            return Object.assign({}, state, {
+                loading: true
+            });
+        case types.RECEUVE_LOGIN:
+            return Object.assign({}, state, {
+                loading: false,
+                loginInfo: {}
+            });
+        default:
+            return state;
+    }
+}

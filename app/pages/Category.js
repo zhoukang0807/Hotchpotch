@@ -48,8 +48,9 @@ const contextTypes = {
 };
 
 class Category extends React.Component {
+  //构造函数，用来初始化数据
   constructor(props) {
-    super(props);
+    super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
     this.renderItem = this.renderItem.bind(this);
     this.onActionSelected = this.onActionSelected.bind(this);
     this.resetRoute = this.resetRoute.bind(this);
@@ -104,7 +105,7 @@ class Category extends React.Component {
   onSelectCatagory() {
       const { routes } = this.context;
       store.save('typeIds', this.state.typeIds);
-      store.save('isInit', true);
+      store.save('isInit', false);
       routes.tabbar();
   }
 
