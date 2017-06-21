@@ -19,15 +19,17 @@ import React, { PropTypes } from 'react';
 import {
     InteractionManager,
     StyleSheet,
-    Text,
     View,
-    Button,
-    TextInput,
+    Image,
     DeviceEventEmitter,
+    Text,
+
     ScrollView,
     RefreshControl,
     Alert
 } from 'react-native';
+import EditView from '../components/EditView';
+import Button from '../components/Button';
 let tempTypeIds = [];
 const contextTypes = {
     routes: PropTypes.object.isRequired
@@ -56,29 +58,57 @@ class Login extends React.Component {
     }
     render() {
         return(
-            <View>
-            <View style={{marginTop:80}}>
-                <TextInput style={{height: 40}} placeholder="输入用户名/注册手机号"
-                           onChangeText={(text) =>  {this.userName = text;}}
-                />
-                <TextInput style={{height: 40}} placeholder="输入密码" onChangeText={(text) =>  {this.password = text;}}
-                />
-                <Button
-                    onPress={() => this.onSelectLogin()}
-                    title="登录"
-                    color="#4A90E2"
-                />
-                <Text style={{color:"#4A90E2",textAlign:'center',marginTop:10}} >忘记密码？</Text>
+            <View style={styles.loginview}>
+                <View   style={{flexDirection: 'row',height:100,marginTop:1,
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',}}>
+                    <Image source={require('../img/login.png')}/>
+                </View>
+                <View style={{marginTop:80}}>
+                    <EditView  name='输入用户名/注册手机号' onChangeText={(text) => {
+                        this.userName = text;
+                    }}/>
+                    <EditView name='输入密码' onChangeText={(text) => {
+                        this.password = text;
+                    }}/>
+                    <Button
+                        containerStyle={styles.sureBtn}
+                        style={styles.btnText}
+                        text={'登录'}
+                        onPress={() => this.onSelectLogin()}/>
+                    <Text style={{color:"#4A90E2",textAlign:'center',marginTop:10}} >忘记密码？</Text>
+                </View>
             </View>
-        </View>
         )
     }
     onPressCallback = () => {
+
     };
+
+    //跳转到第二个页面去
+    onLoginSuccess(){
+    }
 }
 
 const styles = StyleSheet.create({
+    loginview: {
+        flex: 1,
+        padding: 30,
+        backgroundColor: '#ffffff',
+    },
+    sureBtn: {
+        margin: 10,
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: '#3e9ce9'
+    },
+    btnText: {
+        fontSize: 16,
+        textAlign: 'center',
+        color: '#fff'
+    },
 });
+
 Login.contextTypes = contextTypes;
 
 export default Login;
