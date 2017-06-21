@@ -44,11 +44,11 @@ class Login extends React.Component {
             typeIds: tempTypeIds
         };
     }
-
+//组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
        　
     }
-
+//组件渲染完成 已经出现在dom文档里
     componentDidMount() {
       　
     }
