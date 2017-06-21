@@ -56,8 +56,8 @@ class Category extends React.Component {
     this.resetRoute = this.resetRoute.bind(this);
     this.onRefresh = this.onRefresh.bind(this);
     this.state = {
-      typeIds: tempTypeIds
-    };
+          typeIds: tempTypeIds
+      };
   }
 
   componentWillMount() {

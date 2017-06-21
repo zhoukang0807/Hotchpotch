@@ -5,8 +5,8 @@ import TabIcon from '../components/TabIcon';
 import About from '../pages/About';
 import AV from 'leancloud-storage'; //云端保存数据
 import CategoryContainer from '../containers/CategoryContainer';
+import LoginContainer from '../containers/LoginContainer';
 import Main from '../pages/Main';
-import Login from '../pages/Login';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
@@ -54,7 +54,7 @@ class App extends React.Component {
                     />
                     <Scene
                         key="login"
-                        component={Login}
+                        component={LoginContainer}
                         hideNavBar
                         hideTabBar
                         type={ActionConst.REPLACE}

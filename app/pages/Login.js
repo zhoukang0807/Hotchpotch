@@ -23,14 +23,18 @@ import {
     Image,
     DeviceEventEmitter,
     Text,
-
     ScrollView,
     RefreshControl,
     Alert
 } from 'react-native';
+import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
 let tempTypeIds = [];
+const propTypes = {
+    loginActions: PropTypes.object,
+};
+
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
@@ -38,10 +42,9 @@ class Login extends React.Component {
     //构造函数，用来初始化数据
     constructor(props) {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
-        this.userName = "";
-        this.password = "";
         this.state = {
-            typeIds: tempTypeIds
+            userName: "",
+            password : ""
         };
     }
 //组件出现前 就是dom还没有渲染到html文档里面
@@ -50,10 +53,12 @@ class Login extends React.Component {
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
-      　
     }
     onSelectLogin() {
+        const { loginActions } = this.props;
+        loginActions.requestLogin(this.state.userName,this.state.password);
         const { routes } = this.context;
+        store.save('userInfo', this.state.typeIds);
         routes.initCategory({ isFirst: true });
     }
     render() {
@@ -66,10 +71,10 @@ class Login extends React.Component {
                 </View>
                 <View style={{marginTop:80}}>
                     <EditView  name='输入用户名/注册手机号' onChangeText={(text) => {
-                        this.userName = text;
+                        this.state.userName = text;
                     }}/>
                     <EditView name='输入密码' onChangeText={(text) => {
-                        this.password = text;
+                        this.state.password = text;
                     }}/>
                     <Button
                         containerStyle={styles.sureBtn}
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
 });
-
+Login.propTypes = propTypes;
 Login.contextTypes = contextTypes;
 
 export default Login;

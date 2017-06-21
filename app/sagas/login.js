@@ -20,8 +20,10 @@ import { put, take, call, fork } from 'redux-saga/effects';
 import * as types from '../constants/ActionTypes';
 
 
-export function* requestLogin() {
+export function* requestLogin(userName,password) {
     try {
+        console.log(userName)
+        console.log(password)
         console.log("进入登陆界面！")
     } catch (error) {
         console.log("登陆出错！")
@@ -30,7 +32,13 @@ export function* requestLogin() {
 
 export function* watchRequestLogin() {
     while (true) {
-        yield take(types.REQUEST_LOGIN);
-        yield fork(requestLogin);
+        const { userName, password} = yield take(
+            types.REQUEST_LOGIN
+        );
+        yield fork(
+            requestLogin,
+            userName,
+            password
+        );
     }
 }

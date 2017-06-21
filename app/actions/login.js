@@ -17,9 +17,14 @@
  */
 import * as types from '../constants/ActionTypes';
 
-export function requestLogin() {
+export function requestLogin(
+    userName,
+    password
+) {
     return {
-        type: types.REQUEST_LOGIN
+        type: types.REQUEST_LOGIN,
+        userName,
+        password
     };
 }
 
