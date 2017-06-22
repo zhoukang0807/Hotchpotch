@@ -49,7 +49,7 @@ class Login extends React.Component {
     }
 //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
-       　
+        store.delete('loginInfo')
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
@@ -57,11 +57,22 @@ class Login extends React.Component {
     onSelectLogin() {
         const { loginActions } = this.props;
         loginActions.requestLogin(this.state.userName,this.state.password);
-        const { routes } = this.context;
-        store.save('userInfo', this.state.typeIds);
-        routes.initCategory({ isFirst: true });
     }
     render() {
+        InteractionManager.runAfterInteractions(() => {
+            // ...耗时较长的同步的任务...避免影响动画
+            store.get('loginInfo').then((loginInfo) => {
+                 if(loginInfo){
+                     if(loginInfo.resultCode=="0000"){
+                         const { routes } = this.context;
+                         store.save('user', loginInfo.user);
+                         //store.save('isInit', false);
+                         routes.initCategory({ isFirst: true });
+                     }
+                 }
+            })
+        });
+
         return(
             <View style={styles.loginview}>
                 <View   style={{flexDirection: 'row',height:100,marginTop:1,

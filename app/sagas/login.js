@@ -32,9 +32,8 @@ export function* requestLogin(userName,password) {
         console.log(loginInfo)
         yield put(receiveLogin(loginInfo));
         yield call(store.save, 'loginInfo', loginInfo); //将数据存储到store中
-        const errorMessage = loginInfo.resultDesc;
-        if (errorMessage && errorMessage !== '') {
-            yield toastShort(errorMessage); //toastShort安卓内提示用。提示错误信息
+        if (loginInfo.resultCode=="0001") {
+            yield toastShort(loginInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
         }
     } catch (error) {
         console.log(error)
