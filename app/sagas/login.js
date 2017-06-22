@@ -21,17 +21,24 @@ import * as types from '../constants/ActionTypes';
 import { request } from '../utils/RequestUtil';
 import { USER_LOGIN } from '../constants/Urls';
 import {  fetchLogin,receiveLogin } from '../actions/login';
-
+import store from 'react-native-simple-store';
+import { toastShort } from '../utils/ToastUtil';
 export function* requestLogin(userName,password) {
     try {
         console.log(userName)
         console.log(password)
         yield put(fetchLogin());
-        const loginfo = yield call(request, USER_LOGIN, 'post',JSON.stringify({userName,password}));
-        console.log(loginfo)
-        console.log("进入登陆界面！")
+        const loginInfo = yield call(request, USER_LOGIN, 'post',JSON.stringify({userName,password}));
+        console.log(loginInfo)
+        yield put(receiveLogin(loginInfo));
+        yield call(store.save, 'loginInfo', loginInfo); //将数据存储到store中
+        const errorMessage = loginInfo.resultDesc;
+        if (errorMessage && errorMessage !== '') {
+            yield toastShort(errorMessage); //toastShort安卓内提示用。提示错误信息
+        }
     } catch (error) {
-        console.log("登陆出错！")
+        console.log(error)
+        yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }
 

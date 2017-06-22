@@ -32,7 +32,7 @@ export default function login(state = initialState, action) {
         case types.RECEUVE_LOGIN:
             return Object.assign({}, state, {
                 loading: false,
-                loginInfo: {}
+                loginInfo: action.loginInfo
             });
         default:
             return state;
