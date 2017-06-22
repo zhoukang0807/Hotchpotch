@@ -26,8 +26,8 @@ export function* requestLogin(userName,password) {
     try {
         console.log(userName)
         console.log(password)
-       // yield put(fetchLogin());
-        const loginfo = yield call(request, USER_LOGIN, 'post');
+        yield put(fetchLogin());
+        const loginfo = yield call(request, USER_LOGIN, 'post',JSON.stringify({userName,password}));
         console.log(loginfo)
         console.log("进入登陆界面！")
     } catch (error) {
