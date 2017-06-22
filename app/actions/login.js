@@ -27,7 +27,11 @@ export function requestLogin(
         password
     };
 }
-
+export function fetchLogin() {
+    return {
+        type: types.FETCH_LOGIN
+    };
+}
 export function receiveLogin(loginInfo) {
     return {
         type: types.RECEUVE_LOGIN,

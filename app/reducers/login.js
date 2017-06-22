@@ -25,7 +25,7 @@ const initialState = {
 
 export default function login(state = initialState, action) {
     switch (action.type) {
-        case types.REQUEST_LOGIN:
+        case  types.FETCH_LOGIN:
             return Object.assign({}, state, {
                 loading: true
             });

@@ -18,12 +18,17 @@
  */
 import { put, take, call, fork } from 'redux-saga/effects';
 import * as types from '../constants/ActionTypes';
-
+import { request } from '../utils/RequestUtil';
+import { USER_LOGIN } from '../constants/Urls';
+import {  fetchLogin,receiveLogin } from '../actions/login';
 
 export function* requestLogin(userName,password) {
     try {
         console.log(userName)
         console.log(password)
+       // yield put(fetchLogin());
+        const loginfo = yield call(request, USER_LOGIN, 'post');
+        console.log(loginfo)
         console.log("进入登陆界面！")
     } catch (error) {
         console.log("登陆出错！")

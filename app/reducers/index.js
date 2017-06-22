@@ -24,12 +24,14 @@ import {
 import read from './read';
 import category from './category';
 import routes from './routes';
+import login from './login';
 //combineReducers 本函数可以帮助你组织多个 reducer，使它们分别管理自身相关联的 state。类似于 Flux 中的多个 store 分别管理不同的 state。
 // 在 Redux 中，只有一个 store，但是 combineReducers 让你拥有多个 reducer，同时保持各自负责逻辑块的独立性。
 const rootReducer = combineReducers({
 	routes,
 	read,
-	category
+	category,
+    login
 });
 
 export default rootReducer;
