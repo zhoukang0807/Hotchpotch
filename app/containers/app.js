@@ -58,6 +58,7 @@ class App extends React.Component {
                         component={LoginContainer}
                         hideNavBar
                         hideTabBar
+                        type={ActionConst.REPLACE}
                     />
                     <Scene
                         key="register"
