@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  */
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 import {
     InteractionManager,
     StyleSheet,
@@ -30,79 +30,65 @@ import {
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
-import GridView from '../components/GridView';
 const propTypes = {
-    loginActions: PropTypes.object,
+    registerActions: PropTypes.object,
 };
 
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
-class Login extends React.Component {
+class Register extends React.Component {
     //构造函数，用来初始化数据
     constructor(props) {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
         this.state = {
             userName: "",
-            password : ""
+            password: ""
         };
     }
+
 //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
-        store.delete('loginInfo')
     }
+
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
     }
-    onSelectLogin() {
-        const { loginActions } = this.props;
-        loginActions.requestLogin(this.state.userName,this.state.password);
-    }
-    render() {
-        InteractionManager.runAfterInteractions(() => {
-            // ...耗时较长的同步的任务...避免影响动画
-            store.get('loginInfo').then((loginInfo) => {
-                if(loginInfo){
-                    if(loginInfo.resultCode=="0000"){
-                        const { routes } = this.context;
-                        store.save('user', loginInfo.user);
-                        //store.save('isInit', false);
-                        routes.initCategory({ isFirst: true });
-                    }
-                }
-            })
-        });
 
-        return(
+    onSelectLogin() {
+        const {loginActions} = this.props;
+        loginActions.requestLogin(this.state.userName, this.state.password);
+    }
+
+    render() {
+        return (
             <View style={styles.loginview}>
-                <View   style={{flexDirection: 'row',height:100,marginTop:1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',}}>
-                    <Image source={require('../img/login.png')}/>
-                </View>
-                <View style={{marginTop:80}}>
-                    <EditView  name='输入用户名/注册手机号' onChangeText={(text) => {
+                <View style={{marginTop: 80}}>
+                    <EditView name='输入用户名/注册手机号' onChangeText={(text) => {
                         this.state.userName = text;
                     }}/>
                     <EditView name='输入密码' onChangeText={(text) => {
                         this.state.password = text;
                     }}/>
-                    <Button
-                        containerStyle={styles.sureBtn}
-                        style={styles.btnText}
-                        text={'登录'}
-                        onPress={() => this.onSelectLogin()}/>
-                    <Text style={{color:"#4A90E2",textAlign:'center',marginTop:10}} >忘记密码？</Text>
+                    <View style={styles.rowView}>
+                        <View style={{flex: 1}}>
+                            <Button
+                                containerStyle={styles.sureBtn}
+                                style={styles.btnText}
+                                text={'注册'}
+                                onPress={() => this.onSelectLogin()}/>
+                        </View>
+                        <View style={{flex: 1}}>
+                            <Button
+                                containerStyle={styles.sureBtn}
+                                style={styles.btnText}
+                                text={'重置'}
+                                onPress={() => this.onSelectLogin()}/>
+                        </View>
+                    </View>
                 </View>
             </View>
         )
-    }
-    onPressCallback = () => {
-
-    };
-
-    //跳转到第二个页面去
-    onLoginSuccess(){
     }
 }
 
@@ -123,8 +109,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff'
     },
+    rowView:{
+        flexDirection: 'row',
+        marginTop:10
+    }
 });
-Login.propTypes = propTypes;
-Login.contextTypes = contextTypes;
+Register.propTypes = propTypes;
+Register.contextTypes = contextTypes;
 
-export default Login;
+export default Register;

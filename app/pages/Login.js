@@ -3,17 +3,13 @@ import {
     InteractionManager,
     StyleSheet,
     View,
-    Image,
-    DeviceEventEmitter,
     Text,
-    ScrollView,
-    RefreshControl,
+    Image,
     Alert
 } from 'react-native';
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
-let tempTypeIds = [];
 const propTypes = {
     loginActions: PropTypes.object,
 };
@@ -27,7 +23,8 @@ class Login extends React.Component {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
         this.state = {
             userName: "",
-            password : ""
+            password : "",
+            modalVisible: false
         };
     }
 //组件出现前 就是dom还没有渲染到html文档里面
@@ -58,16 +55,14 @@ class Login extends React.Component {
 
         return(
             <View style={styles.loginview}>
-                <View   style={{flexDirection: 'row',height:100,marginTop:1,
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',}}>
+                <View   style={styles.loginImage}>
                     <Image source={require('../img/login.png')}/>
                 </View>
                 <View style={{marginTop:80}}>
-                    <EditView  name='输入用户名/注册手机号' onChangeText={(text) => {
+                    <EditView  name='请输入用户名/注册邮箱：' onChangeText={(text) => {
                         this.state.userName = text;
                     }}/>
-                    <EditView name='输入密码' onChangeText={(text) => {
+                    <EditView name='请输入密码：' onChangeText={(text) => {
                         this.state.password = text;
                     }}/>
                     <Button
@@ -75,30 +70,24 @@ class Login extends React.Component {
                         style={styles.btnText}
                         text={'登录'}
                         onPress={() => this.onSelectLogin()}/>
-                </View>
-                <View   style={{flexDirection: 'row',marginTop:10}}>
-                   <View style={{width:"50%"}}>
-                      <Text style={{color:"#4A90E2",textAlign: 'left'}} onPress={this.registerClick} >邮箱注册</Text>
-                   </View>
-                   <View style={{width:"50%"}}>
-                     <Text style={{color:"#4A90E2",textAlign:'right'}} onPress={this.forgetClick} >忘记密码？</Text>
-                   </View>
-                </View>
+                  </View>
+                  <View  style={styles.rowView}>
+                      <View style={{flex:1}}>
+                           <Text style={styles.loginLeftText} onPress={this.registerClick} >邮箱注册</Text>
+                      </View>
+                      <View style={{flex:1}}>
+                           <Text style={styles.loginRightText} onPress={this.forgetClick} >忘记密码？</Text>
+                      </View>
+                  </View>
             </View>
         )
     }
     registerClick = () => {
-        alert("点击了邮箱注册")
+        const { routes } = this.context;
+        routes.register();
     }
     forgetClick = () => {
         alert("点击了忘记密码")
-    }
-    onPressCallback = () => {
-
-    };
-
-    //跳转到第二个页面去
-    onLoginSuccess(){
     }
 }
 
@@ -107,6 +96,17 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 30,
         backgroundColor: '#ffffff',
+    },
+    rowView:{
+        flexDirection: 'row',
+        marginTop:10
+    },
+    loginImage:{
+        flexDirection: 'row',
+        height:100,
+        marginTop:1,
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     },
     sureBtn: {
         margin: 10,
@@ -119,11 +119,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff'
     },
-    gridLayout: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#f2f2f2'
+    loginLeftText: {
+        color:"#4A90E2",
+        textAlign:'left'
     },
+    loginRightText: {
+        color:"#4A90E2",
+        textAlign:'right'
+    }
 });
 Login.propTypes = propTypes;
 Login.contextTypes = contextTypes;

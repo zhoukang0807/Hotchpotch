@@ -6,6 +6,7 @@ import About from '../pages/About';
 import AV from 'leancloud-storage'; //云端保存数据
 import CategoryContainer from '../containers/CategoryContainer';
 import LoginContainer from '../containers/LoginContainer';
+import RegisterContainer from '../containers/RegisterContainer';
 import Main from '../pages/Main';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
@@ -57,7 +58,12 @@ class App extends React.Component {
                         component={LoginContainer}
                         hideNavBar
                         hideTabBar
-                        type={ActionConst.REPLACE}
+                    />
+                    <Scene
+                        key="register"
+                        component={RegisterContainer}
+                        hideNavBar
+                        hideTabBar
                     />
                     <Scene
                         key="initCategory"
