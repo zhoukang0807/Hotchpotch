@@ -11,7 +11,7 @@ import Main from '../pages/Main';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
-const backButton = require('../img/arrow_left.png');
+const backButton = require('../img/arrow_left2.png');
 const getSceneStyle = (props, computedProps) => {
     const style = {
         flex: 1,
@@ -22,7 +22,7 @@ const getSceneStyle = (props, computedProps) => {
         shadowRadius: null
     };
     if (computedProps.isActive) {
-        style.marginTop = computedProps.hideNavBar ? 0 : 64;
+        style.marginTop = computedProps.hideNavBar ? 0 : 50;
         style.marginBottom = computedProps.hideTabBar ? 0 : 50;
     }
     return style;
@@ -56,15 +56,13 @@ class App extends React.Component {
                     <Scene
                         key="login"
                         component={LoginContainer}
-                        hideNavBar
                         hideTabBar
                         type={ActionConst.REPLACE}
                     />
                     <Scene
                         key="register"
-                        component={RegisterContainer}
-                        hideNavBar
                         hideTabBar
+                        component={RegisterContainer}
                     />
                     <Scene
                         key="initCategory"

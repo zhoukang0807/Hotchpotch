@@ -24,15 +24,20 @@ import {
     DeviceEventEmitter,
     Text,
     ScrollView,
+    BackHandler,
     RefreshControl,
     Alert
 } from 'react-native';
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
+import {
+    Actions
+} from 'react-native-router-flux';
 const propTypes = {
     registerActions: PropTypes.object,
 };
+
 
 const contextTypes = {
     routes: PropTypes.object.isRequired
@@ -43,21 +48,47 @@ class Register extends React.Component {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
         this.state = {
             userName: "",
-            password: ""
+            password: "",
+            isShareModal: false
         };
+        this.goBack = this.goBack.bind(this);
     }
 
 //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
+        //添加回退按键监听
     }
 
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
+        //删除回退按键监听
+        Actions.refresh({
+            title: "用户注册",
+            titleStyle:{ color: '#000',fontSize: 20},
+            navigationBarStyle:{backgroundColor:"#fff"},
+        });
+        BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
     }
 
     onSelectLogin() {
         const {loginActions} = this.props;
         loginActions.requestLogin(this.state.userName, this.state.password);
+    }
+
+    goBack() {
+        if (this.state.isShareModal) {
+            this.setState({
+                isShareModal: false
+            });
+            return true;
+        } else if (canGoBack) {
+            this.webview.goBack();
+            return true;
+        }
+        return false;
     }
 
     render() {

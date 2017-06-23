@@ -10,6 +10,9 @@ import {
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
+import {
+    Actions
+} from 'react-native-router-flux';
 const propTypes = {
     loginActions: PropTypes.object,
 };
@@ -33,6 +36,14 @@ class Login extends React.Component {
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
+        Actions.refresh({
+            title: "用户登陆",
+            titleStyle:{ color: '#000',fontSize: 20},
+            navigationBarStyle:{backgroundColor:"#fff"}
+        });
+    }
+    //官方的解释是组件被移除前执行
+    componentWillUnmount() {
     }
     onSelectLogin() {
         const { loginActions } = this.props;
