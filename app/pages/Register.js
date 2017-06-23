@@ -1,3 +1,20 @@
+/**
+ *
+ * Copyright 2016-present reading
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 import React, { PropTypes } from 'react';
 import {
     InteractionManager,
@@ -13,7 +30,7 @@ import {
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
-let tempTypeIds = [];
+import GridView from '../components/GridView';
 const propTypes = {
     loginActions: PropTypes.object,
 };
@@ -45,14 +62,14 @@ class Login extends React.Component {
         InteractionManager.runAfterInteractions(() => {
             // ...耗时较长的同步的任务...避免影响动画
             store.get('loginInfo').then((loginInfo) => {
-                 if(loginInfo){
-                     if(loginInfo.resultCode=="0000"){
-                         const { routes } = this.context;
-                         store.save('user', loginInfo.user);
-                         //store.save('isInit', false);
-                         routes.initCategory({ isFirst: true });
-                     }
-                 }
+                if(loginInfo){
+                    if(loginInfo.resultCode=="0000"){
+                        const { routes } = this.context;
+                        store.save('user', loginInfo.user);
+                        //store.save('isInit', false);
+                        routes.initCategory({ isFirst: true });
+                    }
+                }
             })
         });
 
@@ -75,23 +92,10 @@ class Login extends React.Component {
                         style={styles.btnText}
                         text={'登录'}
                         onPress={() => this.onSelectLogin()}/>
-                </View>
-                <View   style={{flexDirection: 'row',marginTop:10}}>
-                   <View style={{width:"50%"}}>
-                      <Text style={{color:"#4A90E2",textAlign: 'left'}} onPress={this.registerClick} >邮箱注册</Text>
-                   </View>
-                   <View style={{width:"50%"}}>
-                     <Text style={{color:"#4A90E2",textAlign:'right'}} onPress={this.forgetClick} >忘记密码？</Text>
-                   </View>
+                    <Text style={{color:"#4A90E2",textAlign:'center',marginTop:10}} >忘记密码？</Text>
                 </View>
             </View>
         )
-    }
-    registerClick = () => {
-        alert("点击了邮箱注册")
-    }
-    forgetClick = () => {
-        alert("点击了忘记密码")
     }
     onPressCallback = () => {
 
@@ -118,11 +122,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         color: '#fff'
-    },
-    gridLayout: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#f2f2f2'
     },
 });
 Login.propTypes = propTypes;
