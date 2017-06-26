@@ -20,6 +20,9 @@
 import { put, take, call, fork } from 'redux-saga/effects';
 import * as types from '../constants/ActionTypes';
 import { toastShort } from '../utils/ToastUtil';
+import { request } from '../utils/RequestUtil';
+import { USER_REGISTER } from '../constants/Urls';
+import store from 'react-native-simple-store';
 import {receiveRegister,fetchRegister } from '../actions/register';
 export function* requestRegister(email,userName,password) {
     try {
@@ -27,7 +30,7 @@ export function* requestRegister(email,userName,password) {
             yield toastShort("用户名、密码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
         }else {
             yield put(fetchRegister());
-            const registerInfo = yield call(request, USER_LOGIN, 'post', JSON.stringify({email,userName, password}));
+            const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({email,userName, password}));
             console.log(registerInfo)
             yield put(receiveRegister(registerInfo));
             yield call(store.save, 'registerInfo', registerInfo); //将数据存储到store中
