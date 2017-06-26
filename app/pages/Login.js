@@ -37,9 +37,9 @@ class Login extends React.Component {
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
         Actions.refresh({
-            title: "用户登陆",
+            title: "登陆",
             titleStyle:{ color: '#000',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#fff"}
+            navigationBarStyle:{backgroundColor:"#f2f2f2"}
         });
     }
     //官方的解释是组件被移除前执行

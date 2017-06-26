@@ -65,7 +65,7 @@ class Register extends React.Component {
         Actions.refresh({
             title: "用户注册",
             titleStyle:{ color: '#000',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#fff"},
+            navigationBarStyle:{backgroundColor:"#f2f2f2"},
         });
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
