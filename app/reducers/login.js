@@ -19,7 +19,7 @@
 import * as types from '../constants/ActionTypes';
 
 const initialState = {
-    loading: false,
+    showLoading: false,
     loginInfo: {}
 };
 
@@ -27,11 +27,11 @@ export default function login(state = initialState, action) {
     switch (action.type) {
         case  types.FETCH_LOGIN:
             return Object.assign({}, state, {
-                loading: true
+                showLoading: true
             });
         case types.RECEUVE_LOGIN:
             return Object.assign({}, state, {
-                loading: false,
+                showLoading: false,
                 loginInfo: action.loginInfo
             });
         default:

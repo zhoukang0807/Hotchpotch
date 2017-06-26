@@ -51,7 +51,7 @@ class Register extends React.Component {
         this.state = {
             userName: "",
             password: "",
-            isShareModal: false
+            showLoading: false
         };
         this.goBack = this.goBack.bind(this);
     }
@@ -82,13 +82,13 @@ class Register extends React.Component {
     }
 
     renderLoading() {
-        return <FetchLoading  isShareModal={this.state.isShareModal}/>;
+        return <FetchLoading  showLoading={this.state.showLoading}/>;
     }
 
     goBack() {
-        if (this.state.isShareModal) {
+        if (this.state.showLoading) {
             this.setState({
-                isShareModal: false
+                showLoading: false
             });
             return true;
         } else if (canGoBack) {
@@ -100,7 +100,7 @@ class Register extends React.Component {
 
     onSelectRegister() {
         this.setState({
-            isShareModal: true
+            showLoading: true
         });
     }
 

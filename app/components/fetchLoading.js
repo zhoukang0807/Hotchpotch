@@ -26,17 +26,13 @@ class  FetchLoading extends React.Component {
         console.log("onRequestClose ---- ")
     }
     render() {
-        const { isShareModal } = this.props
+        const { showLoading } = this.props
         return (
         <Modal
             animationType="fade"
-            visible={isShareModal}
+            visible={showLoading}
             transparent
-            onRequestClose={() => {
-                this.setState({
-                    isShareModal: false
-                });
-            }}
+            onRequestClose={() => this._close()}
         >
             <View style={styles.loading}>
                 <ActivityIndicator size="large" color="#3e9ce9"/>

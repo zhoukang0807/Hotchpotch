@@ -35,6 +35,7 @@ export function* requestLogin(userName,password) {
         }
     } catch (error) {
         console.log(error)
+        yield put(receiveLogin(null));
         yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }

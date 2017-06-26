@@ -10,6 +10,7 @@ import {
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
+import FetchLoading from '../components/fetchLoading';
 import {
     Actions
 } from 'react-native-router-flux';
@@ -27,7 +28,6 @@ class Login extends React.Component {
         this.state = {
             userName: "",
             password : "",
-            modalVisible: false
         };
     }
 //组件出现前 就是dom还没有渲染到html文档里面
@@ -64,8 +64,10 @@ class Login extends React.Component {
             })
         });
 
+        const { login } = this.props;
         return(
             <View style={styles.loginview}>
+                <FetchLoading  showLoading={login.showLoading}/>
                 <View   style={styles.loginImage}>
                     <Image source={require('../img/login.png')}/>
                 </View>
