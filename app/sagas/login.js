@@ -26,7 +26,7 @@ import { toastShort } from '../utils/ToastUtil';
 export function* requestLogin(userName,password) {
     try {
         if(userName==""||password==""){
-            yield toastShort("用户名或密码为空!"); //toastShort安卓内提示用。提示错误信息
+            yield toastShort("用户名或密码不能为空!"); //toastShort安卓内提示用。提示错误信息
         }else {
             yield put(fetchLogin());
             const loginInfo = yield call(request, USER_LOGIN, 'post', JSON.stringify({userName, password}));

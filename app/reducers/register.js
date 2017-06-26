@@ -20,7 +20,7 @@ import * as types from '../constants/ActionTypes';
 
 const initialState = {
     loading: false,
-    loginInfo: {}
+    registerInfo:{}
 };
 
 export default function login(state = initialState, action) {
@@ -32,7 +32,7 @@ export default function login(state = initialState, action) {
         case types.RECEUVE_REGISTER:
             return Object.assign({}, state, {
                 loading: false,
-                loginInfo: action.loginInfo
+                registerInfo: action.registerInfo
             });
         default:
             return state;

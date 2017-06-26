@@ -19,11 +19,13 @@
 import * as types from '../constants/ActionTypes';
 
 export function requestRegister(
+    email,
     userName,
     password
 ) {
     return {
         type: types.REQUEST_REGISTER,
+        email,
         userName,
         password
     };

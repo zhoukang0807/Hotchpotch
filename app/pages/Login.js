@@ -67,7 +67,7 @@ class Login extends React.Component {
         const { login } = this.props;
         return(
             <View style={styles.loginview}>
-                <FetchLoading  showLoading={login.showLoading} tips="登陆中..."/>
+                <FetchLoading  showLoading={login.loading} tips="登陆中..."/>
                 <View   style={styles.loginImage}>
                     <Image source={require('../img/login.png')}/>
                 </View>

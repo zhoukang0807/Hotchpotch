@@ -51,7 +51,7 @@ class Register extends React.Component {
         this.state = {
             userName: "",
             password: "",
-            showLoading: false
+            email:"",
         };
         this.goBack = this.goBack.bind(this);
     }
@@ -82,33 +82,25 @@ class Register extends React.Component {
     }
 
     goBack() {
-        if (this.state.showLoading) {
-            this.setState({
-                showLoading: false
-            });
-            return true;
-        } else if (canGoBack) {
-            this.webview.goBack();
-            return true;
-        }
-        return false;
     }
 
     onSelectRegister() {
-        this.setState({
-            showLoading: true
-        });
+        const { registerActions } = this.props;
+        registerActions.requestRegister(this.state.userName,this.state.password,this.state.email);
     }
-
     render() {
+        const { register } = this.props;
         return (
             <View style={styles.loginview}>
-                <FetchLoading  showLoading={this.state.showLoading} tips="注册中..."/>
+                <FetchLoading  showLoading={register.loading} tips="注册中..."/>
                 <View style={{marginTop: 80}}>
-                    <EditView name='输入用户名/注册手机号' onChangeText={(text) => {
+                    <EditView name='请输入邮箱地址' onChangeText={(text) => {
+                        this.state.email = text;
+                    }}/>
+                    <EditView name='请输入用户名' onChangeText={(text) => {
                         this.state.userName = text;
                     }}/>
-                    <EditView name='输入密码' onChangeText={(text) => {
+                    <EditView name='请输入密码' onChangeText={(text) => {
                         this.state.password = text;
                     }}/>
                     <View style={styles.rowView}>

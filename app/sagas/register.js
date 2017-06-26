@@ -20,18 +20,33 @@
 import { put, take, call, fork } from 'redux-saga/effects';
 import * as types from '../constants/ActionTypes';
 import { toastShort } from '../utils/ToastUtil';
-export function* requestRegister(userName,password) {
+import {receiveRegister,fetchRegister } from '../actions/register';
+export function* requestRegister(email,userName,password) {
     try {
-        console.log('123')
+        if(userName==""||password==""||email==""){
+            yield toastShort("用户名、密码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
+        }else {
+            yield put(fetchRegister());
+            const registerInfo = yield call(request, USER_LOGIN, 'post', JSON.stringify({email,userName, password}));
+            console.log(registerInfo)
+            yield put(receiveRegister(registerInfo));
+            yield call(store.save, 'registerInfo', registerInfo); //将数据存储到store中
+            if (registerInfo.resultCode == "0001") {
+                yield toastShort(registerInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
+            }
+        }
     } catch (error) {
         console.log(error)
+        yield put(receiveRegister(null));
         yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }
 
 export function* watchRequestRegister() {
     while (true) {
-        yield take(types.REQUEST_REGISTER);
-        yield fork(requestRegister,);
+        const { email,userName, password} = yield take(
+            types.REQUEST_REGISTER
+        );
+        yield fork(requestRegister,email,userName, password);
     }
 }
