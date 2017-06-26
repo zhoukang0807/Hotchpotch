@@ -26,7 +26,7 @@ class  FetchLoading extends React.Component {
         console.log("onRequestClose ---- ")
     }
     render() {
-        const { showLoading } = this.props
+        const { showLoading,tips} = this.props
         return (
         <Modal
             animationType="fade"
@@ -35,7 +35,10 @@ class  FetchLoading extends React.Component {
             onRequestClose={() => this._close()}
         >
             <View style={styles.loading}>
-                <ActivityIndicator size="large" color="#3e9ce9"/>
+                <View style={styles.rowView}>
+                <Text style={styles.loadingText}>{tips}</Text>
+                <ActivityIndicator size="small" color="#3e9ce9"/>
+                </View>
             </View>
         </Modal>)
     }
@@ -44,12 +47,19 @@ class  FetchLoading extends React.Component {
 const styles = StyleSheet.create({
     loading: {
         flex: 1,
-        alignItems: 'center',
         justifyContent: 'flex-end',
     },
     loadingText: {
-        marginTop: 10,
-        textAlign: 'center'
+        textAlign: 'center',
+        color:"#8193ff",
+        fontSize:12
+    },
+    rowView: {
+        flexDirection: 'row',
+        backgroundColor:"#d9dffb",
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10
     }
 });
 

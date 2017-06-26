@@ -81,10 +81,6 @@ class Register extends React.Component {
         loginActions.requestLogin(this.state.userName, this.state.password);
     }
 
-    renderLoading() {
-        return <FetchLoading  showLoading={this.state.showLoading}/>;
-    }
-
     goBack() {
         if (this.state.showLoading) {
             this.setState({
@@ -107,7 +103,7 @@ class Register extends React.Component {
     render() {
         return (
             <View style={styles.loginview}>
-                {this.renderLoading()}
+                <FetchLoading  showLoading={this.state.showLoading} tips="注册中..."/>
                 <View style={{marginTop: 80}}>
                     <EditView name='输入用户名/注册手机号' onChangeText={(text) => {
                         this.state.userName = text;
