@@ -26,11 +26,13 @@ import {
     ScrollView,
     BackHandler,
     RefreshControl,
-    Alert
+    Alert,
+    Modal
 } from 'react-native';
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
+import FetchLoading from '../components/fetchLoading';
 import {
     Actions
 } from 'react-native-router-flux';
@@ -64,11 +66,12 @@ class Register extends React.Component {
         //删除回退按键监听
         Actions.refresh({
             title: "注册",
-            titleStyle:{ color: '#808080',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#f2f2f2"},
+            titleStyle: {color: '#808080', fontSize: 20},
+            navigationBarStyle: {backgroundColor: "#f2f2f2"},
         });
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.goBack);
     }
@@ -76,6 +79,10 @@ class Register extends React.Component {
     onSelectLogin() {
         const {loginActions} = this.props;
         loginActions.requestLogin(this.state.userName, this.state.password);
+    }
+
+    renderLoading() {
+        return <FetchLoading  isShareModal={this.state.isShareModal}/>;
     }
 
     goBack() {
@@ -91,9 +98,16 @@ class Register extends React.Component {
         return false;
     }
 
+    onSelectRegister() {
+        this.setState({
+            isShareModal: true
+        });
+    }
+
     render() {
         return (
             <View style={styles.loginview}>
+                {this.renderLoading()}
                 <View style={{marginTop: 80}}>
                     <EditView name='输入用户名/注册手机号' onChangeText={(text) => {
                         this.state.userName = text;
@@ -107,7 +121,7 @@ class Register extends React.Component {
                                 containerStyle={styles.sureBtn}
                                 style={styles.btnText}
                                 text={'注册'}
-                                onPress={() => this.onSelectLogin()}/>
+                                onPress={() => this.onSelectRegister()}/>
                         </View>
                         <View style={{flex: 1}}>
                             <Button
@@ -140,9 +154,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff'
     },
-    rowView:{
+    rowView: {
         flexDirection: 'row',
-        marginTop:10
+        marginTop: 10
     }
 });
 Register.propTypes = propTypes;
