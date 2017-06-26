@@ -25,13 +25,17 @@ import store from 'react-native-simple-store';
 import { toastShort } from '../utils/ToastUtil';
 export function* requestLogin(userName,password) {
     try {
-        yield put(fetchLogin());
-        const loginInfo = yield call(request, USER_LOGIN, 'post',JSON.stringify({userName,password}));
-        console.log(loginInfo)
-        yield put(receiveLogin(loginInfo));
-        yield call(store.save, 'loginInfo', loginInfo); //将数据存储到store中
-        if (loginInfo.resultCode=="0001") {
-            yield toastShort(loginInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
+        if(userName==""||password==""){
+            yield toastShort("用户名或密码为空!"); //toastShort安卓内提示用。提示错误信息
+        }else {
+            yield put(fetchLogin());
+            const loginInfo = yield call(request, USER_LOGIN, 'post', JSON.stringify({userName, password}));
+            console.log(loginInfo)
+            yield put(receiveLogin(loginInfo));
+            yield call(store.save, 'loginInfo', loginInfo); //将数据存储到store中
+            if (loginInfo.resultCode == "0001") {
+                yield toastShort(loginInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
+            }
         }
     } catch (error) {
         console.log(error)
