@@ -21,7 +21,7 @@ export function receiveSendEmail(
     code
 ) {
     return {
-        type: types.REQUEST_SENDEMAIL,
+        type: types.RECEUVE_SENDEMAIL,
         code
     };
 }
