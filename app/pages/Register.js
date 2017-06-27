@@ -27,11 +27,13 @@ import {
     BackHandler,
     RefreshControl,
     Alert,
-    Modal
+    Modal,
+    TextInput
 } from 'react-native';
 import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
+import TimerButton from '../components/TimerButton';
 import FetchLoading from '../components/fetchLoading';
 import {
     Actions
@@ -96,21 +98,40 @@ class Register extends React.Component {
         const { registerActions } = this.props;
         registerActions.requestRegister(this.state.userName,this.state.password,this.state.email);
     }
+    _requestSMSCode(shouldStartCountting){
+        shouldStartCountting(true);
+    }
+
     render() {
         const { register } = this.props;
         return (
             <View style={styles.loginview}>
                 <FetchLoading  showLoading={register.loading} tips="注册中..."/>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{flex:1}}>
+                        <Text>邮箱</Text>
+                    </View>
+                    <View style={{flex:3}}>
+                        <EditView name='请输入邮箱地址'  onChangeText={(text) => {
+                            this.state.email = text;
+                        }}/>
+                    </View>
+                    <TimerButton enable={5}
+                                 style={{width: 110,marginRight: 10}}
+                                 textStyle={{color: "#000"}}
+                                 timerCount={10}
+                                 onClick={(shouldStartCountting)=>{
+                                     this._requestSMSCode(shouldStartCountting)
+                                 }}/>
+                </View>
                 <View style={{marginTop: 80}}>
-                    <EditView name='请输入邮箱地址'  onChangeText={(text) => {
-                        this.state.email = text;
-                    }}/>
                     <EditView name='请输入用户名'   onChangeText={(text) => {
                         this.state.userName = text;
                     }}/>
                     <EditView name='请输入密码'   onChangeText={(text) => {
                         this.state.password = text;
                     }}/>
+
                     <View style={styles.rowView}>
                         <View style={{flex: 1}}>
                             <Button
