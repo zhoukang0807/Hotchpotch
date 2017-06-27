@@ -20,8 +20,9 @@ export function* requestSendEmail(email,shouldStartCountting) {
                 yield toastShort("验证码已发送"); //toastShort安卓内提示用。提示错误信息
             }
     } catch (error) {
-        yield put(receiveSendEmail(null));
         console.log(error)
+        yield put(receiveSendEmail(null));
+        yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }
 
