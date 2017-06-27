@@ -11,6 +11,7 @@ import store from 'react-native-simple-store';
 import EditView from '../components/EditView';
 import Button from '../components/Button';
 import FetchLoading from '../components/fetchLoading';
+import { toastShort } from '../utils/ToastUtil';
 import {
     Actions
 } from 'react-native-router-flux';
@@ -46,6 +47,10 @@ class Login extends React.Component {
     componentWillUnmount() {
     }
     onSelectLogin() {
+        if(this.state.userName==""||this.state.password==""){
+            toastShort("用户名或密码不能为空!"); //toastShort安卓内提示用。提示错误信息
+            return;
+        }
         const { loginActions } = this.props;
         loginActions.requestLogin(this.state.userName,this.state.password);
     }
