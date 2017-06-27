@@ -54,9 +54,10 @@ class Register extends React.Component {
             email:"",
         };
         this.goBack = this.goBack.bind(this);
+
     }
 
-//组件出现前 就是dom还没有渲染到html文档里面
+  //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
         //添加回退按键监听
     }
@@ -80,7 +81,14 @@ class Register extends React.Component {
         const {loginActions} = this.props;
         loginActions.requestLogin(this.state.userName, this.state.password);
     }
-
+    onResetReg(){
+        //清空文本内容
+        this.state = {
+            userName: "",
+            password: "",
+            email:"",
+        };
+    }
     goBack() {
     }
 
@@ -94,13 +102,13 @@ class Register extends React.Component {
             <View style={styles.loginview}>
                 <FetchLoading  showLoading={register.loading} tips="注册中..."/>
                 <View style={{marginTop: 80}}>
-                    <EditView name='请输入邮箱地址' onChangeText={(text) => {
+                    <EditView name='请输入邮箱地址'  onChangeText={(text) => {
                         this.state.email = text;
                     }}/>
-                    <EditView name='请输入用户名' onChangeText={(text) => {
+                    <EditView name='请输入用户名'   onChangeText={(text) => {
                         this.state.userName = text;
                     }}/>
-                    <EditView name='请输入密码' onChangeText={(text) => {
+                    <EditView name='请输入密码'   onChangeText={(text) => {
                         this.state.password = text;
                     }}/>
                     <View style={styles.rowView}>
@@ -116,7 +124,7 @@ class Register extends React.Component {
                                 containerStyle={styles.sureBtn}
                                 style={styles.btnText}
                                 text={'重置'}
-                                onPress={() => this.onSelectLogin()}/>
+                                onPress={() => this.onResetReg()}/>
                         </View>
                     </View>
                 </View>

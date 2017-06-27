@@ -50,5 +50,6 @@ const LoginStyles = StyleSheet.create({
     backgroundColor: '#ffffff',
     height:45,
     margin:18,
+    padding: 0
   },
 });
