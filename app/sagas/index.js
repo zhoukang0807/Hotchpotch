@@ -19,12 +19,15 @@ import { fork } from 'redux-saga/effects'; //redux-saga 可以用 fork 和 call 
 import { watchRequestTypeList } from './category';
 import { watchRequestArticleList } from './read';
 import { watchRequestLogin } from './login';
-import { watchRequestRegister } from './register';
+import { watchRequestRegister} from './register';
+import { watchRequestSendEmail} from './sendEmail';
+
 
 export default function* rootSaga() {    //function* 这种声明方式(function关键字后跟一个星号）会定义一个生成器函数 (generator function)，它返回一个  Generator  对象。
                                             //生成器函数在执行时能中途退出，后面又能重新进入继续执行。而且在函数内定义的变量的状态都会保留，不受中途退出的影响。
-    yield [ fork(watchRequestLogin),fork(watchRequestRegister),fork(watchRequestTypeList), fork(watchRequestArticleList)]; //yield 异步的同步调用。。。依次执行后面的方法
+    yield [ fork(watchRequestLogin),fork(watchRequestRegister),fork(watchRequestSendEmail),fork(watchRequestTypeList), fork(watchRequestArticleList)]; //目的是把所有的请求监听事件，用take监听某个事件
 }
+
 
 //yield 表达式
 //由于 Generator 函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield表达式就是暂停标志。

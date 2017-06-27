@@ -33,7 +33,7 @@ export function* requestLogin(userName,password) {
             console.log(loginInfo)
             yield put(receiveLogin(loginInfo));
             yield call(store.save, 'loginInfo', loginInfo); //将数据存储到store中
-            if (loginInfo.resultCode == "0001") {
+            if (loginInfo.resultCode != "0000") {
                 yield toastShort(loginInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
             }
         }

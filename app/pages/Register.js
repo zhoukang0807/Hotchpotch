@@ -35,6 +35,7 @@ import EditView from '../components/EditView';
 import Button from '../components/Button';
 import TimerButton from '../components/TimerButton';
 import FetchLoading from '../components/fetchLoading';
+import { toastShort } from '../utils/ToastUtil';
 import {
     Actions
 } from 'react-native-router-flux';
@@ -96,10 +97,20 @@ class Register extends React.Component {
 
     onSelectRegister() {
         const { registerActions } = this.props;
+        if(this.state.userName==""||this.state.password==""||this.state.email==""){
+           toastShort("用户名、密码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
+           return;
+        }
         registerActions.requestRegister(this.state.userName,this.state.password,this.state.email);
     }
     _requestSMSCode(shouldStartCountting){
-        shouldStartCountting(true);
+        const {sendEmailActions} = this.props;
+        if(this.state.email==""){
+            toastShort("邮箱不能为空");
+            shouldStartCountting(false);
+            return;
+        }
+        sendEmailActions.requestSendEmail(this.state.email, shouldStartCountting);
     }
 
     render() {

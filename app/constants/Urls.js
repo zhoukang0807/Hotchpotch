@@ -19,3 +19,4 @@ export const WEXIN_ARTICLE_LIST = 'http://route.showapi.com/582-2';
 export const WEXIN_ARTICLE_TYPE = 'http://route.showapi.com/582-1';
 export const USER_LOGIN = 'http://169.254.108.40:8089/user/login';
 export const USER_REGISTER = 'http://169.254.108.40:8089/user/register';
+export const REQUSET_SENDEMAIL = 'http://169.254.108.40:8089/user/send/indentify';

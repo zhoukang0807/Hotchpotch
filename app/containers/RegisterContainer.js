@@ -20,6 +20,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as registerCreators from '../actions/register';
+import * as sendEmailCreators from '../actions/sendEmail';
 
 import Register from '../pages/Register';
 
@@ -38,8 +39,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     const registerActions = bindActionCreators(registerCreators, dispatch);
+    const sendEmailActions = bindActionCreators(sendEmailCreators, dispatch);
+
     return {
-        registerActions
+        registerActions,
+        sendEmailActions
     };
 };
 
