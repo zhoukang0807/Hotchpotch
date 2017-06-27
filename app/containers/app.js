@@ -11,7 +11,7 @@ import Main from '../pages/Main';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
-const backButton = require('../img/arrow_left2.png');
+const backButton = require('../img/arrow_left.png');
 const getSceneStyle = (props, computedProps) => {
     const style = {
         flex: 1,

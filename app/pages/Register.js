@@ -70,8 +70,8 @@ class Register extends React.Component {
         //删除回退按键监听
         Actions.refresh({
             title: "注册",
-            titleStyle: {color: '#808080', fontSize: 20},
-            navigationBarStyle: {backgroundColor: "#f2f2f2"},
+            titleStyle:{ color: '#fff',fontSize: 20},
+            navigationBarStyle:{backgroundColor:"#17b1f2"}
         });
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }

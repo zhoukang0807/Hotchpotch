@@ -39,8 +39,8 @@ class Login extends React.Component {
     componentDidMount() {
         Actions.refresh({
             title: "登陆",
-            titleStyle:{ color: '#808080',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#f2f2f2"}
+            titleStyle:{ color: '#fff',fontSize: 20},
+            navigationBarStyle:{backgroundColor:"#17b1f2"}
         });
     }
     //官方的解释是组件被移除前执行
