@@ -114,10 +114,12 @@ class Register extends React.Component {
     }
 
     render() {
-        const { register } = this.props;
+        const { register,sendEmail} = this.props;
+        let loading=sendEmail.loading?sendEmail.loading:register.loading;
+        let tips=sendEmail.loading?"发送中...":"注册中...";
         return (
             <View style={styles.loginview}>
-                <FetchLoading  showLoading={register.loading} tips="注册中..."/>
+                <FetchLoading  showLoading={loading} tips={tips}/>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flex:1}}>
                         <Text>邮箱</Text>

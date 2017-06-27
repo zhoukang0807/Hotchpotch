@@ -31,9 +31,10 @@ class RegisterContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    const { register } = state;
+    const { register,sendEmail} = state;
     return {
-        register
+        register,
+        sendEmail
     };
 };
 
