@@ -22,6 +22,7 @@ export function* requestSendEmail(email,shouldStartCountting) {
     } catch (error) {
         console.log(error)
         yield put(receiveSendEmail(null));
+        shouldStartCountting(false);
         yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }
