@@ -36,6 +36,7 @@ import Button from '../components/Button';
 import TimerButton from '../components/TimerButton';
 import FetchLoading from '../components/fetchLoading';
 import { toastShort } from '../utils/ToastUtil';
+import { IsEmail } from '../utils/utilt';
 import {
     Actions
 } from 'react-native-router-flux';
@@ -105,8 +106,8 @@ class Register extends React.Component {
     }
     _requestSMSCode(shouldStartCountting){
         const {sendEmailActions} = this.props;
-        if(this.state.email==""){
-            toastShort("邮箱不能为空");
+        if(this.state.email==""||!IsEmail(this.state.email)){
+            toastShort("邮箱格式不正确！");
             shouldStartCountting(false);
             return;
         }
