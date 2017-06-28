@@ -12,7 +12,9 @@ export function* requestRegister(userName,password,email,verifyCode) {
             console.log(registerInfo)
             yield put(receiveRegister(registerInfo));
             yield call(store.save, 'registerInfo', registerInfo); //将数据存储到store中
-            if (registerInfo.resultCode != "0000") {
+            if (registerInfo.resultCode == "0000") {
+                yield toastShort("用户注册成功"); //toastShort安卓内提示用。提示错误信息
+            }else{
                 yield toastShort(registerInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
             }
     } catch (error) {
