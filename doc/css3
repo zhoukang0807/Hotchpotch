@@ -1,0 +1,40 @@
+View控件的 Style的使用 相当与html的Div
+1.transform:[{translate:[-100,100,50]}] //旋转    transform[{translateY:-100}] //y轴向上平移100个单位
+[{perspective: number}, {rotate: string}, {rotateX: string}, {rotateY: string}, {rotateZ: string}, {scale: number}, {scaleX: number},
+{scaleY: number}, {translateX: number}, {translateY: number}, {skewX: string}, {skewY: string}]
+//perspective  这个是透视的概念，在RN中目前还看不到效果
+//rotate  旋转  transform:[{rotateZ:"20deg"}]  按z轴旋转20度
+//scale 放大缩小
+//translate 平移 transform:[{translateX:"20"}] x轴向右平移20
+//skewX skewX表示的是以X轴为中心在YZ屏幕中旋转，而skewY表示的是以Y轴为中心在XZ屏幕中旋转。 transform:[{skewY:"180deg"}] ...我改了没反应233
+参考页： http://blog.csdn.net/liu__520/article/details/55224778
+
+2.flexbox布局
+2.1 flexDirection: 'row' || "column" 横向和纵向布局
+2.2 justifyContent 决定其子元素沿着主轴的排列方式 参数flex-start、center、flex-end、space-around以及space-between  //行头，中间，行尾，平均分配开头和末尾没间距，平均分配（有间距）
+//参考http://www.runoob.com/css3/css3-flexbox.html
+2.3 alignItems  flex-start、center、flex-end以及stretch //要使stretch选项生效的话，子元素在次轴方向上不能有固定的尺寸.如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+
+3.(适用于IOS)shadowColor color # 设置阴影色 shadowOffset   {width: number, height: number} # 设置阴影偏移 shadowOpacity  number设置阴影不透明度 (乘以颜色的alpha分量) shadowRadius number #设置阴影模糊半径
+
+4.backfaceVisibility  enum('visible', 'hidden')隐藏被旋转的 div 元素的背面： transform:[{rotateY:"180deg"}],backfaceVisibility :"hidden"为啥没生效不懂。。
+
+5.backgroundColor 设置背景色
+
+6.borderColor  string 设置边框颜色 borderTopColor borderRightColor  borderBottomColor  borderLeftColor  上下左右边框颜色
+
+7.borderRadius number  borderRadius:25; 边框圆角 borderTopLeftRadius  borderTopRightRadius  borderBottomLeftRadius  borderBottomRightRadius 上下左右圆角弧度值越高弧度越大
+
+8.borderStyle enum('solid', 'dotted', 'dashed')  边框样式（实线，点状，虚线） borderStyle:"dashed";
+
+9.borderWidth  number边框宽度 borderTopWidth  borderRightWidth borderBottomWidth borderLeftWidth  上下左右边框宽度
+
+10.opacity number透明度 opacity:0.5
+
+11.overflow enum('visible', 'hidden') overflow 属性规定当内容溢出元素框时发生的事情。
+
+12. elevation number(限Android)使用Android原生的 elevation API来设置视图的高度（elevation）。这样可以为视图添加一个投影，并且会影响视图层叠的顺序。此属性仅支持Android5.0及以上版本。
+其他http://reactnative.cn/docs/0.45/view.html#content
+
+
+
