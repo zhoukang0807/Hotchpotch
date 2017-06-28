@@ -19,16 +19,16 @@
 import * as types from '../constants/ActionTypes';
 
 export function requestRegister(
-    email,
     userName,
     password,
+    email,
     verifyCode
 ) {
     return {
         type: types.REQUEST_REGISTER,
-        email,
         userName,
         password,
+        email,
         verifyCode
     };
 }
