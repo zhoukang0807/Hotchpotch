@@ -21,13 +21,15 @@ import * as types from '../constants/ActionTypes';
 export function requestRegister(
     email,
     userName,
-    password
+    password,
+    verifyCode
 ) {
     return {
         type: types.REQUEST_REGISTER,
         email,
         userName,
-        password
+        password,
+        verifyCode
     };
 }
 export function fetchRegister() {

@@ -56,6 +56,7 @@ class Register extends React.Component {
             userName: "",
             password: "",
             email:"",
+            verifyCode:""
         };
         this.goBack = this.goBack.bind(this);
 
@@ -91,6 +92,7 @@ class Register extends React.Component {
             userName: "",
             password: "",
             email:"",
+            verifyCode:""
         };
     }
     goBack() {
@@ -98,11 +100,11 @@ class Register extends React.Component {
 
     onSelectRegister() {
         const { registerActions } = this.props;
-        if(this.state.userName==""||this.state.password==""||this.state.email==""){
-           toastShort("用户名、密码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
+        if(this.state.userName==""||this.state.password==""||this.state.email==""||this.state.verifyCode==""){
+           toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
            return;
         }
-        registerActions.requestRegister(this.state.userName,this.state.password,this.state.email);
+        registerActions.requestRegister(this.state.userName,this.state.password,this.state.email,this.state.verifyCode);
     }
     _requestSMSCode(shouldStartCountting){
         const {sendEmailActions} = this.props;
@@ -117,7 +119,7 @@ class Register extends React.Component {
     render() {
         const { register,sendEmail} = this.props;
         let loading=sendEmail.loading?sendEmail.loading:register.loading;
-        let tips=sendEmail.loading?"发送中...":"注册中...";
+        let tips=sendEmail.loading?"请求中...":"注册中...";
         return (
             <View style={styles.loginview}>
                 <FetchLoading  showLoading={loading} tips={tips}/>
@@ -139,6 +141,9 @@ class Register extends React.Component {
                                  }}/>
                 </View>
                 <View style={{marginTop: 80}}>
+                    <EditView name='请输入邮箱验证码'   onChangeText={(text) => {
+                        this.state.verifyCode = text;
+                    }}/>
                     <EditView name='请输入用户名'   onChangeText={(text) => {
                         this.state.userName = text;
                     }}/>

@@ -5,10 +5,10 @@ import { request } from '../utils/RequestUtil';
 import { USER_REGISTER } from '../constants/Urls';
 import store from 'react-native-simple-store';
 import {receiveRegister,fetchRegister } from '../actions/register';
-export function* requestRegister(userName,password,email) {
+export function* requestRegister(userName,password,email,verifyCode) {
     try {
             yield put(fetchRegister());
-            const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({userName,password, email}));
+            const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({userName,password, email,verifyCode}));
             console.log(registerInfo)
             yield put(receiveRegister(registerInfo));
             yield call(store.save, 'registerInfo', registerInfo); //将数据存储到store中
@@ -23,10 +23,10 @@ export function* requestRegister(userName,password,email) {
 }
 export function* watchRequestRegister() {
     while (true) {
-        const { email,userName, password} = yield take(
+        const { userName,password, email,verifyCode} = yield take(
             types.REQUEST_REGISTER
         );
-        yield fork(requestRegister,email,userName, password);
+        yield fork(requestRegister,userName,password, email,verifyCode);
     }
 }
 
