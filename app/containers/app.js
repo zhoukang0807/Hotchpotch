@@ -82,14 +82,14 @@ class App extends React.Component {
                             component={Main}
                             title="阅读"
                             icon={TabIcon}
-                            iconName="home"
+                            iconName="md-home"
                         />
                         <Scene
                             key="about"
                             component={About}
                             title="关于"
                             icon={TabIcon}
-                            iconName="md-information-circle"
+                            iconName="md-pricetags"
                         />
                     </Scene>
                 </Scene>
