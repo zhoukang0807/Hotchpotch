@@ -5,10 +5,11 @@ import {
     View,
     Text,
     Image,
-    Alert
+    Alert,
+    TextInput
 } from 'react-native';
 import store from 'react-native-simple-store';
-import EditView from '../components/EditView';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../components/Button';
 import FetchLoading from '../components/fetchLoading';
 import { toastShort } from '../utils/ToastUtil';
@@ -40,7 +41,7 @@ class Login extends React.Component {
         Actions.refresh({
             title: "登陆",
             titleStyle:{ color: '#fff',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#17b1f2"}
+            navigationBarStyle:{backgroundColor:"#b7e9de"}
         });
     }
     //官方的解释是组件被移除前执行
@@ -77,19 +78,47 @@ class Login extends React.Component {
                     <Image source={require('../img/login.png')}/>
                 </View>
                 <View style={{marginTop:80}}>
-                    <EditView  name='请输入用户名/注册邮箱：' onChangeText={(text) => {
-                        this.state.userName = text;
-                    }}/>
-                    <EditView name='请输入密码：' onChangeText={(text) => {
-                        this.state.password = text;
-                    }}/>
+                    <View style={styles.rowView}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Icon
+                                color='#b7e9de'
+                                name='md-person'
+                                size={25}
+                            />
+                        </View>
+                        <View style={{flex: 8}}>
+                            <TextInput placeholder='请输入用户名'
+                                       underlineColorAndroid='transparent'
+                                       onChangeText={(text) => {
+                                           this.state.userName = text;
+                                       }}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.rowView}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Icon
+                                color='#b7e9de'
+                                name='md-lock'
+                                size={25}
+                            />
+                        </View>
+                        <View style={{flex: 8}}>
+                            <TextInput placeholder='请输入密码'
+                                       underlineColorAndroid='transparent'
+                                       onChangeText={(text) => {
+                                           this.state.password = text;
+                                       }}
+                            />
+                        </View>
+                    </View>
                     <Button
                         containerStyle={styles.sureBtn}
                         style={styles.btnText}
                         text={'登录'}
                         onPress={() => this.onSelectLogin()}/>
                   </View>
-                  <View  style={styles.rowView}>
+                  <View  style={styles.bottomView}>
                       <View style={{flex:1}}>
                            <Text style={styles.loginLeftText} onPress={this.registerClick} >邮箱注册</Text>
                       </View>
@@ -115,9 +144,11 @@ const styles = StyleSheet.create({
         padding: 30,
         backgroundColor: '#ffffff',
     },
-    rowView:{
+    rowView: {
         flexDirection: 'row',
-        marginTop:10
+        marginTop: 10,
+        borderBottomColor: "#f1f1f1",
+        borderBottomWidth: 1
     },
     loginImage:{
         flexDirection: 'row',
@@ -130,7 +161,7 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         borderRadius: 10,
-        backgroundColor: '#3e9ce9'
+        backgroundColor: '#b7e9de'
     },
     btnText: {
         fontSize: 16,
@@ -138,12 +169,16 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     loginLeftText: {
-        color:"#4A90E2",
+        color:"#b7e9de",
         textAlign:'left'
     },
     loginRightText: {
-        color:"#4A90E2",
+        color:"#b7e9de",
         textAlign:'right'
+    },
+    bottomView: {
+        flexDirection: 'row',
+        marginTop: 10,
     }
 });
 Login.propTypes = propTypes;

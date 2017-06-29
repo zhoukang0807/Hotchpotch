@@ -37,7 +37,7 @@ export default class TimerButton extends React.Component {
                 console.log("---- timer ",timer);
                 this.setState({
                     timerCount:timer,
-                    timerTitle: `重新获取(${timer}s)`,
+                    timerTitle: `${timer}s后重试`,
                 })
             }
         },1000)
@@ -64,8 +64,8 @@ export default class TimerButton extends React.Component {
                     this.props.onClick(this._shouldStartCountting)
                 };
             }}>
-                <View style={[{width:100, height:44,flex:1,justifyContent:'center',alignItems:'center'},style]}>
-                    <Text style={[{fontSize: 16},textStyle,{color: ((!counting && enable && selfEnable) ? textStyle.color : disableColor || 'gray')}]}>{timerTitle}</Text>
+                <View style={[{width:100, height:25,flex:1,justifyContent:'center',alignItems:'center',backgroundColor:"#f1f1f1"},style]}>
+                     <Text style={[{fontSize: 14},textStyle,{color: ((!counting && enable && selfEnable) ? textStyle.color : disableColor || 'gray')}]}>{timerTitle}</Text>
                 </View>
             </TouchableOpacity>
         )

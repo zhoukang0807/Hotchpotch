@@ -21,6 +21,7 @@ export default class EditView extends Component {
        <TextInput style={LoginStyles.TextInput}
          placeholder={this.props.name}
          underlineColorAndroid='transparent'
+         secureTextEntry={this.props.secureTextEntry}
          onChangeText={
            (text) => {
              this.setState({text});

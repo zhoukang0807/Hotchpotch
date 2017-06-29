@@ -30,13 +30,12 @@ import {
     Modal,
     TextInput
 } from 'react-native';
-import store from 'react-native-simple-store';
-import EditView from '../components/EditView';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../components/Button';
 import TimerButton from '../components/TimerButton';
 import FetchLoading from '../components/fetchLoading';
-import { toastShort } from '../utils/ToastUtil';
-import { IsEmail } from '../utils/utilt';
+import {toastShort} from '../utils/ToastUtil';
+import {IsEmail} from '../utils/utilt';
 import {
     Actions
 } from 'react-native-router-flux';
@@ -55,14 +54,14 @@ class Register extends React.Component {
         this.state = {
             userName: "",
             password: "",
-            email:"",
-            verifyCode:""
+            email: "",
+            verifyCode: ""
         };
         this.goBack = this.goBack.bind(this);
 
     }
 
-  //组件出现前 就是dom还没有渲染到html文档里面
+    //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
         //添加回退按键监听
     }
@@ -72,8 +71,8 @@ class Register extends React.Component {
         //删除回退按键监听
         Actions.refresh({
             title: "注册",
-            titleStyle:{ color: '#fff',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#17b1f2"}
+            titleStyle: {color: '#fff', fontSize: 20},
+            navigationBarStyle: {backgroundColor: "#b7e9de"}
         });
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
@@ -86,29 +85,32 @@ class Register extends React.Component {
         const {loginActions} = this.props;
         loginActions.requestLogin(this.state.userName, this.state.password);
     }
-    onResetReg(){
+
+    onResetReg() {
         //清空文本内容
         this.state = {
             userName: "",
             password: "",
-            email:"",
-            verifyCode:""
+            email: "",
+            verifyCode: ""
         };
     }
+
     goBack() {
     }
 
     onSelectRegister() {
-        const { registerActions } = this.props;
-        if(this.state.userName==""||this.state.password==""||this.state.email==""||this.state.verifyCode==""){
-           toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
-           return;
+        const {registerActions} = this.props;
+        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == "") {
+            toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
+            return;
         }
-        registerActions.requestRegister(this.state.userName,this.state.password,this.state.email,this.state.verifyCode);
+        registerActions.requestRegister(this.state.userName, this.state.password, this.state.email, this.state.verifyCode);
     }
-    _requestSMSCode(shouldStartCountting){
+
+    _requestSMSCode(shouldStartCountting) {
         const {sendEmailActions} = this.props;
-        if(this.state.email==""||!IsEmail(this.state.email)){
+        if (this.state.email == "" || !IsEmail(this.state.email)) {
             toastShort("邮箱格式不正确！");
             shouldStartCountting(false);
             return;
@@ -117,57 +119,97 @@ class Register extends React.Component {
     }
 
     render() {
-        const { register,sendEmail} = this.props;
-        let loading=sendEmail.loading?sendEmail.loading:register.loading;
-        let tips=sendEmail.loading?"请求中...":"注册中...";
+        const {register, sendEmail} = this.props;
+        let loading = sendEmail.loading ? sendEmail.loading : register.loading;
+        let tips = sendEmail.loading ? "请求中..." : "注册中...";
         return (
             <View style={styles.loginview}>
-                <FetchLoading  showLoading={loading} tips={tips}/>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{flex:1}}>
-                        <Text>邮箱</Text>
+                <FetchLoading showLoading={loading} tips={tips}/>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#b7e9de'
+                            name='md-mail'
+                            size={25}
+                        />
                     </View>
-                    <View style={{flex:3}}>
-                        <EditView name='请输入邮箱地址'  onChangeText={(text) => {
-                            this.state.email = text;
-                        }}/>
+                    <View style={{flex: 6}}>
+                        <TextInput placeholder='请输入邮箱'
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text) => {
+                                       this.state.email = text;
+                                   }}
+                        />
                     </View>
                     <TimerButton enable={5}
-                                 style={{width: 110,marginRight: 10}}
-                                 textStyle={{color: "#000"}}
-                                 timerCount={10}
-                                 onClick={(shouldStartCountting)=>{
+                                 style={{width: 80, marginRight: 0, marginTop: 12, marginBottom: 12}}
+                                 textStyle={{color: "#ffffff"}}
+                                 timerCount={60}
+                                 onClick={(shouldStartCountting) => {
                                      this._requestSMSCode(shouldStartCountting)
                                  }}/>
                 </View>
-                <View style={{marginTop: 80}}>
-                    <EditView name='请输入邮箱验证码'   onChangeText={(text) => {
-                        this.state.verifyCode = text;
-                    }}/>
-                    <EditView name='请输入用户名'   onChangeText={(text) => {
-                        this.state.userName = text;
-                    }}/>
-                    <EditView name='请输入密码'   onChangeText={(text) => {
-                        this.state.password = text;
-                    }}/>
-
-                    <View style={styles.rowView}>
-                        <View style={{flex: 1}}>
-                            <Button
-                                containerStyle={styles.sureBtn}
-                                style={styles.btnText}
-                                text={'注册'}
-                                onPress={() => this.onSelectRegister()}/>
-                        </View>
-                        <View style={{flex: 1}}>
-                            <Button
-                                containerStyle={styles.sureBtn}
-                                style={styles.btnText}
-                                text={'重置'}
-                                onPress={() => this.onResetReg()}/>
-                        </View>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#b7e9de'
+                            name='md-umbrella'
+                            size={25}
+                        />
+                    </View>
+                    <View style={{flex: 8}}>
+                        <TextInput placeholder='请输入邮箱验证码'
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text) => {
+                                       this.state.verifyCode = text;
+                                   }}
+                        />
                     </View>
                 </View>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#b7e9de'
+                            name='md-person'
+                            size={25}
+                        />
+                    </View>
+                    <View style={{flex: 8}}>
+                        <TextInput placeholder='请输入用户名'
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text) => {
+                                       this.state.userName = text;
+                                   }}
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#b7e9de'
+                            name='md-lock'
+                            size={25}
+                        />
+                    </View>
+                    <View style={{flex: 8}}>
+                        <TextInput placeholder='请输入密码'
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text) => {
+                                       this.state.password = text;
+                                   }}
+                        />
+                    </View>
+                </View>
+                <View style={styles.bottomView}>
+                    <View style={{flex: 1}}>
+                        <Button
+                            containerStyle={styles.sureBtn}
+                            style={styles.btnText}
+                            text={'注册'}
+                            onPress={() => this.onSelectRegister()}/>
+                    </View>
+                </View>
+
             </View>
         )
     }
@@ -183,7 +225,7 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         borderRadius: 10,
-        backgroundColor: '#3e9ce9'
+        backgroundColor: '#b7e9de'
     },
     btnText: {
         fontSize: 16,
@@ -192,8 +234,15 @@ const styles = StyleSheet.create({
     },
     rowView: {
         flexDirection: 'row',
-        marginTop: 10
+        marginTop: 10,
+        borderBottomColor: "#f1f1f1",
+        borderBottomWidth: 1
+    },
+    bottomView: {
+        flexDirection: 'row',
+        marginTop: 10,
     }
+
 });
 Register.propTypes = propTypes;
 Register.contextTypes = contextTypes;
