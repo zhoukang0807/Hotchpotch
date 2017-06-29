@@ -99,7 +99,7 @@ class App extends React.Component {
 }
 const styles = StyleSheet.create({
     navBar: {
-        backgroundColor: '#3e9ce9'
+        backgroundColor: '#b7e9de'
     },
     navBarTitle: {
         color: '#fff',
