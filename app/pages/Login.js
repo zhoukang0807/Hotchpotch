@@ -87,7 +87,7 @@ class Login extends React.Component {
                             />
                         </View>
                         <View style={{flex: 8}}>
-                            <TextInput placeholder='请输入用户名'
+                            <TextInput placeholder='用户名/邮箱'
                                        underlineColorAndroid='transparent'
                                        onChangeText={(text) => {
                                            this.state.userName = text;
@@ -104,7 +104,7 @@ class Login extends React.Component {
                             />
                         </View>
                         <View style={{flex: 8}}>
-                            <TextInput placeholder='请输入密码'
+                            <TextInput placeholder='登陆密码'
                                        underlineColorAndroid='transparent'
                                        onChangeText={(text) => {
                                            this.state.password = text;
