@@ -55,7 +55,8 @@ class Register extends React.Component {
             userName: "",
             password: "",
             email: "",
-            verifyCode: ""
+            verifyCode: "",
+            repassword:""
         };
         this.goBack = this.goBack.bind(this);
 
@@ -86,25 +87,20 @@ class Register extends React.Component {
         loginActions.requestLogin(this.state.userName, this.state.password);
     }
 
-    onResetReg() {
-        //清空文本内容
-        this.state = {
-            userName: "",
-            password: "",
-            email: "",
-            verifyCode: ""
-        };
-    }
-
     goBack() {
     }
 
     onSelectRegister() {
         const {registerActions} = this.props;
-        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == "") {
+        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
             toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
             return;
         }
+        if(this.state.password !== this.state.repassword){
+            toastShort("两次输入的密码不一致，请重新输入！");
+            return;
+        }
+
         registerActions.requestRegister(this.state.userName, this.state.password, this.state.email, this.state.verifyCode);
     }
 
@@ -194,8 +190,27 @@ class Register extends React.Component {
                     <View style={{flex: 8}}>
                         <TextInput placeholder='请输入密码'
                                    underlineColorAndroid='transparent'
+                                   secureTextEntry={true}
                                    onChangeText={(text) => {
                                        this.state.password = text;
+                                   }}
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#b7e9de'
+                            name='md-refresh-circle'
+                            size={25}
+                        />
+                    </View>
+                    <View style={{flex: 8}}>
+                        <TextInput placeholder='请再次输入密码'
+                                   underlineColorAndroid='transparent'
+                                   secureTextEntry={true}
+                                   onChangeText={(text) => {
+                                       this.state.repassword = text;
                                    }}
                         />
                     </View>
