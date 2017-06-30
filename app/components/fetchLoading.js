@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         textAlign: 'center',
-        color:"#8193ff",
+        color:"#ffffff",
         fontSize:12
     },
     rowView: {
         flexDirection: 'row',
-        backgroundColor:"#d9dffb",
+        backgroundColor:"#b7e9de",
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 10
