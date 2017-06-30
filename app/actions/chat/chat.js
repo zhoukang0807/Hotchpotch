@@ -1,8 +1,6 @@
 import * as types from '../../constants/ActionTypes';
 
-export function requestChat(
-
-) {
+export function requestChat() {
     return {
         type: types.REQUEST_CHAT,
     };

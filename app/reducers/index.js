@@ -8,6 +8,7 @@ import login from './user/login';
 import register from './user/register';
 import sendEmail from './sendEmail';
 import  forgetPassword from './user/forgetPassword';
+import  chat from './chat/chat';
 const rootReducer = combineReducers({
     routes,
     read,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     login,
     register,
     sendEmail,
-    forgetPassword
+    forgetPassword,
+    chat
 });
 
 export default rootReducer;

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as chatCreators from '../../actions/chat/chat';
 
-import chatRoom from '../../pages/chat/chatRoom';
+import chatRoom from '../../pages/chat/chat';
 
 class ChatRoomContainer extends React.Component {
     render() {

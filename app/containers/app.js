@@ -10,7 +10,7 @@ import RegisterContainer from './user/RegisterContainer';
 import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
-import ArticleView from '../containers/read/ArticleViewContainer';
+import ArticleView from './read/ArticleViewContainer';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
