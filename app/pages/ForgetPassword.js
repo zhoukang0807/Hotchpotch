@@ -35,7 +35,6 @@ class Register extends React.Component {
     constructor(props) {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
         this.state = {
-            userName: "",
             password: "",
             email: "",
             verifyCode: "",
@@ -65,17 +64,13 @@ class Register extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.goBack);
     }
 
-    onSelectLogin() {
-        const {loginActions} = this.props;
-        loginActions.requestLogin(this.state.userName, this.state.password);
-    }
 
     goBack() {
     }
 
     onSelectRegister() {
         const {registerActions} = this.props;
-        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
+        if ( this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
             toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
             return;
         }
@@ -84,7 +79,7 @@ class Register extends React.Component {
             return;
         }
 
-        registerActions.requestRegister(this.state.userName, this.state.password, this.state.email, this.state.verifyCode);
+        registerActions.requestRegister(this.state.password, this.state.email, this.state.verifyCode);
     }
 
     _requestSMSCode(shouldStartCountting) {
@@ -149,29 +144,12 @@ class Register extends React.Component {
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Icon
                             color='#b7e9de'
-                            name='md-person'
-                            size={25}
-                        />
-                    </View>
-                    <View style={{flex: 8}}>
-                        <TextInput placeholder='请输入用户名'
-                                   underlineColorAndroid='transparent'
-                                   onChangeText={(text) => {
-                                       this.state.userName = text;
-                                   }}
-                        />
-                    </View>
-                </View>
-                <View style={styles.rowView}>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <Icon
-                            color='#b7e9de'
                             name='md-lock'
                             size={25}
                         />
                     </View>
                     <View style={{flex: 8}}>
-                        <TextInput placeholder='请输入密码'
+                        <TextInput placeholder='请输入新密码'
                                    underlineColorAndroid='transparent'
                                    secureTextEntry={true}
                                    onChangeText={(text) => {
@@ -189,7 +167,7 @@ class Register extends React.Component {
                         />
                     </View>
                     <View style={{flex: 8}}>
-                        <TextInput placeholder='请再次输入密码'
+                        <TextInput placeholder='请再次输入新密码'
                                    underlineColorAndroid='transparent'
                                    secureTextEntry={true}
                                    onChangeText={(text) => {
@@ -203,7 +181,7 @@ class Register extends React.Component {
                         <Button
                             containerStyle={styles.sureBtn}
                             style={styles.btnText}
-                            text={'注册'}
+                            text={'确认'}
                             onPress={() => this.onSelectRegister()}/>
                     </View>
                 </View>

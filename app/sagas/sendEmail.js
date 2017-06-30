@@ -13,17 +13,17 @@ export function* requestSendEmail(email,shouldStartCountting) {
             yield put(receiveSendEmail(result.code));
             if (result.resultCode != "0000") {
                 shouldStartCountting(false);
-                yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
+                yield toastShort(result.resultDesc);
             }else{
                 shouldStartCountting(true);
-                yield call(store.save, 'code', result.code); //将数据存储到store中
-                yield toastShort("验证码已发送"); //toastShort安卓内提示用。提示错误信息
+                yield call(store.save, 'code', result.code);
+                yield toastShort("验证码已发送");
             }
     } catch (error) {
         console.log(error)
         yield put(receiveSendEmail(null));
         shouldStartCountting(false);
-        yield toastShort(error); //toastShort安卓内提示用。提示错误信息
+        yield toastShort(error);
     }
 }
 

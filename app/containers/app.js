@@ -7,6 +7,7 @@ import AV from 'leancloud-storage'; //云端保存数据
 import CategoryContainer from '../containers/CategoryContainer';
 import LoginContainer from '../containers/LoginContainer';
 import RegisterContainer from '../containers/RegisterContainer';
+import ForgetPassword from '../pages/ForgetPassword';
 import Main from '../pages/Main';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
@@ -63,6 +64,11 @@ class App extends React.Component {
                         key="register"
                         hideTabBar
                         component={RegisterContainer}
+                    />
+                    <Scene
+                        key="forgetPassword"
+                        hideTabBar
+                        component={ForgetPassword}
                     />
                     <Scene
                         key="initCategory"

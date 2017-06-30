@@ -7,16 +7,16 @@ import store from 'react-native-simple-store';
 import {receiveRegister,fetchRegister } from '../actions/register';
 export function* requestRegister(userName,password,email,verifyCode) {
     try {
-            yield put(fetchRegister());
-            const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({userName,password, email,verifyCode}));
-            console.log(registerInfo)
-            yield put(receiveRegister(registerInfo));
-            yield call(store.save, 'registerInfo', registerInfo);
-            if (registerInfo.resultCode == "0000") {
-                yield toastShort("用户注册成功");
-            }else{
-                yield toastShort(registerInfo.resultDesc);
-            }
+        yield put(fetchRegister());
+        const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({userName,password, email,verifyCode}));
+        console.log(registerInfo)
+        yield put(receiveRegister(registerInfo));
+        yield call(store.save, 'registerInfo', registerInfo);
+        if (registerInfo.resultCode == "0000") {
+            yield toastShort("用户注册成功");
+        }else{
+            yield toastShort(registerInfo.resultDesc);
+        }
     } catch (error) {
         console.log(error)
         yield put(receiveRegister(null));

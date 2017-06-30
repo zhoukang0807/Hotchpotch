@@ -24,9 +24,8 @@ const contextTypes = {
     routes: PropTypes.object.isRequired
 };
 class Login extends React.Component {
-    //构造函数，用来初始化数据
     constructor(props) {
-        super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
+        super(props);
         this.state = {
             userName: "",
             password : "",
@@ -34,7 +33,7 @@ class Login extends React.Component {
     }
 //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
-        store.delete('loginInfo')
+         store.delete('loginInfo')
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
@@ -49,7 +48,7 @@ class Login extends React.Component {
     }
     onSelectLogin() {
         if(this.state.userName==""||this.state.password==""){
-            toastShort("用户名或密码不能为空!"); //toastShort安卓内提示用。提示错误信息
+            toastShort("用户名或密码不能为空!");
             return;
         }
         const { loginActions } = this.props;
@@ -134,7 +133,8 @@ class Login extends React.Component {
         routes.register();
     }
     forgetClick = () => {
-        alert("点击了忘记密码")
+        const { routes } = this.context;
+        routes.forgetPassword();
     }
 }
 
