@@ -57,6 +57,15 @@ class Login extends React.Component {
     render() {
         InteractionManager.runAfterInteractions(() => {
             // ...耗时较长的同步的任务...避免影响动画
+            store.get('loginInfo').then((loginInfo) => {
+                if(loginInfo){
+                    if(loginInfo.resultCode=="0000"){
+                        const { routes } = this.context;
+                        store.save('user', loginInfo.user);
+                        //store.save('isInit', false);
+                        routes.initCategory({ isFirst: true });
+                    }
+                } })
         });
 
         const { login } = this.props;
