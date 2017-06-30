@@ -1,10 +1,10 @@
 import { put, take, call, fork } from 'redux-saga/effects';
-import * as types from '../constants/ActionTypes';
-import { toastShort } from '../utils/ToastUtil';
-import { request } from '../utils/RequestUtil';
-import { USER_REGISTER } from '../constants/Urls';
+import * as types from '../../constants/ActionTypes';
+import { toastShort } from '../../utils/ToastUtil';
+import { request } from '../../utils/RequestUtil';
+import { USER_REGISTER } from '../../constants/Urls';
 import store from 'react-native-simple-store';
-import {receiveRegister,fetchRegister } from '../actions/register';
+import {receiveRegister,fetchRegister } from '../../actions/user/register';
 export function* requestRegister(userName,password,email,verifyCode) {
     try {
             yield put(fetchRegister());

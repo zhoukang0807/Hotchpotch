@@ -1,10 +1,10 @@
 import { put, take, call, fork } from 'redux-saga/effects';
-import * as types from '../constants/ActionTypes';
-import { toastShort } from '../utils/ToastUtil';
-import { request } from '../utils/RequestUtil';
-import { REQUSET_FORGETPASSWORD } from '../constants/Urls';
+import * as types from '../../constants/ActionTypes';
+import { toastShort } from '../../utils/ToastUtil';
+import { request } from '../../utils/RequestUtil';
+import { REQUSET_FORGETPASSWORD } from '../../constants/Urls';
 import store from 'react-native-simple-store';
-import {receiveForgetPassword,fetchForgetPassword } from '../actions/forgetPassword';
+import {receiveForgetPassword,fetchForgetPassword } from '../../actions/user/forgetPassword';
 export function* requestForgetPassword(password,email,verifyCode) {
     try {
         yield put(fetchForgetPassword());

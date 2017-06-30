@@ -1,20 +1,20 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../../constants/ActionTypes';
 
 const initialState = {
     loading: false,
-    loginInfo: {}
+    registerInfo:{}
 };
 
 export default function login(state = initialState, action) {
     switch (action.type) {
-        case  types.FETCH_LOGIN:
+        case  types.FETCH_REGISTER:
             return Object.assign({}, state, {
                 loading: true
             });
-        case types.RECEUVE_LOGIN:
+        case types.RECEUVE_REGISTER:
             return Object.assign({}, state, {
                 loading: false,
-                loginInfo: action.loginInfo
+                registerInfo: action.registerInfo
             });
         default:
             return state;

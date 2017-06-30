@@ -4,10 +4,10 @@ import {
 import read from './read';
 import category from './category';
 import routes from './routes';
-import login from './login';
-import register from './register';
+import login from './user/login';
+import register from './user/register';
 import sendEmail from './sendEmail';
-import  forgetPassword from './forgetPassword';
+import  forgetPassword from './user/forgetPassword';
 const rootReducer = combineReducers({
     routes,
     read,

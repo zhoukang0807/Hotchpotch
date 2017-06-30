@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as loginCreators from '../actions/login';
+import * as loginCreators from '../../actions/user/login';
 
-import Login from '../pages/Login';
+import Login from '../../pages/user/Login';
 
 class LoginContainer extends React.Component {
     render() {

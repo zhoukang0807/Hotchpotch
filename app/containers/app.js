@@ -5,9 +5,9 @@ import TabIcon from '../components/TabIcon';
 import About from '../pages/About';
 import AV from 'leancloud-storage'; //云端保存数据
 import CategoryContainer from '../containers/CategoryContainer';
-import LoginContainer from '../containers/LoginContainer';
-import RegisterContainer from '../containers/RegisterContainer';
-import ForgetPassword from '../containers/ForgetPassword';
+import LoginContainer from './user/LoginContainer';
+import RegisterContainer from './user/RegisterContainer';
+import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import { connect } from 'react-redux';

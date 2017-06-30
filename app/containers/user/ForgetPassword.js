@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as forgetPasswordCreators from '../actions/forgetPassword';
-import * as sendEmailCreators from '../actions/sendEmail';
+import * as forgetPasswordCreators from '../../actions/user/forgetPassword';
+import * as sendEmailCreators from '../../actions/sendEmail';
 
-import ForgetPassword from '../pages/ForgetPassword';
+import ForgetPassword from '../../pages/user/ForgetPassword';
 
 class ForgetPasswordContainer extends React.Component {
     render() {

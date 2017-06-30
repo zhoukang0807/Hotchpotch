@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as registerCreators from '../actions/register';
-import * as sendEmailCreators from '../actions/sendEmail';
+import * as registerCreators from '../../actions/user/register';
+import * as sendEmailCreators from '../../actions/sendEmail';
 
-import Register from '../pages/Register';
+import Register from '../../pages/user/Register';
 
 class RegisterContainer extends React.Component {
     render() {
