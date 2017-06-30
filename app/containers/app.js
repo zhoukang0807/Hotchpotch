@@ -96,7 +96,7 @@ class App extends React.Component {
                             component={Read}
                             title="阅读"
                             icon={TabIcon}
-                            iconName="md-home"
+                            iconName="md-book"
                         />
                         <Scene
                             key="about"
