@@ -105,6 +105,7 @@ class Login extends React.Component {
                         <View style={{flex: 8}}>
                             <TextInput placeholder='登陆密码'
                                        underlineColorAndroid='transparent'
+                                       secureTextEntry={true}
                                        onChangeText={(text) => {
                                            this.state.password = text;
                                        }}
