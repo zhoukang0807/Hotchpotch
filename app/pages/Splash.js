@@ -27,7 +27,18 @@ class Splash extends React.Component {
     this.timer = setTimeout(() => {
       store.get('isInit').then((isInit) => {
         if (!isInit) {
-          routes.login({ isFirst: true });
+            store.get('loginInfo').then((loginInfo) => {
+                if(loginInfo){
+                    if(loginInfo.resultCode=="0000"){
+                        const { routes } = this.context;
+                        store.save('user', loginInfo.user);
+                        //store.save('isInit', false);
+                        routes.initCategory({ isFirst: true });
+                    }
+                }else{
+                    routes.login({ isFirst: true });
+                }
+            })
         } else {
           routes.tabbar();
         }

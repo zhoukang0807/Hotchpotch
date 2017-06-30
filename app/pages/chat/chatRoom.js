@@ -14,11 +14,8 @@ import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
 import { toastShort } from '../../utils/ToastUtil';
 import Pomelo from 'react-native-pomelo';
-import {
-    Actions
-} from 'react-native-router-flux';
 const propTypes = {
-    loginActions: PropTypes.object,
+    chatActions: PropTypes.object,
 };
 
 const contextTypes = {
@@ -32,194 +29,31 @@ class chatRoom extends React.Component {
     }
 //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
-        store.delete('loginInfo')
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
-        Actions.refresh({
-            title: "登陆",
-            titleStyle:{ color: '#fff',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#b7e9de"}
-        });
     }
 
     //官方的解释是组件被移除前执行
     componentWillUnmount() {
     }
-    onSelectLogin() {
-        if(this.state.userName==""||this.state.password==""){
-            toastShort("用户名或密码不能为空!");
-            return;
-        }
-        const { loginActions } = this.props;
-        loginActions.requestLogin(this.state.userName,this.state.password);
-    }
     render() {
         InteractionManager.runAfterInteractions(() => {
             // ...耗时较长的同步的任务...避免影响动画
             store.get('loginInfo').then((loginInfo) => {
-                if(loginInfo){
-                    if(loginInfo.resultCode=="0000"){
-                        const { routes } = this.context;
-                        store.save('user', loginInfo.user);
-                        //store.save('isInit', false);
-                        routes.initCategory({ isFirst: true });
-                        //登陆pomelo后台websocket服务
-                        let uid = "adas*12";
-                        let rid = "rid";
-                        let username = "username";
-                        Pomelo.init({
-                            host: "169.254.108.40",
-                            port: 3014,
-                            log: true
-                        }, function() {
-                            Pomelo.request('gate.gateHandler.queryEntry', {
-                                uid: uid
-                            }, function(data) {
-                                Pomelo.disconnect();
-                                Pomelo.init({
-                                    host: data.host,
-                                    port: data.port,
-                                    log: true
-                                }, function() {
-                                    Pomelo.request("connector.entryHandler.enter", {
-                                        username: username,
-                                        rid: rid
-                                    }, function(data) {
-                                        chatSend();
-                                    });
-                                });
-                            });
-                        });
-                        function chatSend() {
-                            let target = "*";
-                            let msg = "msg"
-                            Pomelo.request("chat.chatHandler.send", {
-                                rid: rid,
-                                content: msg,
-                                from: username,
-                                target: target
-                            }, function(data) {
-                                console.log( data );
-                            });
-                        }
-
-                    }
-                }
             })
         });
-
-        const { login } = this.props;
         return(
-            <View style={styles.loginview}>
-                <FetchLoading  showLoading={login.loading} tips="登陆中..."/>
-                <View   style={styles.loginImage}>
-                    <Image source={require('../../img/login.png')}/>
-                </View>
-                <View style={{marginTop:80}}>
-                    <View style={styles.rowView}>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Icon
-                                color='#b7e9de'
-                                name='md-person'
-                                size={25}
-                            />
-                        </View>
-                        <View style={{flex: 8}}>
-                            <TextInput placeholder='用户名/邮箱'
-                                       underlineColorAndroid='transparent'
-                                       onChangeText={(text) => {
-                                           this.state.userName = text;
-                                       }}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.rowView}>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Icon
-                                color='#b7e9de'
-                                name='md-lock'
-                                size={25}
-                            />
-                        </View>
-                        <View style={{flex: 8}}>
-                            <TextInput placeholder='登陆密码'
-                                       underlineColorAndroid='transparent'
-                                       onChangeText={(text) => {
-                                           this.state.password = text;
-                                       }}
-                            />
-                        </View>
-                    </View>
-                    <Button
-                        containerStyle={styles.sureBtn}
-                        style={styles.btnText}
-                        text={'登录'}
-                        onPress={() => this.onSelectLogin()}/>
-                </View>
-                <View  style={styles.bottomView}>
-                    <View style={{flex:1}}>
-                        <Text style={styles.loginLeftText} onPress={this.registerClick} >邮箱注册</Text>
-                    </View>
-                    <View style={{flex:1}}>
-                        <Text style={styles.loginRightText} onPress={this.forgetClick} >忘记密码？</Text>
-                    </View>
-                </View>
+            <View>
+                <Text>聊天页面</Text>
             </View>
         )
     }
-    registerClick = () => {
-        const { routes } = this.context;
-        routes.register();
-    }
-    forgetClick = () => {
-        const { routes } = this.context;
-        routes.forgetPassword();
-    }
+
 }
 
 const styles = StyleSheet.create({
-    loginview: {
-        flex: 1,
-        padding: 30,
-        backgroundColor: '#ffffff',
-    },
-    rowView: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomColor: "#f1f1f1",
-        borderBottomWidth: 1
-    },
-    loginImage:{
-        flexDirection: 'row',
-        height:100,
-        marginTop:1,
-        justifyContent: 'center',
-        alignItems: 'flex-start'
-    },
-    sureBtn: {
-        margin: 10,
-        padding: 10,
-        borderRadius: 10,
-        backgroundColor: '#b7e9de'
-    },
-    btnText: {
-        fontSize: 16,
-        textAlign: 'center',
-        color: '#fff'
-    },
-    loginLeftText: {
-        color:"#b7e9de",
-        textAlign:'left'
-    },
-    loginRightText: {
-        color:"#b7e9de",
-        textAlign:'right'
-    },
-    bottomView: {
-        flexDirection: 'row',
-        marginTop: 10,
-    }
+
 });
 chatRoom.propTypes = propTypes;
 chatRoom.contextTypes = contextTypes;
