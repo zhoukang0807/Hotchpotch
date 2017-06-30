@@ -15,9 +15,10 @@ import {
     TouchableOpacity
 } from 'react-native';
 import GridView from '../components/GridView';
-
+import { toastShort } from '../utils/ToastUtil';
 import Button from '../components/Button';
 import * as readActions from '../actions/read'
+import store from 'react-native-simple-store';
 const propTypes = {
     readActions: PropTypes.object,
     read: PropTypes.object.isRequired
@@ -34,7 +35,13 @@ class Read extends React.Component {
         console.log(33);
 
     }
-
+    //点击事件
+    _onPressList(rowData){
+        //toastShort(rowData.long);
+        const { routes } = this.context;
+        store.save('articleUrl', rowData.long);
+       routes.articleView();
+   }
     renderListView() {
 
         const {read} = this.props;
@@ -43,6 +50,7 @@ class Read extends React.Component {
             dataSource: ds.cloneWithRows(read.articleList),
         };
         console.log(read.articleList);
+
         if (read.articleList) {
             return (
                 <ScrollView
@@ -65,9 +73,10 @@ class Read extends React.Component {
                             renderRow={(rowData, sectionID, rowID) =>
                                 <View >
                                     <TouchableOpacity
+                                        onPress={()=>this._onPressList(rowData)}
                                         underlayColor="rgb(210, 230,255)"
                                         activeOpacity={0.5}
-                                        style={{borderRadius: 8, padding: 6, marginTop: 5}}>
+                                        style={{borderRadius: 8, padding: 0, marginTop: 0}}>
                                         <View>
                                             <View style={styles.row}>
                                                 <Image style={styles.thumb} source={require('../img/about_logo.png')}/>
@@ -76,7 +85,7 @@ class Read extends React.Component {
                                                     fontSize: 16,
                                                     color: 'blue',
                                                     borderBottomColor: 'red'
-                                                }}>{rowID}.{rowData.title}</Text>
+                                                }}>{rowData.title}</Text>
                                             </View>
                                             <View style={styles.separator}/>
                                         </View>
@@ -109,7 +118,6 @@ class Read extends React.Component {
                             {color: 'black', align: 'center', padding: 5, fontSize: 18}
                         ]}
                     >
-                        read界面
                     </Text>
                 </View>
                 {this.renderListView()}
@@ -149,5 +157,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',  // #文字水平居中
     },
 });
-
+Read.propTypes = propTypes;
+Read.contextTypes = contextTypes;
 export default Read;

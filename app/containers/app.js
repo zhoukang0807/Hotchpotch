@@ -10,6 +10,7 @@ import RegisterContainer from './user/RegisterContainer';
 import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
+import ArticleView from '../containers/read/ArticleViewContainer';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
@@ -79,6 +80,13 @@ class App extends React.Component {
                         type={ActionConst.REPLACE}
                     />
                     <Scene
+                        key="articleView"
+                        component={ArticleView}
+                        hideNavBar
+                        hideTabBar
+                        type={ActionConst.REPLACE}
+                    />
+                    <Scene
                         key="tabbar"
                         tabs
                         pressOpacity={0.8}
@@ -106,6 +114,8 @@ class App extends React.Component {
                             iconName="md-pricetags"
                         />
                     </Scene>
+
+
                 </Scene>
             </RouterWithRedux>
         );
