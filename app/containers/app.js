@@ -9,6 +9,7 @@ import LoginContainer from '../containers/LoginContainer';
 import RegisterContainer from '../containers/RegisterContainer';
 import ForgetPassword from '../pages/ForgetPassword';
 import Main from '../pages/Main';
+import Read from '../containers/ReadContainer';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
@@ -86,6 +87,13 @@ class App extends React.Component {
                         <Scene
                             key="main"
                             component={Main}
+                            title="阅读"
+                            icon={TabIcon}
+                            iconName="md-home"
+                        />
+                        <Scene
+                            key="read"
+                            component={Read}
                             title="阅读"
                             icon={TabIcon}
                             iconName="md-home"
