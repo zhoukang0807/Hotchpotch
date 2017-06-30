@@ -23,49 +23,36 @@ import { toastShort } from '../utils/ToastUtil';
 import { request } from '../utils/RequestUtil';
 import { WEXIN_ARTICLE_LIST } from '../constants/Urls';
 import { fetchArticleList, receiveArticleList } from '../actions/read';
-
-export function* requestArticleList(
-  isRefreshing,
-  loading,
-  typeId,
-  isLoadMore,
-  page
-) {
+import store from 'react-native-simple-store';
+export function* requestArticleList() {
   try {
-    yield put(fetchArticleList(isRefreshing, loading, isLoadMore));
-    const articleList = yield call(
+    yield put(fetchArticleList());
+    const read = yield call(
       request,
-      `${WEXIN_ARTICLE_LIST}?typeId=${typeId}&page=${page}`,
+        WEXIN_ARTICLE_LIST,
       'get'
     );
     yield put(
       receiveArticleList(
-        articleList.showapi_res_body.pagebean.contentlist,
-        typeId
+          read.list,
+
       )
     );
-    const errorMessage = articleList.showapi_res_error;
-    if (errorMessage && errorMessage !== '') {
-      yield toastShort(errorMessage);
-    }
+      yield call(store.save, 'read', read); //将数据存储到store中
+    const resultCode = read.resultCode;
+      if (resultCode != "0000") {
+          yield toastShort(read.resultDesc); //toastShort安卓内提示用。提示错误信息
+      }
   } catch (error) {
-    yield put(receiveArticleList([], typeId));
+    yield put(receiveArticleList([]));
     toastShort('网络发生错误，请重试');
   }
 }
 
 export function* watchRequestArticleList() {
-  while (true) {
-    const { isRefreshing, loading, typeId, isLoadMore, page } = yield take(
-      types.REQUEST_ARTICLE_LIST
-    );
-    yield fork(
-      requestArticleList,
-      isRefreshing,
-      loading,
-      typeId,
-      isLoadMore,
-      page
-    );
-  }
+    while (true) {
+        yield take(types.REQUEST_ARTICLE_LIST);
+        yield fork(requestArticleList);
+    }
+
 }

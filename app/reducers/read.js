@@ -29,19 +29,12 @@ export default function read(state = initialState, action) {
   switch (action.type) {
     case types.FETCH_ARTICLE_LIST:
       return Object.assign({}, state, {        //Object.assign() 方法用于将所有可枚举的属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。复制的作用，避免指针问题
-        isRefreshing: action.isRefreshing,
-        loading: action.loading,
-        isLoadMore: action.isLoadMore
+
       });
     case types.RECEIVE_ARTICLE_LIST:
       return Object.assign({}, state, {
-        isRefreshing: false,
-        isLoadMore: false,
-        noMore: action.articleList.length === 0,
-        articleList: state.isLoadMore
-          ? loadMore(state, action)
-          : combine(state, action),
-        loading: state.articleList[action.typeId] === undefined
+        success:true,
+        articleList:action.read,
       });
     default:
       return state;
