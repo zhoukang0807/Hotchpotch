@@ -7,13 +7,15 @@ import routes from './routes';
 import login from './login';
 import register from './register';
 import sendEmail from './sendEmail';
+import  forgetPassword from './forgetPassword';
 const rootReducer = combineReducers({
     routes,
     read,
     category,
     login,
     register,
-    sendEmail
+    sendEmail,
+    forgetPassword
 });
 
 export default rootReducer;

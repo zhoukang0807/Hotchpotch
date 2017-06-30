@@ -23,14 +23,14 @@ import {
     Actions
 } from 'react-native-router-flux';
 const propTypes = {
-    registerActions: PropTypes.object,
+    forgetPasswordActions: PropTypes.object,
 };
 
 
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
-class Register extends React.Component {
+class ForgetPassword extends React.Component {
     //构造函数，用来初始化数据
     constructor(props) {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
@@ -53,7 +53,7 @@ class Register extends React.Component {
     componentDidMount() {
         //删除回退按键监听
         Actions.refresh({
-            title: "注册",
+            title: "忘记密码",
             titleStyle: {color: '#fff', fontSize: 20},
             navigationBarStyle: {backgroundColor: "#b7e9de"}
         });
@@ -63,14 +63,12 @@ class Register extends React.Component {
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.goBack);
     }
-
-
     goBack() {
     }
 
-    onSelectRegister() {
-        const {registerActions} = this.props;
-        if ( this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
+    onSelectForgetPassword() {
+        const {forgetPasswordActions} = this.props;
+        if (this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
             toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
             return;
         }
@@ -79,7 +77,7 @@ class Register extends React.Component {
             return;
         }
 
-        registerActions.requestRegister(this.state.password, this.state.email, this.state.verifyCode);
+        forgetPasswordActions.requestForgetPassword( this.state.password, this.state.email, this.state.verifyCode);
     }
 
     _requestSMSCode(shouldStartCountting) {
@@ -93,9 +91,9 @@ class Register extends React.Component {
     }
 
     render() {
-        const {register, sendEmail} = this.props;
-        let loading = sendEmail.loading ? sendEmail.loading : register.loading;
-        let tips = sendEmail.loading ? "请求中..." : "注册中...";
+        const {forgetPassword, sendEmail} = this.props;
+        let loading = sendEmail.loading ? sendEmail.loading : forgetPassword.loading;
+        let tips = sendEmail.loading ? "请求中..." : "修改中...";
         return (
             <View style={styles.loginview}>
                 <FetchLoading showLoading={loading} tips={tips}/>
@@ -181,8 +179,8 @@ class Register extends React.Component {
                         <Button
                             containerStyle={styles.sureBtn}
                             style={styles.btnText}
-                            text={'确认'}
-                            onPress={() => this.onSelectRegister()}/>
+                            text={'确定'}
+                            onPress={() => this.onSelectForgetPassword()}/>
                     </View>
                 </View>
 
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
     }
 
 });
-Register.propTypes = propTypes;
-Register.contextTypes = contextTypes;
+ForgetPassword.propTypes = propTypes;
+ForgetPassword.contextTypes = contextTypes;
 
-export default Register;
+export default ForgetPassword;
