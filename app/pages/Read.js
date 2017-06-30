@@ -2,7 +2,7 @@
  * Created by PC on 2017/6/28.
  */
 import React, { PropTypes } from 'react';
-import { StyleSheet,ScrollView, Image,ListView ,Text, Linking, View ,RefreshControl,TouchableHighlight} from 'react-native';
+import { StyleSheet,ScrollView, Image,ListView ,Text, Linking, View ,RefreshControl,TouchableHighlight,TouchableOpacity} from 'react-native';
 import GridView from '../components/GridView';
 
 import Button from '../components/Button';
@@ -51,7 +51,11 @@ class Read extends React.Component {
                         <ListView
                             dataSource={this.state.dataSource}
                             renderRow={(rowData,sectionID,rowID) =>
-                            <TouchableHighlight>
+                            <View >
+                            <TouchableOpacity
+                                underlayColor="rgb(210, 230,255)"
+                                activeOpacity={0.5}
+                                style={{ borderRadius: 8,padding:6,marginTop:5}} >
                                 <View>
                                     <View style={styles.row}>
                                         <Image style={styles.thumb} source={require('../img/about_logo.png')} />
@@ -59,8 +63,8 @@ class Read extends React.Component {
                                     </View>
                                     <View style={styles.separator} />
                                 </View>
-                            </TouchableHighlight>
-
+                            </TouchableOpacity>
+                                </View>
                                 }
                         />
 
