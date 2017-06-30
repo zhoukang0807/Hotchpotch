@@ -2,7 +2,7 @@
  * Created by PC on 2017/6/28.
  */
 import React, { PropTypes } from 'react';
-import { StyleSheet,ScrollView, Image,ListView ,Text, Linking, View ,RefreshControl,} from 'react-native';
+import { StyleSheet,ScrollView, Image,ListView ,Text, Linking, View ,RefreshControl,TouchableHighlight} from 'react-native';
 import GridView from '../components/GridView';
 
 import Button from '../components/Button';
@@ -21,14 +21,15 @@ class Read extends React.Component {
         const { readActions } = this.props;
         readActions.requestArticleList();
         console.log(33);
-        const  { read } = this.props;
+
+    }
+    renderListView() {
+
+        const { read } = this.props;
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRows(read.articleList),
         };
-    }
-    renderListView() {
-        const { read } = this.props;
         console.log(read.articleList);
         if(read.articleList){
             return (
@@ -49,7 +50,18 @@ class Read extends React.Component {
                     <View style={styles.gridLayout}>
                         <ListView
                             dataSource={this.state.dataSource}
-                            renderRow={(rowData) => <Text>{rowData.title}</Text>}
+                            renderRow={(rowData,sectionID,rowID) =>
+                            <TouchableHighlight>
+                                <View>
+                                    <View style={styles.row}>
+                                        <Image style={styles.thumb} source={require('../img/about_logo.png')} />
+                                        <Text style={{flex:1,fontSize:16,color:'blue',borderBottomColor:'red'}}>{rowID}.{rowData.title}</Text>
+                                    </View>
+                                    <View style={styles.separator} />
+                                </View>
+                            </TouchableHighlight>
+
+                                }
                         />
 
                     </View>
@@ -72,7 +84,7 @@ class Read extends React.Component {
                     <Text
                         style={[
                             styles.btnText,
-                            { color: 'black', padding: 5, fontSize: 18 }
+                            { color: 'black',align:'center', padding: 5, fontSize: 18 }
                         ]}
                     >
                         read界面
@@ -94,6 +106,29 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center'
     },
+    textStyle:{
+        borderBottom:"#000000"
+    },
+row: {
+    flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: '#F6F6F6',
+},
+separator: {
+    height: 1,
+        backgroundColor: '#CCCCCC',
+},
+thumb: {
+    width: 64,
+        height: 64,
+},
+text: {
+    flex: 1,
+        alignItems: 'center',    //#水平居中
+        justifyContent: 'center',//  #垂直居中
+        textAlign: 'center',  // #文字水平居中
+},
 });
 
 export default Read;
