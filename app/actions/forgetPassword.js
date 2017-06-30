@@ -1,25 +1,23 @@
 import * as types from '../constants/ActionTypes';
 
-export function requestForget(
-    userName,
+export function requestForgetPassword(
     password,
     email,
     verifyCode
 ) {
     return {
         type: types.REQUEST_FORGETPASSWORD,
-        userName,
         password,
         email,
         verifyCode
     };
 }
-export function fetchForget() {
+export function fetchForgetPassword() {
     return {
         type: types.FETCH_FORGETPASSWORD
     };
 }
-export function receiveForget(forgetInfo) {
+export function receiveForgetPassword(forgetInfo) {
     return {
         type: types.RECEUVE_FORGETPASSWORD,
         forgetInfo

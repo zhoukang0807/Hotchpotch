@@ -7,7 +7,7 @@ import AV from 'leancloud-storage'; //云端保存数据
 import CategoryContainer from '../containers/CategoryContainer';
 import LoginContainer from '../containers/LoginContainer';
 import RegisterContainer from '../containers/RegisterContainer';
-import ForgetPassword from '../pages/ForgetPassword';
+import ForgetPassword from '../containers/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import { connect } from 'react-redux';
