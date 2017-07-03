@@ -11,6 +11,7 @@ import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
+import ChatContainer from './chat/ChatContainer';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
@@ -92,6 +93,13 @@ class App extends React.Component {
                         pressOpacity={0.8}
                         type={ActionConst.REPLACE}
                     >
+                        <Scene
+                            key="chat"
+                            component={ChatContainer}
+                            title="聊天"
+                            icon={TabIcon}
+                            iconName="md-chatbubbles"
+                        />
                         <Scene
                             key="main"
                             component={Main}

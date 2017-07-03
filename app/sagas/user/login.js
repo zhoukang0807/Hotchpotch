@@ -8,12 +8,12 @@ import { toastShort } from '../../utils/ToastUtil';
 export function* requestLogin(userName,password) {
     try {
             yield put(fetchLogin());
-            const loginInfo = yield call(request, USER_LOGIN, 'post', JSON.stringify({userName, password}));
-            console.log(loginInfo)
-            yield put(receiveLogin(loginInfo));
-            yield call(store.save, 'loginInfo', loginInfo); //将数据存储到store中
-            if (loginInfo.resultCode != "0000") {
-                yield toastShort(loginInfo.resultDesc); //toastShort安卓内提示用。提示错误信息
+            const result = yield call(request, USER_LOGIN, 'post', JSON.stringify({userName, password}));
+            console.log(result)
+            yield put(receiveLogin(result.loginInfo));
+            yield call(store.save, 'loginInfo', result.loginInfo); //将数据存储到store中
+            if (result.resultCode != "0000") {
+                yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
             }
     } catch (error) {
         console.log(error)

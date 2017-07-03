@@ -56,24 +56,11 @@ export const enterWebScoket = (uid="", rid="", username="") => {
                     Pomelo.request("connector.entryHandler.enter", {
                         username: username,
                         rid: rid
-                    }, function(data) {
-                        chatSend();
+                    }, function(users) {
+                        resolve(users);
                     });
                 });
             });
         });
-        function chatSend() {
-            let target = "*";
-            let msg = "msg"
-            Pomelo.request("chat.chatHandler.send", {
-                rid: rid,
-                content: msg,
-                from: username,
-                target: target
-            }, function(data) {
-                console.log( data );
-                resolve(data);
-            });
-        }
     });
 };

@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as chatCreators from '../../actions/chat/chat';
 
-import chatRoom from '../../pages/chat/chat';
+import Chat from '../../pages/chat/chat';
 
 class ChatRoomContainer extends React.Component {
     render() {
-        return <chatRoom {...this.props} />;
+        return <Chat {...this.props} />;
     }
 }
 

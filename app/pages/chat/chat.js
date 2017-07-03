@@ -21,7 +21,7 @@ const propTypes = {
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
-class chatRoom extends React.Component {
+class Chat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,6 +32,10 @@ class chatRoom extends React.Component {
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
+        const { chatActions } = this.props;
+        store.get('loginInfo').then((loginInfo) => {
+            chatActions.requestChat(loginInfo.userId,loginInfo.userName);
+        })
     }
 
     //官方的解释是组件被移除前执行
@@ -55,7 +59,7 @@ class chatRoom extends React.Component {
 const styles = StyleSheet.create({
 
 });
-chatRoom.propTypes = propTypes;
-chatRoom.contextTypes = contextTypes;
+Chat.propTypes = propTypes;
+Chat.contextTypes = contextTypes;
 
-export default chatRoom;
+export default Chat;
