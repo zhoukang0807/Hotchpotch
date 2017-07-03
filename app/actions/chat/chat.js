@@ -24,3 +24,17 @@ export function receiveChat(users) {
         users,
     };
 }
+
+export function onAddChat(userName) {
+    return {
+        type: types.ONADD_CHAT,
+        userName,
+    };
+}
+export function onChatChat(chatInfo) {
+    return {
+        type: types.ONCHAT_CHAT,
+        chatInfo,
+    };
+}
+

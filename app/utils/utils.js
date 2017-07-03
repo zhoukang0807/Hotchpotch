@@ -6,3 +6,7 @@ export const IsEmail = function (email) {
     }
     return true;
 }
+
+export const isNull = function (obj) {
+    return (obj === null || obj === undefined || obj === '');
+}

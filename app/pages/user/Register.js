@@ -18,7 +18,7 @@ import Button from '../../components/Button';
 import TimerButton from '../../components/TimerButton';
 import FetchLoading from '../../components/fetchLoading';
 import {toastShort} from '../../utils/ToastUtil';
-import {IsEmail} from '../../utils/utilt';
+import {IsEmail} from '../../utils/utils';
 import {
     Actions
 } from 'react-native-router-flux';
