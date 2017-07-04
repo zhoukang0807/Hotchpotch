@@ -96,7 +96,7 @@ class App extends React.Component {
                         <Scene
                             key="chat"
                             component={ChatContainer}
-                            title="聊天"
+                            title="群聊"
                             icon={TabIcon}
                             iconName="md-chatbubbles"
                         />
