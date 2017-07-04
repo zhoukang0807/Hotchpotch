@@ -60,7 +60,7 @@ class Login extends React.Component {
             store.get('loginInfo').then((loginInfo) => {
                 if(loginInfo){
                         const { routes } = this.context;
-                        routes.initCategory({ isFirst: true });
+                        routes.tabbar({ loginInfo });
                 } })
         });
 

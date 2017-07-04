@@ -25,6 +25,16 @@ export default class Chat extends React.Component {
 
         });
         Pomelo.on('onChat', function (chatInfo) {
+            const {loginInfo} = this.props;
+            for (var i = 0; i < this.state.messages.length; i++) {
+                if (chatInfo._id == this.state.messages[i]._id) {
+                    this.state.messages[i].sent = true;
+                    this.state.messages[i].received = false;
+                }
+            }
+            if (chatInfo.user._id == loginInfo.userId) {
+                return;
+            }
             this.onReceive(chatInfo);
         }.bind(this));
         this._isMounted = false;
@@ -39,10 +49,10 @@ export default class Chat extends React.Component {
     }
 
     componentWillMount() {
+
         const {chatActions} = this.props;
-        store.get('loginInfo').then((loginInfo) => {
-            chatActions.requestChat(loginInfo.userId, loginInfo.userName);
-        })
+        const {loginInfo} = this.props;
+        chatActions.requestChat(loginInfo.userId, loginInfo.userName);
         this._isMounted = true;
     }
 
@@ -71,25 +81,23 @@ export default class Chat extends React.Component {
     }
 
     onSend(messages = []) {
+        const {loginInfo} = this.props;
         this.setState((previousState) => {
             return {
                 messages: GiftedChat.append(previousState.messages, messages),
             };
         });
-        store.get('loginInfo').then((loginInfo) => {
-            var route = "chat.chatHandler.send";
-            var target = "*";
-            var msg = this.state.msg;
-            if(!isNull(msg)) {
-                Pomelo.request(route, {
-                    rid: "admin",
-                    content: msg,
-                    from: loginInfo.userName,
-                    target: target
-                }, function(data) {
-                });
-            }
-        })
+        var route = "chat.chatHandler.send";
+        var target = "*";
+        if (messages.length > 0) {
+            Pomelo.request(route, {
+                rid: "admin",
+                content: messages[0],
+                from: loginInfo.userName,
+                target: target
+            }, function (data) {
+            });
+        }
     }
 
     onReceive(msg) {
@@ -115,7 +123,8 @@ export default class Chat extends React.Component {
             'Action 2': (props) => {
                 alert('option 2');
             },
-            'Cancel': () => {},
+            'Cancel': () => {
+            },
         };
         return (
             <Actions
@@ -160,6 +169,7 @@ export default class Chat extends React.Component {
     }
 
     render() {
+        const {loginInfo} = this.props;
         return (
             <GiftedChat
                 messages={this.state.messages}
@@ -169,9 +179,10 @@ export default class Chat extends React.Component {
                 isLoadingEarlier={this.state.isLoadingEarlier}
 
                 user={{
-                    _id: 1, // sent messages should have same user._id
+                    _id: loginInfo.userId, // sent messages should have same user._id
+                    name: loginInfo.userName,
+                    avatar: 'https://facebook.github.io/react/img/logo_og.png',
                 }}
-
                 renderActions={this.renderCustomActions}
                 renderBubble={this.renderBubble}
                 renderCustomView={this.renderCustomView}

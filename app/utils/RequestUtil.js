@@ -40,7 +40,7 @@ export const request = (url, method, body) => {
 export const enterWebScoket = (uid="", rid="", username="") => {
     return new Promise((resolve, reject) => {
         Pomelo.init({
-            host: "169.254.108.40",
+            host: "kangz.win",
             port: 3014,
             log: true
         }, function() {

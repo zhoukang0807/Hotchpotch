@@ -30,7 +30,7 @@ class Splash extends React.Component {
                     store.get('loginInfo').then((loginInfo) => {
                         if (loginInfo) {
                             const {routes} = this.context;
-                            routes.initCategory({isFirst: true});
+                            routes.tabbar({loginInfo});
                         } else {
                             routes.login({isFirst: true});
                         }
