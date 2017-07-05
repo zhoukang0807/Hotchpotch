@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {Dimensions, Animated} from 'react-native';
 import store from 'react-native-simple-store';
 import {request} from '../utils/RequestUtil';
-import { USER_LOGIN } from '../constants/Urls';
+import {USER_LOGIN} from '../constants/Urls';
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
@@ -26,23 +26,22 @@ class Splash extends React.Component {
             duration: 1000
         }).start();
         this.timer = setTimeout(() => {
-            store.get('isInit').then((isInit) => {
-                if (!isInit) {
-                    store.get('loginInfo').then((loginInfo) => {
-                        if(loginInfo){
-                            request(USER_LOGIN,'post',JSON.stringify({userName:loginInfo.userName,password:loginInfo.password})).then(function (data) {
-                                routes.tabbar({ loginInfo });
-                            }).catch(function () {
-                                routes.login();
-                            })
-                        }else{
+            store.get('loginInfo').then((loginInfo) => {
+                    if (loginInfo) {
+                        request(USER_LOGIN, 'post', JSON.stringify({
+                            userName: loginInfo.userName,
+                            password: loginInfo.password
+                        })).then(function (data) {
+                            routes.tabbar({loginInfo});
+                        }).catch(function () {
                             routes.login();
-                        }}
-                        )
-                } else {
-                    routes.tabbar();
+                        })
+                    } else {
+                        routes.login();
+                    }
                 }
-            });
+            )
+
         }, 1000);
     }
 

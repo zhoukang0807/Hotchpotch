@@ -4,14 +4,14 @@ import {
     StyleSheet,
     Text,
     View,
+    BackHandler
 } from 'react-native';
 import store from 'react-native-simple-store';
 import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
-import {isNull} from '../../utils/utils';
-
+import { toastShort } from '../../utils/ToastUtil';
 export default class Chat extends React.Component {
     constructor(props) {
         super(props);
@@ -26,13 +26,21 @@ export default class Chat extends React.Component {
         });
         Pomelo.on('onChat', function (chatInfo) {
             const {loginInfo} = this.props;
+            let flag = false;
             for (var i = 0; i < this.state.messages.length; i++) {
                 if (chatInfo._id == this.state.messages[i]._id) {
                     this.state.messages[i].sent = true;
                     this.state.messages[i].received = false;
+                    flag = true;
+                    break;
                 }
             }
-            if (chatInfo.user._id == loginInfo.userId) {
+            if (chatInfo.user._id == loginInfo.userId || flag) {
+                this.setState((previousState) => {
+                    return {
+                        messages: GiftedChat.append(previousState.messages,[]),
+                    };
+                });
                 return;
             }
             this.onReceive(chatInfo);
@@ -44,20 +52,29 @@ export default class Chat extends React.Component {
         this.renderBubble = this.renderBubble.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
         this.onLoadEarlier = this.onLoadEarlier.bind(this);
-
+        this.goBack = this.goBack.bind(this);
         this._isAlright = null;
     }
 
     componentWillMount() {
-
         const {chatActions} = this.props;
         const {loginInfo} = this.props;
         chatActions.requestChat(loginInfo.userId, loginInfo.userName);
         this._isMounted = true;
-    }
 
+    }
+    //销毁
     componentWillUnmount() {
         this._isMounted = false;
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
+    }
+    //渲染完成
+    componentDidMount() {
+
+        BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    }
+    goBack() {
+       Pomelo.disconnect();
     }
 
     onLoadEarlier() {
