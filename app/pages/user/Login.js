@@ -33,7 +33,6 @@ class Login extends React.Component {
     }
 //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
-        // store.delete('loginInfo')
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
@@ -59,9 +58,9 @@ class Login extends React.Component {
             // ...耗时较长的同步的任务...避免影响动画
             store.get('loginInfo').then((loginInfo) => {
                 if(loginInfo){
-                        const { routes } = this.context;
-                        routes.tabbar({ loginInfo });
-                } })
+                    const { routes } = this.context;
+                    routes.tabbar({ loginInfo });
+                }})
         });
 
         const { login } = this.props;

@@ -11,9 +11,11 @@ export function* requestLogin(userName,password) {
             const result = yield call(request, USER_LOGIN, 'post', JSON.stringify({userName, password}));
             console.log(result)
             yield put(receiveLogin(result.loginInfo));
-            yield call(store.save, 'loginInfo', result.loginInfo); //将数据存储到store中
             if (result.resultCode != "0000") {
                 yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
+            }else{
+                yield call(store.save, 'loginInfo', result.loginInfo); //将数据存储到store中
+
             }
     } catch (error) {
         console.log(error)
