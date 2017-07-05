@@ -3,6 +3,7 @@ import {Dimensions, Animated} from 'react-native';
 import store from 'react-native-simple-store';
 import {request} from '../utils/RequestUtil';
 import {USER_LOGIN} from '../constants/Urls';
+import { enterWebScoket } from '../utils/RequestUtil';
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
@@ -32,8 +33,10 @@ class Splash extends React.Component {
                             userName: loginInfo.userName,
                             password: loginInfo.password
                         })).then(function (data) {
+                            enterWebScoket(data.userId,data.userName);
                             routes.tabbar({loginInfo});
                         }).catch(function () {
+                            store.delete('loginInfo')
                             routes.login();
                         })
                     } else {

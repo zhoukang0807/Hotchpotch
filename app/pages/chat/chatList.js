@@ -21,6 +21,7 @@ export default class ChatList extends Component {
             rowOpen:false,
             dataSource: ds.cloneWithRows([])
         };
+
     }
     componentDidMount() {
         let data = [
@@ -55,6 +56,7 @@ export default class ChatList extends Component {
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(data)
         });
+
         // this.sessionListener = NativeAppEventEmitter.addListener("observeRecentContact",(data)=>{
         //     this.setState({
         //         dataSource:this.state.dataSource.cloneWithRows(data.recents || data.sessionList)

@@ -5,6 +5,7 @@ import { USER_LOGIN } from '../../constants/Urls';
 import {  fetchLogin,receiveLogin } from '../../actions/user/login';
 import store from 'react-native-simple-store';
 import { toastShort } from '../../utils/ToastUtil';
+import { enterWebScoket } from '../../utils/RequestUtil';
 export function* requestLogin(userName,password) {
     try {
             yield put(fetchLogin());
@@ -15,7 +16,7 @@ export function* requestLogin(userName,password) {
                 yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
             }else{
                 yield call(store.save, 'loginInfo', result.loginInfo); //将数据存储到store中
-
+                enterWebScoket(result.loginInfo.userId,result.loginInfo.userName);
             }
     } catch (error) {
         console.log(error)

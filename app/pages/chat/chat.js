@@ -11,7 +11,6 @@ import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
-import { toastShort } from '../../utils/ToastUtil';
 export default class Chat extends React.Component {
     constructor(props) {
         super(props);
@@ -19,11 +18,32 @@ export default class Chat extends React.Component {
             messages: [],
             loadEarlier: true,
             typingText: null,
-            isLoadingEarlier: false,
+            isLoadingEarlier: false
         };
+        this._isMounted = false;
+        this.onSend = this.onSend.bind(this);
+        this.onReceive = this.onReceive.bind(this);
+        this.renderCustomActions = this.renderCustomActions.bind(this);
+        this.renderBubble = this.renderBubble.bind(this);
+        this.renderFooter = this.renderFooter.bind(this);
+        this.onLoadEarlier = this.onLoadEarlier.bind(this);
+        this.goBack = this.goBack.bind(this);
+        this._isAlright = null;
+    }
+
+    componentWillMount() {
+        this._isMounted = true;
+    }
+    //销毁
+    componentWillUnmount() {
+        this._isMounted = false;
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
+    }
+    //渲染完成
+    componentDidMount() {
         Pomelo.on('onAdd', function (data) {
 
-        });
+        }.bind(this));
         Pomelo.on('onChat', function (chatInfo) {
             const {loginInfo} = this.props;
             let flag = false;
@@ -45,32 +65,6 @@ export default class Chat extends React.Component {
             }
             this.onReceive(chatInfo);
         }.bind(this));
-        this._isMounted = false;
-        this.onSend = this.onSend.bind(this);
-        this.onReceive = this.onReceive.bind(this);
-        this.renderCustomActions = this.renderCustomActions.bind(this);
-        this.renderBubble = this.renderBubble.bind(this);
-        this.renderFooter = this.renderFooter.bind(this);
-        this.onLoadEarlier = this.onLoadEarlier.bind(this);
-        this.goBack = this.goBack.bind(this);
-        this._isAlright = null;
-    }
-
-    componentWillMount() {
-        const {chatActions} = this.props;
-        const {loginInfo} = this.props;
-        chatActions.requestChat(loginInfo.userId, loginInfo.userName);
-        this._isMounted = true;
-
-    }
-    //销毁
-    componentWillUnmount() {
-        this._isMounted = false;
-        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
-    }
-    //渲染完成
-    componentDidMount() {
-
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
     goBack() {
@@ -98,12 +92,12 @@ export default class Chat extends React.Component {
     }
 
     onSend(messages = []) {
-        const {loginInfo} = this.props;
         this.setState((previousState) => {
             return {
                 messages: GiftedChat.append(previousState.messages, messages),
             };
         });
+        const {loginInfo} = this.props;
         var route = "chat.chatHandler.send";
         var target = "*";
         if (messages.length > 0) {

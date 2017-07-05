@@ -11,7 +11,7 @@ import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
-import ChatContainer from './chat/ChatContainer';
+import Chat from '../pages/chat/chat';
 import ChatList from '../pages/chat/chatList';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
@@ -92,7 +92,7 @@ class App extends React.Component {
                         key="tabbar"
                         tabs
                         pressOpacity={0.8}
-                        type={ActionConst.REPLACE}
+                        type={ ActionConst.REPLACE}
                     >
                         <Scene
                             key="chatList"
@@ -100,13 +100,15 @@ class App extends React.Component {
                             title="消息"
                             icon={TabIcon}
                             iconName="md-alert"
+                            type={ ActionConst.REFRESH}
                         />
                         <Scene
                             key="chat"
-                            component={ChatContainer}
+                            component={Chat}
                             title="群聊"
                             icon={TabIcon}
                             iconName="md-chatbubbles"
+                            type={ ActionConst.REFRESH}
                         />
                         <Scene
                             key="main"
@@ -114,6 +116,7 @@ class App extends React.Component {
                             title="阅读"
                             icon={TabIcon}
                             iconName="md-home"
+                            type={ ActionConst.REFRESH}
                         />
                         <Scene
                             key="read"
@@ -121,6 +124,7 @@ class App extends React.Component {
                             title="阅读"
                             icon={TabIcon}
                             iconName="md-book"
+                            type={ ActionConst.REFRESH}
                         />
                         <Scene
                             key="about"
@@ -128,6 +132,7 @@ class App extends React.Component {
                             title="关于"
                             icon={TabIcon}
                             iconName="md-pricetags"
+                            type={ ActionConst.REFRESH}
                         />
                     </Scene>
 
