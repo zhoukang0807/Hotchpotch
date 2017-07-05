@@ -39,21 +39,9 @@ export const request = (url, method, body) => {
 
 export const enterWebScoket = (uid = "", rid = "", username = "") => {
     return new Promise((resolve, reject) => {
-        Pomelo.init({
-            host: "169.254.108.40",
-            port: 3014,
-            log: true
-        }, function () {
-            Pomelo.request('gate.gateHandler.queryEntry', {
-                uid: uid
-            }, function (data) {
-                Pomelo.disconnect();
-                if(data.code === 500) {
-                    reject("服务连接失败！");
-                }
                 Pomelo.init({
-                    host: data.host,
-                    port: data.port,
+                    host:"kangz.win",
+                    port:3050,
                     log: true
                 }, function () {
                     Pomelo.request("connector.entryHandler.enter", {
@@ -67,8 +55,6 @@ export const enterWebScoket = (uid = "", rid = "", username = "") => {
                         }
                     });
                 });
-            });
-        });
     });
 };
 
