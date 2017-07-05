@@ -11,26 +11,9 @@ import {
     ListView,
     NativeAppEventEmitter
 } from 'react-native';
-import {Container,Content,Left,Body,Right,Title,ListItem,List,Header,Icon,Text as TextNB,Button} from 'native-base';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 export default class ChatList extends Component {
-    static navigatorStyle = {
-        navBarTextColor: 'white',
-        navBarButtonColor: 'white',
-        statusBarTextColorScheme: 'light',
-        statusBarColor: '#444',
-        tabBarHidden: true,
-        navBarBackgroundColor:"#444",
-    };
-    static navigatorButtons = {
-        rightButtons: [
-            {
-                title: '朋友',
-                id:'firends'
-            }
-        ]
-    };
     constructor (props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -38,53 +21,59 @@ export default class ChatList extends Component {
             rowOpen:false,
             dataSource: ds.cloneWithRows([])
         };
-        this.props.navigator.setOnNavigatorEvent(this._onNavigatorEvent.bind(this));
-    }
-    _onNavigatorEvent(event){
-        const {navigator} = this.props;
-        if (event.type == 'NavBarButtonPress') {
-            if (event.id === 'firends') {
-                navigator.push({
-                    screen:"ImDemo.FriendList",
-                    title:'朋友'
-                });
-            }
-        }
     }
     componentDidMount() {
-        this.sessionListener = NativeAppEventEmitter.addListener("observeRecentContact",(data)=>{
-            this.setState({
-                dataSource:this.state.dataSource.cloneWithRows(data.recents || data.sessionList)
-            });
-            console.info('会话列表',data)
+        let data = [
+            {
+                name:"木城",
+                time:"2017/01/01",
+                unreadCount:1,
+                content:"最近可好啊"
+            },{
+                name:"木城",
+                time:"2017/01/01",
+                unreadCount:1,
+                content:"最近可好啊"
+            },{
+                name:"木城",
+                time:"2017/01/01",
+                unreadCount:1,
+                content:"最近可好啊"
+            },{
+                name:"木城",
+                time:"2017/01/01",
+                unreadCount:1,
+                content:"最近可好啊"
+            },{
+                name:"木城",
+                time:"2017/01/01",
+                unreadCount:1,
+                content:"最近可好啊"
+            },
+
+        ]
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(data)
         });
+        // this.sessionListener = NativeAppEventEmitter.addListener("observeRecentContact",(data)=>{
+        //     this.setState({
+        //         dataSource:this.state.dataSource.cloneWithRows(data.recents || data.sessionList)
+        //     });
+        //     console.info('会话列表',data)
+        // });
     }
     componentWillUnmount() {
         this.sessionListener && this.sessionListener.remove();
     }
     onRowTap(data){
-        const {navigator} = this.props;
-        this.refs['swList'].safeCloseOpenRow();
-        navigator.push({
-            screen:'ImDemo.Chat',
-            title:data.name,
-            passProps:{
-                session:data
-            },
-            rightButton:{
-                id: 'setting',
-                color: '#fff',
-                buttonColor:'#fff',
-                title:'设置'
-            }
-        });
+        alert("点击Le ");
     }
     _renderRow(data){
         return (
             <View>
                 <TouchableHighlight  onPress={()=>this.onRowTap(data)}>
                     <View style={[styles.row,styles.last]}>
-                        <Image style={styles.logo} source={data.imagePath ? {uri:data.imagePath} : require('../images/discuss_logo.png')} />
+                        <Image style={styles.logo} source={{uri:"https://facebook.github.io/react/img/logo_og.png"}} />
                         <View style={styles.content}>
                             <View style={[styles.crow]}>
                                 <Text style={styles.title} numberOfLines={1}>{data.name}</Text>
@@ -104,8 +93,7 @@ export default class ChatList extends Component {
         )
     }
     delete(res){
-        // NIM.deleteRecentContact(res.contactId);
-        // this.refs['swList'].safeCloseOpenRow();
+        alert(res);
     }
     _renderSeparator(){
         return (
@@ -116,58 +104,13 @@ export default class ChatList extends Component {
         return(
             <View style={styles.rowBack}>
                 <TouchableOpacity style={styles.deleteBtn} activeOpacity={1} onPress={()=>this.delete(res)}>
-                    <TextNB style={{color:'#fff'}}>删除</TextNB>
+                    <Text style={{color:'#fff'}}>删除</Text>
                 </TouchableOpacity>
             </View>
         )
     }
-    addFriend(){
-        this.setState({isVisible: false});
-        const {navigator} = this.props;
-        navigator.showModal({
-            screen:"FeiMa.SearchScreen",
-            passProps:{
-                onResult:function(result){
-                    navigator.dismissAllModals({
-                        animated:false,
-                    });
-                    navigator.push({
-                        screen:'FeiMa.FriendDetail',
-                        title:'详细资料',
-                        passProps:{
-                            friendData:result
-                        }
-                    });
-                }
-            }
-        });
-    }
-    createTeam(){
-        this.setState({isVisible: false});
-        const {navigator} = this.props;
-        navigator.showModal({
-            screen:'FeiMa.CreateTeam',
-            title:'选择联系人',
-            passProps:{
-                onSuccess:function(res){
-                    let session = {
-                        contactId:res.teamId,
-                        name:'群聊',
-                        sessionType:'1'
-                    };
-                    navigator.dismissAllModals({animationType: 'none',animated: false});
-                    navigator.push({
-                        screen:'FeiMa.Chat',
-                        title:'群聊',
-                        passProps:{session}
-                    });
-                }
-            }
-        });
-    }
     render() {
         return (
-            <Container>
                 <SwipeListView
                     ref="swList"
                     enableEmptySections
@@ -186,7 +129,6 @@ export default class ChatList extends Component {
                     onRowClose={()=>this.setState({rowOpen:false})}
                     swipeToOpenPercent={5}
                 />
-            </Container>
         );
     }
 }

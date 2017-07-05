@@ -12,6 +12,7 @@ import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
 import ChatContainer from './chat/ChatContainer';
+import ChatList from '../pages/chat/chatList';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
@@ -93,6 +94,13 @@ class App extends React.Component {
                         pressOpacity={0.8}
                         type={ActionConst.REPLACE}
                     >
+                        <Scene
+                            key="chatList"
+                            component={ChatList}
+                            title="消息"
+                            icon={TabIcon}
+                            iconName="md-alert"
+                        />
                         <Scene
                             key="chat"
                             component={ChatContainer}
