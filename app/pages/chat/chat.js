@@ -45,24 +45,6 @@ export default class Chat extends React.Component {
 
         }.bind(this));
         Pomelo.on('onChat', function (chatInfo) {
-            const {loginInfo} = this.props;
-            let flag = false;
-            for (var i = 0; i < this.state.messages.length; i++) {
-                if (chatInfo._id == this.state.messages[i]._id) {
-                    this.state.messages[i].sent = true;
-                    this.state.messages[i].received = false;
-                    flag = true;
-                    break;
-                }
-            }
-            if (chatInfo.user._id == loginInfo.userId || flag) {
-                this.setState((previousState) => {
-                    return {
-                        messages: GiftedChat.append(previousState.messages,[]),
-                    };
-                });
-                return;
-            }
             this.onReceive(chatInfo);
         }.bind(this));
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
@@ -99,15 +81,25 @@ export default class Chat extends React.Component {
         });
         const {loginInfo} = this.props;
         var route = "chat.chatHandler.send";
-        var target = "*";
+        var target = "jiang";
         if (messages.length > 0) {
             Pomelo.request(route, {
-                rid: "admin",
-                content: messages[0],
+                rid: this.props.loginInfo.userId,
+                content: messages,
                 from: loginInfo.userName,
                 target: target
             }, function (data) {
-            });
+                for(var i = 0;i<messages.length;i++){
+                   messages[i].sent = true;
+                   messages[i].received = false;
+                }
+                this.setState((previousState) => {
+                    return {
+                        messages: GiftedChat.append(previousState.messages, []),
+                    };
+                });
+                alert(JSON.stringify(data));
+            }.bind(this));
         }
     }
 

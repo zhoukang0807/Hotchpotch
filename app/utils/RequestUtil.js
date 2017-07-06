@@ -1,4 +1,5 @@
 import Pomelo from 'react-native-pomelo';
+import {ipSever} from '../constants/ipconfig';
 const getUrl = (url) => {
     if (url.indexOf('?') === -1) {
         return `${url}?showapi_appid=29400&showapi_sign=e7977541307547beab3e4aa033adb78f`;
@@ -37,16 +38,17 @@ export const request = (url, method, body) => {
     });
 };
 
-export const enterWebScoket = (rid = "", username = "") => {
+export const enterWebScoket = (uid="",rid = "", username = "") => {
     return new Promise((resolve, reject) => {
                 Pomelo.init({
-                    host:"169.254.108.40",
+                    host:ipSever.socketIp,
                     port:3050,
                     log: true
                 }, function () {
                     Pomelo.request("connector.entryHandler.enter", {
                         username: username,
-                        rid: rid
+                        rid: rid,
+                        uid:uid
                     }, function (users) {
                         if(users.error) {
                             reject("服务连接失败！");
