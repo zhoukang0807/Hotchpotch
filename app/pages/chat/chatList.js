@@ -11,8 +11,11 @@ import {
     ListView,
     NativeAppEventEmitter
 } from 'react-native';
+import {
+    Actions
+} from 'react-native-router-flux';
 import {SwipeListView} from 'react-native-swipe-list-view';
-
+import { enterWebScoket } from '../../utils/RequestUtil';
 export default class ChatList extends Component {
     constructor (props) {
         super(props);
@@ -26,49 +29,38 @@ export default class ChatList extends Component {
     componentDidMount() {
         let data = [
             {
-                name:"木城",
+                name:"江超",
+                id:"1499084091067978",
+                userName:"jiang",
                 time:"2017/01/01",
                 unreadCount:1,
                 content:"最近可好啊"
             },{
-                name:"木城",
+                name:"周康",
+                id:"1499083182572912",
+                userName:"kangz",
                 time:"2017/01/01",
                 unreadCount:1,
                 content:"最近可好啊"
             },{
-                name:"木城",
+                name:"群聊天",
+                userName:"qun",
+                id:"14990831822",
                 time:"2017/01/01",
                 unreadCount:1,
                 content:"最近可好啊"
-            },{
-                name:"木城",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            },{
-                name:"木城",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            },
-
+            }
         ]
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(data)
         });
-
-        // this.sessionListener = NativeAppEventEmitter.addListener("observeRecentContact",(data)=>{
-        //     this.setState({
-        //         dataSource:this.state.dataSource.cloneWithRows(data.recents || data.sessionList)
-        //     });
-        //     console.info('会话列表',data)
-        // });
     }
     componentWillUnmount() {
         this.sessionListener && this.sessionListener.remove();
     }
     onRowTap(data){
-        alert("点击Le ");
+        enterWebScoket(data.id,data.id,data.userName);
+        Actions.chat({loginInfo:this.props.loginInfo,sessionData:data})
     }
     _renderRow(data){
         return (

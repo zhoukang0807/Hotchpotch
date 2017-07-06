@@ -89,6 +89,12 @@ class App extends React.Component {
                         type={ActionConst.REPLACE}
                     />
                     <Scene
+                        key="chat"
+                        component={Chat}
+                        hideTabBar
+                        icon={TabIcon}
+                    />
+                    <Scene
                         key="tabbar"
                         tabs
                         pressOpacity={0.8}
@@ -102,14 +108,7 @@ class App extends React.Component {
                             iconName="md-alert"
                             type={ ActionConst.REFRESH}
                         />
-                        <Scene
-                            key="chat"
-                            component={Chat}
-                            title="群聊"
-                            icon={TabIcon}
-                            iconName="md-chatbubbles"
-                            type={ ActionConst.REFRESH}
-                        />
+
                         <Scene
                             key="main"
                             component={Main}

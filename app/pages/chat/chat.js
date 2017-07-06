@@ -8,6 +8,9 @@ import {
 } from 'react-native';
 import store from 'react-native-simple-store';
 import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
+import {
+    Actions as tabAction
+} from 'react-native-router-flux';
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
@@ -41,12 +44,30 @@ export default class Chat extends React.Component {
     }
     //渲染完成
     componentDidMount() {
+        const { sessionData } = this.props;
         Pomelo.on('onAdd', function (data) {
 
         }.bind(this));
-        Pomelo.on('onChat', function (chatInfo) {
-            this.onReceive(chatInfo);
+        Pomelo.on('onChat', function (chatInfos) {
+            let flag = false;
+            for(var i=0;i<chatInfos.length;i++){
+                if(chatInfos[i].userId == this.props.loginInfo.userId){
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag){
+                return;
+            }
+            this.onReceive(chatInfos);
         }.bind(this));
+
+        tabAction.refresh({
+            title: sessionData.name,
+            titleStyle:{ color: '#fff',fontSize: 20},
+            navigationBarStyle:{backgroundColor:"#b7e9de"}
+        });
+
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
     goBack() {
@@ -98,7 +119,6 @@ export default class Chat extends React.Component {
                         messages: GiftedChat.append(previousState.messages, []),
                     };
                 });
-                alert(JSON.stringify(data));
             }.bind(this));
         }
     }
