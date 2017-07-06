@@ -15,7 +15,6 @@ import {
     Actions
 } from 'react-native-router-flux';
 import {SwipeListView} from 'react-native-swipe-list-view';
-import { enterWebScoket } from '../../utils/RequestUtil';
 export default class ChatList extends Component {
     constructor (props) {
         super(props);
@@ -59,7 +58,6 @@ export default class ChatList extends Component {
         this.sessionListener && this.sessionListener.remove();
     }
     onRowTap(data){
-        enterWebScoket(data.id,data.id,data.userName);
         Actions.chat({loginInfo:this.props.loginInfo,sessionData:data})
     }
     _renderRow(data){

@@ -100,12 +100,13 @@ export default class Chat extends React.Component {
                 messages: GiftedChat.append(previousState.messages, messages),
             };
         });
-        const {loginInfo} = this.props;
+        const {loginInfo,sessionData} = this.props;
         var route = "chat.chatHandler.send";
-        var target = "jiang";
+        var rid =  sessionData.id;
+        var target = sessionData.userName;
         if (messages.length > 0) {
             Pomelo.request(route, {
-                rid: this.props.loginInfo.userId,
+                rid:rid,
                 content: messages,
                 from: loginInfo.userName,
                 target: target
