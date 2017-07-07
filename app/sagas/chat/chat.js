@@ -21,7 +21,6 @@ export function* requestGetUsers(id) {
         }else{
             users[id] = result.users;
             yield call(store.save,'users', users); //将数据存储到store中
-            yield toastShort(JSON.stringify(result));
         }
     } catch (error) {
         console.log(error)

@@ -30,6 +30,7 @@ export default class Chat extends React.Component {
             isLoadingEarlier: false
         };
         this._isMounted = false;
+        this.init=this.init.bind(this);
         this.onSend = this.onSend.bind(this);
         this.onReceive = this.onReceive.bind(this);
         this.renderCustomActions = this.renderCustomActions.bind(this);
@@ -39,7 +40,9 @@ export default class Chat extends React.Component {
         this.goBack = this.goBack.bind(this);
         this._isAlright = null;
     }
+    init(){
 
+    }
     componentWillMount() {
         this._isMounted = true;
     }
@@ -57,7 +60,7 @@ export default class Chat extends React.Component {
         Pomelo.on('onChat', function (chatInfos) {
             let flag = false;
             for(var i=0;i<chatInfos.length;i++){
-                if(chatInfos[i].userId == this.props.loginInfo.userId){
+                if(chatInfos[i].user._id == this.props.loginInfo.userId){
                     flag = true;
                     break;
                 }
@@ -110,16 +113,20 @@ export default class Chat extends React.Component {
                 messages: GiftedChat.append(previousState.messages, messages),
             };
         });
+        let users=[];
         const {loginInfo,sessionData} = this.props;
-        var route = "chat.chatHandler.send";
-        var rid =  sessionData.id;
-        var target = sessionData.userName;
+        const {chat} = this.props;
+        if(chat.users.length==0){
+            users.push({userId:sessionData.id,userName:sessionData.userName});
+        }else{
+            users = chat.users;
+        }
+
         if (messages.length > 0) {
-            Pomelo.request(route, {
-                rid:rid,
+            Pomelo.request("chat.chatHandler.send", {
                 content: messages,
                 from: loginInfo.userName,
-                target: target
+               receivers: users
             }, function (data) {
                 for(var i = 0;i<messages.length;i++){
                    messages[i].sent = true;

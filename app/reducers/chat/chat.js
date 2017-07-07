@@ -4,7 +4,7 @@ const initialState = {
     users: []
 };
 
-export default function login(state = initialState, action) {
+export default function chat(state = initialState, action) {
     switch (action.type) {
         case  types.RECEUVE_USERLIST:
             return Object.assign({}, state, {

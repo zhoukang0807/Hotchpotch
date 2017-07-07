@@ -6,9 +6,9 @@ export function requestUserList(id) {
         id
     };
 }
-export function receiveUserList(userList) {
+export function receiveUserList(users) {
     return {
         type: types.RECEUVE_USERLIST,
-        userList
+        users
     };
 }
