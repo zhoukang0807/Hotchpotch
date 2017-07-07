@@ -5,6 +5,7 @@ import { watchRequestLogin } from './user/login';
 import { watchRequestRegister} from './user/register';
 import { watchRequestSendEmail} from './sendEmail';
 import { watchRequestForgetPassword} from './user/forgetPassword';
+import { watchRequsetUsers} from './chat/chat';
 
 
 export default function* rootSaga() {
@@ -14,6 +15,7 @@ export default function* rootSaga() {
              fork(watchRequestSendEmail),
              fork(watchRequestTypeList),
              fork(watchRequestArticleList),
+             fork(watchRequsetUsers),
           ];
 }
 

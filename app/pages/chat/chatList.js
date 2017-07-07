@@ -29,6 +29,7 @@ export default class ChatList extends Component {
         let data = [
             {
                 name:"江超",
+                room:false,
                 id:"1499084091067978",
                 userName:"jiang",
                 time:"2017/01/01",
@@ -36,6 +37,7 @@ export default class ChatList extends Component {
                 content:"最近可好啊"
             },{
                 name:"周康",
+                room:false,
                 id:"1499083182572912",
                 userName:"kangz",
                 time:"2017/01/01",
@@ -43,6 +45,7 @@ export default class ChatList extends Component {
                 content:"最近可好啊"
             },{
                 name:"群聊天",
+                room:true,
                 userName:"qun",
                 id:"14990831822",
                 time:"2017/01/01",

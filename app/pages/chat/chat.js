@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{PropTypes} from 'react';
 import {
     Platform,
     StyleSheet,
@@ -6,7 +6,6 @@ import {
     View,
     BackHandler
 } from 'react-native';
-import store from 'react-native-simple-store';
 import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
 import {
     Actions as tabAction
@@ -14,6 +13,13 @@ import {
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
+const propTypes = {
+    chatActions: PropTypes.object,
+};
+
+const contextTypes = {
+    routes: PropTypes.object.isRequired
+};
 export default class Chat extends React.Component {
     constructor(props) {
         super(props);
@@ -68,6 +74,10 @@ export default class Chat extends React.Component {
             navigationBarStyle:{backgroundColor:"#b7e9de"}
         });
 
+        if(this.props.sessionData.room){
+            const { chatActions } = this.props;
+            chatActions.requestUserList(this.props.sessionData.id);
+        }
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
     goBack() {
@@ -228,7 +238,8 @@ const styles = StyleSheet.create({
         color: '#aaa',
     },
 });
-
+Chat.propTypes = propTypes;
+Chat.contextTypes = contextTypes;
 
 
 

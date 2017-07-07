@@ -11,7 +11,7 @@ import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
-import Chat from '../pages/chat/chat';
+import ChatContainer from '../containers/chat/ChatContainer';
 import ChatList from '../pages/chat/chatList';
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
@@ -90,7 +90,7 @@ class App extends React.Component {
                     />
                     <Scene
                         key="chat"
-                        component={Chat}
+                        component={ChatContainer}
                         hideTabBar
                         icon={TabIcon}
                     />
