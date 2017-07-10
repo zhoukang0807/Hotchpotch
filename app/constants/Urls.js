@@ -1,5 +1,7 @@
 const {ipSever} = require("./ipconfig")
 
+export const FRIEND_LIST =ipSever.server+'/user/selectFriend';
+export const CHAT_LIST =ipSever.server+'/chat/selectChat';
 export const WEXIN_ARTICLE_LIST =ipSever.server+'/articles/read';
 export const WEXIN_ARTICLE_TYPE = 'http://route.showapi.com/582-1';
 export const USER_LOGIN = ipSever.server+'/user/login';

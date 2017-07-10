@@ -1,66 +1,60 @@
-import Pomelo from 'react-native-pomelo';
+import {toastShort} from './ToastUtil';
+
 const getUrl = (url) => {
-  if (url.indexOf('?') === -1) {
-    return `${url}?showapi_appid=29400&showapi_sign=e7977541307547beab3e4aa033adb78f`;
-  }
-  return `${url}&showapi_appid=29400&showapi_sign=e7977541307547beab3e4aa033adb78f`;
+    if (url.indexOf('?') === -1) {
+        return `${url}?showapi_appid=29400&showapi_sign=e7977541307547beab3e4aa033adb78f`;
+    }
+    return `${url}&showapi_appid=29400&showapi_sign=e7977541307547beab3e4aa033adb78f`;
 };
 
 export const request = (url, method, body) => {
-  let isOk;
-  return new Promise((resolve, reject) => {
-    fetch(getUrl(url), {
-      method,
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body
-    })
-      .then((response) => {
-        if (response.ok) {
-          isOk = true;
-        } else {
-          isOk = false;
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        if (isOk) {
-          resolve(responseData);
-        } else {
-          reject(responseData);
-        }
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-
-export const enterWebScoket = (uid="", rid="", username="") => {
+    let isOk;
     return new Promise((resolve, reject) => {
-        Pomelo.init({
-            host: "169.254.108.40",
-            port: 3014,
-            log: true
-        }, function() {
-            Pomelo.request('gate.gateHandler.queryEntry', {
-                uid: uid
-            }, function(data) {
-                Pomelo.disconnect();
-                Pomelo.init({
-                    host: data.host,
-                    port: data.port,
-                    log: true
-                }, function() {
-                    Pomelo.request("connector.entryHandler.enter", {
-                        username: username,
-                        rid: rid
-                    }, function(users) {
-                        resolve(users);
-                    });
-                });
+        fetch(getUrl(url), {
+            method,
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body
+        })
+            .then((response) => {
+                if (response.ok) {
+                    isOk = true;
+                } else {
+                    isOk = false;
+                }
+                return response.json();
+            })
+            .then((responseData) => {
+                if (isOk) {
+                    resolve(responseData);
+                } else {
+                    reject(responseData);
+                }
+            })
+            .catch((error) => {
+                reject(error);
             });
-        });
     });
 };
+
+
+export default class SocketStore {
+    socket: object;
+    constructor() {
+        const io = require('socket.io-client');
+        this.socket = io('http://169.254.173.140:3000');
+        this.socket.on("connecting", function () {
+            console.log("正在连接到服务器");
+        })
+        this.socket.on("connect", function () {
+            console.log("连接成功");
+        })
+        this.socket.on("connect_failed", function () {
+            console.log("连接失败");
+        })
+        this.socket.on("login", function (from, to, msg) {
+            toastShort(from + "对" + to + "说:" + msg);
+        })
+    }
+}

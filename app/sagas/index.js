@@ -1,10 +1,11 @@
 import { fork } from 'redux-saga/effects';
-import { watchRequestTypeList } from './category';
+//import { watchRequestTypeList } from './category';
 import { watchRequestArticleList } from './read';
 import { watchRequestLogin } from './user/login';
 import { watchRequestRegister} from './user/register';
 import { watchRequestSendEmail} from './sendEmail';
 import { watchRequestForgetPassword} from './user/forgetPassword';
+import { watchRequestFriend} from './chat/friend';
 import { watchRequestChat} from './chat/chat';
 
 
@@ -13,9 +14,10 @@ export default function* rootSaga() {
              fork(watchRequestRegister),
              fork(watchRequestForgetPassword),
              fork(watchRequestSendEmail),
-             fork(watchRequestTypeList),
+             //fork(watchRequestTypeList),
              fork(watchRequestArticleList),
-             fork(watchRequestChat)
-          ];
+             fork(watchRequestFriend),
+            fork(watchRequestChat)
+    ];
 }
 

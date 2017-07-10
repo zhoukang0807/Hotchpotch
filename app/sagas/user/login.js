@@ -1,6 +1,6 @@
 import { put, take, call, fork } from 'redux-saga/effects';
 import * as types from '../../constants/ActionTypes';
-import { request } from '../../utils/RequestUtil';
+import { request,scoketio } from '../../utils/RequestUtil';
 import { USER_LOGIN } from '../../constants/Urls';
 import {  fetchLogin,receiveLogin } from '../../actions/user/login';
 import store from 'react-native-simple-store';

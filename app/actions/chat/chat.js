@@ -1,26 +1,22 @@
 import * as types from '../../constants/ActionTypes';
 
-export function requestChat(
-    userId,
-    userName
-) {
+export function requestChat(userName,friendName) {
     return {
         type: types.REQUEST_CHAT,
-        userId,
-        userName
+        userName,
+        friendName
     };
 }
 
 export function fetchChat() {
     return {
         type: types.FETCH_CHAT,
-
     };
 }
 
-export function receiveChat(users) {
+export function receiveChat(chat) {
     return {
         type: types.RECEIVE_CHAT,
-        users,
+        chat,
     };
 }

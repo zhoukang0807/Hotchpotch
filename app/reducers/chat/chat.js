@@ -1,20 +1,17 @@
 import * as types from '../../constants/ActionTypes';
 
 const initialState = {
-    loading: false,
-    users: []
+    success:false,
 };
 export default function chat(state = initialState, action) {
     switch (action.type) {
         case types.FETCH_CHAT:
             return Object.assign({}, state, {
-                loading: true,
-                users: []
+                success:false,
             });
         case types.RECEIVE_CHAT:
             return Object.assign({}, state, {
-                loading: false,
-                users: action.users
+                success:true,
             });
         default:
             return state;

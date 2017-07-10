@@ -36,6 +36,7 @@ class Register extends React.Component {
         super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
         this.state = {
             userName: "",
+            nick:"",
             password: "",
             email: "",
             verifyCode: "",
@@ -47,8 +48,8 @@ class Register extends React.Component {
 
     //组件出现前 就是dom还没有渲染到html文档里面
     componentWillMount() {
-        //添加回退按键监听
-    }
+    //添加回退按键监听
+}
 
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
@@ -75,8 +76,8 @@ class Register extends React.Component {
 
     onSelectRegister() {
         const {registerActions} = this.props;
-        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
-            toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
+        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword ==""||this.state.nick == "" ) {
+            toastShort("用户名、昵称、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
             return;
         }
         if(this.state.password !== this.state.repassword){
@@ -84,7 +85,7 @@ class Register extends React.Component {
             return;
         }
 
-        registerActions.requestRegister(this.state.userName, this.state.password, this.state.email, this.state.verifyCode);
+        registerActions.requestRegister(this.state.userName, this.state.password, this.state.email, this.state.verifyCode,this.state.nick);
     }
 
     _requestSMSCode(shouldStartCountting) {
@@ -166,6 +167,23 @@ class Register extends React.Component {
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Icon
                             color='#b7e9de'
+                            name='md-contact'
+                            size={25}
+                        />
+                    </View>
+                    <View style={{flex: 8}}>
+                        <TextInput placeholder='请输入昵称'
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text) => {
+                                       this.state.nick = text;
+                                   }}
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#b7e9de'
                             name='md-lock'
                             size={25}
                         />
@@ -201,9 +219,7 @@ class Register extends React.Component {
                 <View style={styles.bottomView}>
                     <View style={{flex: 1}}>
                         <Button
-                            containerStyle={styles.sureBtn}
-                            style={styles.btnText}
-                            text={'注册'}
+                            children={'注册'}
                             onPress={() => this.onSelectRegister()}/>
                     </View>
                 </View>

@@ -28,4 +28,6 @@ export const REQUEST_CHAT = 'REQUEST_CHAT';
 export const FETCH_CHAT = 'FETCH_CHAT';
 export const RECEIVE_CHAT = 'RECEIVE_CHAT';
 
-
+export const REQUEST_FRIENDS = 'REQUEST_FRIENDS';
+export const FETCH_FRIENDS = 'FETCH_FRIENDS';
+export const RECEIVE_FRIENDS = 'RECEIVE_FRIENDS';

@@ -3,15 +3,15 @@ import {AppRegistry, Platform, StyleSheet, Text, View, StatusBar} from 'react-na
 import { Router, Scene, ActionConst } from 'react-native-router-flux';
 import TabIcon from '../components/TabIcon';
 import About from '../pages/About';
-import AV from 'leancloud-storage'; //云端保存数据
-import CategoryContainer from '../containers/CategoryContainer';
 import LoginContainer from './user/LoginContainer';
 import RegisterContainer from './user/RegisterContainer';
 import ForgetPassword from './user/ForgetPassword';
 import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
+import FriendContainer from './chat/FriendContainer';
 import ChatContainer from './chat/ChatContainer';
+
 import { connect } from 'react-redux';
 import Splash from '../pages/Splash';
 const RouterWithRedux = connect()(Router);
@@ -35,12 +35,7 @@ const getSceneStyle = (props, computedProps) => {
 StatusBar.setHidden(true);
 //TabBarIOS管理两个模块:图书、电影
 class App extends React.Component {
-    componentDidMount() {
-        AV.init({
-            appId: 'Tfi1z7dN9sjMwSul8sYaTEvg-gzGzoHsz',
-            appKey: '57qmeEJonefntNqRe17dAgi4'
-        });
-    }
+
     render() {
         return (
             <RouterWithRedux
@@ -68,18 +63,18 @@ class App extends React.Component {
                         hideTabBar
                         component={RegisterContainer}
                     />
+
                     <Scene
                         key="forgetPassword"
                         hideTabBar
                         component={ForgetPassword}
                     />
                     <Scene
-                        key="initCategory"
-                        component={CategoryContainer}
-                        hideNavBar
+                        key="ChatContainer"
                         hideTabBar
-                        type={ActionConst.REPLACE}
+                        component={ChatContainer}
                     />
+
                     <Scene
                         key="articleView"
                         component={ArticleView}
@@ -87,6 +82,7 @@ class App extends React.Component {
                         hideTabBar
                         type={ActionConst.REPLACE}
                     />
+
                     <Scene
                         key="tabbar"
                         tabs
@@ -94,11 +90,12 @@ class App extends React.Component {
                         type={ActionConst.REPLACE}
                     >
                         <Scene
-                            key="chat"
-                            component={ChatContainer}
+                            key="friend"
+                            component={FriendContainer}
                             title="聊天"
                             icon={TabIcon}
                             iconName="md-chatbubbles"
+                            type={ActionConst.REPLACE}
                         />
                         <Scene
                             key="main"
@@ -122,7 +119,6 @@ class App extends React.Component {
                             iconName="md-pricetags"
                         />
                     </Scene>
-
 
                 </Scene>
             </RouterWithRedux>
