@@ -64,7 +64,7 @@ export default class TimerButton extends React.Component {
                     this.props.onClick(this._shouldStartCountting)
                 };
             }}>
-                <View style={[{width:100, height:25,flex:1,justifyContent:'center',alignItems:'center',backgroundColor:"#f1f1f1"},style]}>
+                <View style={[{width:100, height:25,flex:1,justifyContent:'center',alignItems:'center',backgroundColor:"#f1b9e9"},style]}>
                      <Text style={[{fontSize: 14},textStyle,{color: ((!counting && enable && selfEnable) ? textStyle.color : disableColor || 'gray')}]}>{timerTitle}</Text>
                 </View>
             </TouchableOpacity>

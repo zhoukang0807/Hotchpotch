@@ -7,6 +7,10 @@ import * as sendEmailCreators from '../../actions/sendEmail';
 import Register from '../../pages/user/Register';
 
 class RegisterContainer extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitleStyle:{alignSelf:'center'},
+        headerTitle: '邮箱注册',
+    });
     render() {
         return <Register {...this.props} />;
     }

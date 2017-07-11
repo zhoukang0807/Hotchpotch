@@ -70,13 +70,6 @@ export default class Chat extends React.Component {
             }
             this.onReceive(chatInfos);
         }.bind(this));
-
-        tabAction.refresh({
-            title: sessionData.name,
-            titleStyle:{ color: '#fff',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#b7e9de"}
-        });
-
         if(this.props.sessionData.room){
             const { chatActions } = this.props;
             chatActions.requestUserList(this.props.sessionData.id);

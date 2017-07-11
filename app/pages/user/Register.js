@@ -24,12 +24,9 @@ import {
 } from 'react-native-router-flux';
 const propTypes = {
     registerActions: PropTypes.object,
+    register: PropTypes.object.isRequired
 };
 
-
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
 class Register extends React.Component {
     //构造函数，用来初始化数据
     constructor(props) {
@@ -53,11 +50,6 @@ class Register extends React.Component {
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
         //删除回退按键监听
-        Actions.refresh({
-            title: "注册",
-            titleStyle: {color: '#fff', fontSize: 20},
-            navigationBarStyle: {backgroundColor: "#b7e9de"}
-        });
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
 
@@ -243,6 +235,5 @@ const styles = StyleSheet.create({
 
 });
 Register.propTypes = propTypes;
-Register.contextTypes = contextTypes;
 
 export default Register;

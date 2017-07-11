@@ -7,6 +7,10 @@ import * as sendEmailCreators from '../../actions/sendEmail';
 import ForgetPassword from '../../pages/user/ForgetPassword';
 
 class ForgetPasswordContainer extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitleStyle:{alignSelf:'center'},
+        headerTitle: '忘记密码',
+    });
     render() {
         return <ForgetPassword {...this.props} />;
     }

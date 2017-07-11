@@ -4,15 +4,17 @@ import store from 'react-native-simple-store';
 import {request} from '../utils/RequestUtil';
 import {USER_LOGIN} from '../constants/Urls';
 import { enterWebScoket } from '../utils/RequestUtil';
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
+import NavigationUtil from '../utils/NavigationUtil';
 
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
 const splashImg = require('../img/splash.png');
 
 class Splash extends React.Component {
+    static navigationOptions = {
+        header: null
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -21,7 +23,7 @@ class Splash extends React.Component {
     }
 
     componentDidMount() {
-        const {routes} = this.context;
+        const {navigate} = this.props.navigation;
         Animated.timing(this.state.bounceValue, {
             toValue: 1.2,
             duration: 1000
@@ -34,17 +36,16 @@ class Splash extends React.Component {
                             password: loginInfo.password
                         })).then(function (data) {
                             enterWebScoket(data.loginInfo.userId,data.loginInfo.userId,data.loginInfo.userName);
-                            routes.tabbar({loginInfo});
+                            NavigationUtil.reset(this.props.navigation, 'Home',{ loginInfo});
                         }).catch(function () {
                             store.delete('loginInfo')
-                            routes.login();
+                            navigate('Login');
                         })
                     } else {
-                        routes.login();
+                        navigate('Login');
                     }
                 }
             )
-
         }, 1000);
     }
 
@@ -65,7 +66,4 @@ class Splash extends React.Component {
         );
     }
 }
-
-Splash.contextTypes = contextTypes;
-
 export default Splash;

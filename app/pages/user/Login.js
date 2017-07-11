@@ -13,15 +13,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
 import { toastShort } from '../../utils/ToastUtil';
-import {
-    Actions
-} from 'react-native-router-flux';
+import NavigationUtil from '../../utils/NavigationUtil';
 const propTypes = {
     loginActions: PropTypes.object,
-};
-
-const contextTypes = {
-    routes: PropTypes.object.isRequired
+    login: PropTypes.object.isRequired
 };
 class Login extends React.Component {
     constructor(props) {
@@ -36,11 +31,6 @@ class Login extends React.Component {
     }
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
-        Actions.refresh({
-            title: "登陆",
-            titleStyle:{ color: '#fff',fontSize: 20},
-            navigationBarStyle:{backgroundColor:"#b7e9de"}
-        });
     }
     //官方的解释是组件被移除前执行
     componentWillUnmount() {
@@ -58,8 +48,7 @@ class Login extends React.Component {
             // ...耗时较长的同步的任务...避免影响动画
             store.get('loginInfo').then((loginInfo) => {
                 if(loginInfo){
-                    const { routes } = this.context;
-                    routes.tabbar({ loginInfo });
+                    NavigationUtil.reset(this.props.navigation, 'Home',{loginInfo});
                 }})
         });
 
@@ -124,12 +113,12 @@ class Login extends React.Component {
         )
     }
     registerClick = () => {
-        const { routes } = this.context;
-        routes.register();
+        const {navigate} = this.props.navigation;;
+        navigate('Register');
     }
     forgetClick = () => {
-        const { routes } = this.context;
-        routes.forgetPassword();
+        const {navigate} = this.props.navigation;;
+        navigate('Forget');
     }
 }
 
@@ -177,6 +166,5 @@ const styles = StyleSheet.create({
     }
 });
 Login.propTypes = propTypes;
-Login.contextTypes = contextTypes;
 
 export default Login;

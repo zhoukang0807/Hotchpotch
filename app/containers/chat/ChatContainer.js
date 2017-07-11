@@ -6,6 +6,10 @@ import * as chatCreators from '../../actions/chat/chat';
 import Chat from '../../pages/chat/chat';
 
 class ChatContainer extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitleStyle:{alignSelf:'center'},
+        headerTitle: '忘记密码',
+    });
     render() {
         return <Chat {...this.props} />;
     }

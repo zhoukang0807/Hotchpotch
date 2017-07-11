@@ -19,17 +19,11 @@ import TimerButton from '../../components/TimerButton';
 import FetchLoading from '../../components/fetchLoading';
 import {toastShort} from '../../utils/ToastUtil';
 import {IsEmail} from '../../utils/utils';
-import {
-    Actions
-} from 'react-native-router-flux';
 const propTypes = {
     forgetPasswordActions: PropTypes.object,
+    forgetPassword: PropTypes.object.isRequired
 };
 
-
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
 class ForgetPassword extends React.Component {
     //构造函数，用来初始化数据
     constructor(props) {
@@ -52,11 +46,6 @@ class ForgetPassword extends React.Component {
 //组件渲染完成 已经出现在dom文档里
     componentDidMount() {
         //删除回退按键监听
-        Actions.refresh({
-            title: "忘记密码",
-            titleStyle: {color: '#fff', fontSize: 20},
-            navigationBarStyle: {backgroundColor: "#b7e9de"}
-        });
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
 
@@ -219,6 +208,5 @@ const styles = StyleSheet.create({
 
 });
 ForgetPassword.propTypes = propTypes;
-ForgetPassword.contextTypes = contextTypes;
 
 export default ForgetPassword;
