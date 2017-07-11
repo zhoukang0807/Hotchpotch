@@ -63,7 +63,7 @@ class Login extends React.Component {
                     <View style={styles.rowView}>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Icon
-                                color='#b7e9de'
+                                color='#595959'
                                 name='md-person'
                                 size={25}
                             />
@@ -80,7 +80,7 @@ class Login extends React.Component {
                     <View style={styles.rowView}>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Icon
-                                color='#b7e9de'
+                                color='#595959'
                                 name='md-lock'
                                 size={25}
                             />
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         borderRadius: 10,
-        backgroundColor: '#b7e9de'
+        backgroundColor: '#595959'
     },
     btnText: {
         fontSize: 16,
@@ -153,11 +153,11 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     loginLeftText: {
-        color:"#b7e9de",
+        color:"#595959",
         textAlign:'left'
     },
     loginRightText: {
-        color:"#b7e9de",
+        color:"#595959",
         textAlign:'right'
     },
     bottomView: {

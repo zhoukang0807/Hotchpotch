@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 class LoginContainer extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        headerTitleStyle:{alignSelf:'center'},
         headerTitle: '登陆',
     });
     render() {
