@@ -8,6 +8,7 @@ import login from './user/login';
 import register from './user/register';
 import sendEmail from './sendEmail';
 import  forgetPassword from './user/forgetPassword';
+import  chat from './chat/chat';
 import  contact from './chat/contact';
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     register,
     sendEmail,
     forgetPassword,
+    chat,
     contact
 });
 

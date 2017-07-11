@@ -44,7 +44,7 @@ export default class Chat extends React.Component {
     }
     //渲染完成
     componentDidMount() {
-        const {loginInfo,sessionData} = this.props.navigation.state.params;
+        const { loginInfo,sessionData } =this.props.navigation.state.params;
         Pomelo.on('onAdd', function (data) {
 
         }.bind(this));
