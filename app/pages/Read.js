@@ -24,9 +24,6 @@ const propTypes = {
     read: PropTypes.object.isRequired
 };
 
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
 class Read extends React.Component {
     constructor(props) {
         super(props);
@@ -37,10 +34,9 @@ class Read extends React.Component {
     }
     //点击事件
     _onPressList(rowData){
-        //toastShort(rowData.long);
-        const { routes } = this.context;
         store.save('articleUrl', rowData.long);
-       routes.articleView();
+        const {navigate} = this.props.navigation;
+        navigate('Article');
    }
     renderListView() {
 
@@ -158,5 +154,4 @@ const styles = StyleSheet.create({
     },
 });
 Read.propTypes = propTypes;
-Read.contextTypes = contextTypes;
 export default Read;

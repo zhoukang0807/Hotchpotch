@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Image, Text, Linking, View } from 'react-native';
 class About extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: '关于',
+    });
   render() {
     return (
       <View style={styles.container}>

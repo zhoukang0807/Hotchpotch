@@ -16,10 +16,6 @@ import {
     WebView,
     Dimensions
 } from 'react-native';
-import GridView from '../../components/GridView';
-import { toastShort } from '../../utils/ToastUtil';
-import Button from '../../components/Button';
-import * as readActions from '../../actions/read'
 import store from 'react-native-simple-store';
 const propTypes = {
     readActions: PropTypes.object,

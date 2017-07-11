@@ -9,6 +9,9 @@ import * as readCreators from '../actions/read';
 import Read from '../pages/Read';
 
 class ReadContainer extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: '阅读',
+    });
     render() {
         return <Read {...this.props} />;
     }

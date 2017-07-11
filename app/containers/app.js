@@ -15,7 +15,6 @@ const TabContainer = TabNavigator(
         ChatList: { screen: ChatList },
         Read: { screen: Read },
         About: { screen: About },
-        Chat: { screen: ChatContainer },
     },
     {
         lazy: true,
@@ -58,7 +57,8 @@ const App = StackNavigator(
                 headerLeft: null
             }
         },
-        Article: { screen: ArticleView }
+        Article: { screen: ArticleView },
+        Chat: { screen: ChatContainer },
     },
     {
         headerMode: 'screen',

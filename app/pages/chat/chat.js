@@ -7,19 +7,14 @@ import {
     BackHandler
 } from 'react-native';
 import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
-import {
-    Actions as tabAction
-} from 'react-native-router-flux';
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
 const propTypes = {
     chatActions: PropTypes.object,
+    chat: PropTypes.object.isRequired
 };
 
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
 export default class Chat extends React.Component {
     constructor(props) {
         super(props);
@@ -239,7 +234,6 @@ const styles = StyleSheet.create({
     },
 });
 Chat.propTypes = propTypes;
-Chat.contextTypes = contextTypes;
 
 
 

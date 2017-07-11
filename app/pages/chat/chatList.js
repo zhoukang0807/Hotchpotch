@@ -11,11 +11,11 @@ import {
     ListView,
     NativeAppEventEmitter
 } from 'react-native';
-import {
-    Actions
-} from 'react-native-router-flux';
 import {SwipeListView} from 'react-native-swipe-list-view';
 export default class ChatList extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: '消息',
+    });
     constructor (props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -61,7 +61,8 @@ export default class ChatList extends Component {
         this.sessionListener && this.sessionListener.remove();
     }
     onRowTap(data){
-        Actions.chat({loginInfo:this.props.loginInfo,sessionData:data})
+        const {navigate} = this.props.navigation;
+        navigate('Chat',{loginInfo:this.props.loginInfo,sessionData:data});
     }
     _renderRow(data){
         return (

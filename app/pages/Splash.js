@@ -39,10 +39,10 @@ class Splash extends React.Component {
                             NavigationUtil.reset(this.props.navigation, 'Home',{ loginInfo});
                         }).catch(function () {
                             store.delete('loginInfo')
-                            navigate('Login');
+                            NavigationUtil.reset(this.props.navigation, 'Login');
                         })
                     } else {
-                        navigate('Login');
+                        NavigationUtil.reset(this.props.navigation, 'Login');
                     }
                 }
             )
