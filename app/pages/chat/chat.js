@@ -25,7 +25,6 @@ export default class Chat extends React.Component {
             isLoadingEarlier: false
         };
         this._isMounted = false;
-        this.init=this.init.bind(this);
         this.onSend = this.onSend.bind(this);
         this.onReceive = this.onReceive.bind(this);
         this.renderCustomActions = this.renderCustomActions.bind(this);
@@ -34,9 +33,6 @@ export default class Chat extends React.Component {
         this.onLoadEarlier = this.onLoadEarlier.bind(this);
         this.goBack = this.goBack.bind(this);
         this._isAlright = null;
-    }
-    init(){
-
     }
     componentWillMount() {
         this._isMounted = true;
@@ -48,14 +44,14 @@ export default class Chat extends React.Component {
     }
     //渲染完成
     componentDidMount() {
-        const { sessionData } = this.props;
+        const {loginInfo,sessionData} = this.props.navigation.state.params;
         Pomelo.on('onAdd', function (data) {
 
         }.bind(this));
         Pomelo.on('onChat', function (chatInfos) {
             let flag = false;
             for(var i=0;i<chatInfos.length;i++){
-                if(chatInfos[i].user._id == this.props.loginInfo.userId){
+                if(chatInfos[i].user._id == loginInfo.userId){
                     flag = true;
                     break;
                 }
@@ -65,9 +61,9 @@ export default class Chat extends React.Component {
             }
             this.onReceive(chatInfos);
         }.bind(this));
-        if(this.props.sessionData.room){
+        if(sessionData.room){
             const { chatActions } = this.props;
-            chatActions.requestUserList(this.props.sessionData.id);
+            chatActions.requestUserList(sessionData.id);
         }
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
@@ -102,7 +98,7 @@ export default class Chat extends React.Component {
             };
         });
         let users=[];
-        const {loginInfo,sessionData} = this.props;
+        const {loginInfo,sessionData} = this.props.navigation.state.params;
         const {chat} = this.props;
         if(chat.users.length==0){
             users.push({userId:sessionData.id,userName:sessionData.userName});
@@ -198,7 +194,7 @@ export default class Chat extends React.Component {
     }
 
     render() {
-        const {loginInfo} = this.props;
+        const {loginInfo} = this.props.navigation.state.params;
         return (
             <GiftedChat
                 messages={this.state.messages}

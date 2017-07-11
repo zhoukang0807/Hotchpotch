@@ -12,9 +12,15 @@ import {
     NativeAppEventEmitter
 } from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import Icon from 'react-native-vector-icons/Ionicons';
+import store from 'react-native-simple-store';
 export default class ChatList extends Component {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: '消息',
+        tabBarLabel: '消息',
+        tabBarIcon: ({tintColor}) => (
+        <Icon name="md-alert" size={25} color={tintColor} />
+        ),
     });
     constructor (props) {
         super(props);
@@ -62,7 +68,9 @@ export default class ChatList extends Component {
     }
     onRowTap(data){
         const {navigate} = this.props.navigation;
-        navigate('Chat',{loginInfo:this.props.loginInfo,sessionData:data});
+        store.get('loginInfo').then((loginInfo) => {
+            navigate('Chat',{loginInfo:loginInfo,sessionData:data});
+        });
     }
     _renderRow(data){
         return (

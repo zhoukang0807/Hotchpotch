@@ -23,7 +23,7 @@ class Splash extends React.Component {
     }
 
     componentDidMount() {
-        const {navigate} = this.props.navigation;
+        const navigation = this.props.navigation;
         Animated.timing(this.state.bounceValue, {
             toValue: 1.2,
             duration: 1000
@@ -36,13 +36,13 @@ class Splash extends React.Component {
                             password: loginInfo.password
                         })).then(function (data) {
                             enterWebScoket(data.loginInfo.userId,data.loginInfo.userId,data.loginInfo.userName);
-                            NavigationUtil.reset(this.props.navigation, 'Home',{ loginInfo});
+                            NavigationUtil.reset(navigation, 'Home');
                         }).catch(function () {
                             store.delete('loginInfo')
-                            NavigationUtil.reset(this.props.navigation, 'Login');
+                            NavigationUtil.reset(navigation, 'Login');
                         })
                     } else {
-                        NavigationUtil.reset(this.props.navigation, 'Login');
+                        NavigationUtil.reset(navigation, 'Login');
                     }
                 }
             )
