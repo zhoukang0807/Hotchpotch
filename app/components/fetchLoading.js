@@ -20,7 +20,7 @@ class  FetchLoading extends React.Component {
             <View style={styles.loading}>
                 <View style={styles.rowView}>
                 <Text style={styles.loadingText}>{tips}</Text>
-                <ActivityIndicator size="small" color="#3e9ce9"/>
+                <ActivityIndicator size="small" color="#FFF"/>
                 </View>
             </View>
         </Modal>)
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     rowView: {
         flexDirection: 'row',
-        backgroundColor:"#b7e9de",
+        backgroundColor:"#595959",
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 10

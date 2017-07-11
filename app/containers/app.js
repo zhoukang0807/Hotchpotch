@@ -7,12 +7,14 @@ import ForgetPassword from './user/ForgetPassword';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
 import ChatContainer from '../containers/chat/ChatContainer';
+import ContactContainer from '../containers/chat/ContactContainer';
 import ChatList from '../pages/chat/chatList';
 import Splash from '../pages/Splash';
 
 const TabContainer = TabNavigator(
     {
         ChatList: { screen: ChatList },
+        Contact: { screen: ContactContainer },
         Read: { screen: Read },
         About: { screen: About },
     },
@@ -20,7 +22,7 @@ const TabContainer = TabNavigator(
         lazy: true,
         tabBarPosition: 'bottom',
         tabBarOptions: {
-            activeTintColor: '#353535',
+            activeTintColor: '#595959',
             inactiveTintColor: '#999999',
             showIcon: true,
             style: {

@@ -3,7 +3,7 @@ import { StyleSheet, Image, Text, Linking, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 class About extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-        headerTitle: '个人信息',
+        headerTitle: '我',
         tabBarLabel: '我',
         tabBarIcon: ({tintColor}) => (
             <Icon name="md-person" size={25} color={tintColor} />
