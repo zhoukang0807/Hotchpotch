@@ -10,7 +10,7 @@ import ChatContainer from '../containers/chat/ChatContainer';
 import ContactContainer from '../containers/chat/ContactContainer';
 import ChatList from '../pages/chat/chatList';
 import Splash from '../pages/Splash';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 const TabContainer = TabNavigator(
     {
         ChatList: { screen: ChatList },
@@ -34,14 +34,6 @@ const TabContainer = TabNavigator(
             tabStyle: {
                 padding: 0
             }
-        },
-        navigationOptions:{
-            headerRight:<Icon.Button
-                name="md-add"
-                backgroundColor="transparent"
-                underlayColor="transparent"
-                activeOpacity={0.8}
-            />
         }
     }
 );

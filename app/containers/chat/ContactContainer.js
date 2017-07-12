@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as contactCreators from '../../actions/chat/contact';
 import Contact from '../../pages/chat/contact';
+import Example from '../../components/Example';
 import Icon from 'react-native-vector-icons/Ionicons';
 class ContactContainer extends React.Component {
     static navigationOptions = ({ navigation }) => ({
@@ -11,6 +12,7 @@ class ContactContainer extends React.Component {
         tabBarIcon: ({tintColor}) => (
             <Icon name="md-contacts" size={25} color={tintColor} />
         ),
+        headerRight:<Example/>
     });
 
     render() {
