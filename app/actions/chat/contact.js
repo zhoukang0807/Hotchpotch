@@ -1,8 +1,9 @@
 import * as types from '../../constants/ActionTypes';
 
-export function requestContactList(id) {
+export function requestContactList(userId) {
     return {
-        type: types.REQUSET_CONTACT_LIST
+        type: types.REQUSET_CONTACT_LIST,
+        userId
     };
 }
 export function fetchContactList(id) {

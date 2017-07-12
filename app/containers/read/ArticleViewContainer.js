@@ -9,6 +9,12 @@ import * as articleCreators from '../../actions/read/articleView';
 import ArticleView from '../../pages/read/ArticleView';
 
 class ArticleViewContainer extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: navigation.state.params.rowData.title,
+        headerTitleStyle: {
+            fontSize: 14,
+        },
+    });
     render() {
         return <ArticleView {...this.props} />;
     }

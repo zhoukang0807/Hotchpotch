@@ -36,7 +36,7 @@ class Read extends React.Component {
     _onPressList(rowData){
         store.save('articleUrl', rowData.long);
         const {navigate} = this.props.navigation;
-        navigate('Article');
+        navigate('Article',{rowData});
    }
     renderListView() {
 

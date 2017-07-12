@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as contactCreators from '../../actions/chat/contact';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Contact from '../../pages/chat/contact';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 class ContactContainer extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: "联系人",
@@ -13,6 +12,7 @@ class ContactContainer extends React.Component {
             <Icon name="md-contacts" size={25} color={tintColor} />
         ),
     });
+
     render() {
         return <Contact {...this.props} />;
     }

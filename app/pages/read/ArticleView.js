@@ -22,9 +22,6 @@ const propTypes = {
     read: PropTypes.object.isRequired
 };
 
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
 //获取设备的宽度和高度
 var {
     height: deviceHeight,
@@ -86,5 +83,4 @@ const styles = StyleSheet.create({
 
 });
 ArticleView.propTypes = propTypes;
-ArticleView.contextTypes = contextTypes;
 export default ArticleView;

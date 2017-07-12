@@ -11,131 +11,51 @@ import {
     ListView,
     NativeAppEventEmitter
 } from 'react-native';
-import {SwipeListView} from 'react-native-swipe-list-view';
-import Icon from 'react-native-vector-icons/Ionicons';
 import store from 'react-native-simple-store';
 const propTypes = {
     contactActions: PropTypes.object,
     contact: PropTypes.object.isRequired
 };
 export default class Contact extends Component {
-    static navigationOptions = ({ navigation }) => ({
-        headerTitle: '消息',
-        tabBarLabel: '消息',
-        tabBarIcon: ({tintColor}) => (
-            <Icon name="md-alert" size={25} color={tintColor} />
-        ),
-    });
     constructor (props) {
         super(props);
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            rowOpen:false,
-            dataSource: ds.cloneWithRows([])
+            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
         };
-
     }
     componentDidMount() {
-        let data = [
-            {
-                name:"江超",
-                room:false,
-                id:"1499084091067978",
-                userName:"jiang",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            },{
-                name:"周康",
-                room:false,
-                id:"1499083182572912",
-                userName:"kangz",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            },{
-                name:"群聊天",
-                room:true,
-                userName:"qun",
-                id:"14990831822",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            }
-        ]
-        this.setState({
-            dataSource:this.state.dataSource.cloneWithRows(data)
+        store.get('loginInfo').then((loginInfo) => {
+            const { contactActions } = this.props;
+            contactActions.requestContactList(loginInfo.userId);
         });
     }
     componentWillUnmount() {
-        this.sessionListener && this.sessionListener.remove();
-    }
-    onRowTap(data){
-        const {navigate} = this.props.navigation;
-        store.get('loginInfo').then((loginInfo) => {
-            navigate('Chat',{loginInfo:loginInfo,sessionData:data});
-        });
     }
     _renderRow(data){
         return (
-            <View>
+            <View style={{paddingTop:1}}>
                 <TouchableHighlight  onPress={()=>this.onRowTap(data)}>
                     <View style={[styles.row,styles.last]}>
                         <Image style={styles.logo} source={{uri:"https://facebook.github.io/react/img/logo_og.png"}} />
                         <View style={styles.content}>
                             <View style={[styles.crow]}>
-                                <Text style={styles.title} numberOfLines={1}>{data.name}</Text>
-
-                                <Text style={styles.time}> {data.time}</Text>
-                            </View>
-                            <View style={[styles.crow,{marginTop:3}]}>
-                                <Text style={styles.desc} numberOfLines={1}>
-                                    {(data.unreadCount > 0 ?'['+data.unreadCount+'条]' : '')+data.content}</Text>
+                                <Text style={styles.title} numberOfLines={1}>{data.remark?data.remark:data.nickName?data.nickName:data.userName}</Text>
                             </View>
                         </View>
-                        {parseInt(data.unreadCount) > 0 ? <View style={styles.badge}/> : null}
                     </View>
                 </TouchableHighlight>
-
-            </View>
-        )
-    }
-    delete(res){
-        alert(res);
-    }
-    _renderSeparator(){
-        return (
-            <View style={styles.line}/>
-        );
-    }
-    _renderHiddenRow(res,index){
-        return(
-            <View style={styles.rowBack}>
-                <TouchableOpacity style={styles.deleteBtn} activeOpacity={1} onPress={()=>this.delete(res)}>
-                    <Text style={{color:'#fff'}}>删除</Text>
-                </TouchableOpacity>
             </View>
         )
     }
     render() {
+        const {contact} =this.props;
+
         return (
-            <SwipeListView
-                ref="swList"
-                enableEmptySections
-                style={styles.list}
-                disableRightSwipe
-                recalculateHiddenLayout
-                closeOnRowPress={true}
-                tension={-2}
-                friction={5}
-                dataSource={this.state.dataSource}
+            <ListView
+                dataSource={this.state.dataSource.cloneWithRows(contact.contacts)}
                 renderRow={this._renderRow.bind(this)}
-                renderSeparator={this._renderSeparator.bind(this)}
-                renderHiddenRow={this._renderHiddenRow.bind(this)}
-                rightOpenValue={-75}
-                onRowOpen={()=>this.setState({rowOpen:true})}
-                onRowClose={()=>this.setState({rowOpen:false})}
-                swipeToOpenPercent={5}
+                enableEmptySections={true}
             />
         );
     }
