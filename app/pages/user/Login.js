@@ -101,25 +101,10 @@ class Login extends React.Component {
                         text={'登录'}
                         onPress={() => this.onSelectLogin()}/>
                   </View>
-                  <View  style={styles.bottomView}>
-                      <View style={{flex:1}}>
-                           <Text style={styles.loginLeftText} onPress={this.registerClick} >邮箱注册</Text>
-                      </View>
-                      <View style={{flex:1}}>
-                           <Text style={styles.loginRightText} onPress={this.forgetClick} >忘记密码？</Text>
-                      </View>
-                  </View>
             </View>
         )
     }
-    registerClick = () => {
-        const {navigate} = this.props.navigation;;
-        navigate('Register');
-    }
-    forgetClick = () => {
-        const {navigate} = this.props.navigation;;
-        navigate('Forget');
-    }
+
 }
 
 const styles = StyleSheet.create({

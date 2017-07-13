@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as loginCreators from '../../actions/user/login';
 import Login from '../../pages/user/Login';
-import Icon from 'react-native-vector-icons/Ionicons';
+import LoginSelect from '../../pages/user/loginSelect';
 
 class LoginContainer extends React.Component {
-
     static navigationOptions = ({ navigation }) => ({
         headerTitle: '登陆',
+        headerRight:<LoginSelect navigation={navigation}/>
     });
     render() {
         return <Login {...this.props}/>;
