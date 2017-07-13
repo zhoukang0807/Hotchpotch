@@ -10,6 +10,8 @@ import ChatContainer from '../containers/chat/ChatContainer';
 import ContactContainer from '../containers/chat/ContactContainer';
 import ChatList from '../pages/chat/chatList';
 import Splash from '../pages/Splash';
+import ContactInfo from '../pages/user/contactInfo';
+
 
 const TabContainer = TabNavigator(
     {
@@ -61,6 +63,7 @@ const App = StackNavigator(
         },
         Article: { screen: ArticleView },
         Chat: { screen: ChatContainer },
+        ContactInfo: { screen: ContactInfo },
     },
     {
         headerMode: 'screen',

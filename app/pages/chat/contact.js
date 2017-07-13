@@ -32,6 +32,10 @@ export default class Contact extends Component {
     }
     componentWillUnmount() {
     }
+    onRowTap(data){
+        const {navigate} = this.props.navigation;
+        navigate('ContactInfo',{contactInfo:data});
+    }
     _renderRow(data){
         return (
             <View style={{paddingTop:1}}>
