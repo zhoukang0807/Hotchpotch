@@ -70,7 +70,7 @@ export default class Contact extends Component {
                     <Icon
                         color='#FFF'
                         name='md-person-add'
-                        size={25}
+                        size={35}
                     />
                 </View>
                 <View style={styles.textView}>
@@ -208,8 +208,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF"
     },
     image: {
-        width: 30,
-        height: 30,
+        width: 50,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 5,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         left: 10,
     },
     text: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 'bold'
     },
 });

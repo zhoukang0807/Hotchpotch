@@ -89,10 +89,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF"
     },
     rowView2: {
+        height:50,
         marginTop: 20,
         paddingLeft: 10,
         flexDirection: 'row',
-        backgroundColor: "#FFF"
+        backgroundColor: "#FFF",
+        alignItems: 'center',
     },
     image: {
         width: 60,

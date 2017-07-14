@@ -27,10 +27,12 @@ const propTypes = {
 class Read extends React.Component {
     constructor(props) {
         super(props);
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.state = {
+            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+        };
         const {readActions} = this.props;
         readActions.requestArticleList();
-        console.log(33);
-
     }
     //点击事件
     _onPressList(rowData){
@@ -39,21 +41,12 @@ class Read extends React.Component {
         navigate('Article',{rowData});
    }
     renderListView() {
-
         const {read} = this.props;
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: ds.cloneWithRows(read.articleList),
-        };
-        console.log(read.articleList);
-
         if (read.articleList) {
             return (
                 <ScrollView
                     automaticallyAdjustContentInsets={false}
                     horizontal={false}
-                    contentContainerStyle={styles.no_data}
-                    style={styles.base}
                     refreshControl={
                         <RefreshControl
                             refreshing={read.loading}
@@ -63,9 +56,9 @@ class Read extends React.Component {
                         />
                     }
                 >
-                    <View style={styles.gridLayout}>
                         <ListView
-                            dataSource={this.state.dataSource}
+                            dataSource={this.state.dataSource.cloneWithRows(read.articleList)}
+                            enableEmptySections={true}
                             renderRow={(rowData, sectionID, rowID) =>
                                 <View >
                                     <TouchableOpacity
@@ -89,8 +82,6 @@ class Read extends React.Component {
                                 </View>
                             }
                         />
-
-                    </View>
                 </ScrollView>
             );
         } else {
@@ -107,17 +98,7 @@ class Read extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text
-                        style={[
-                            styles.btnText,
-                            {color: 'black', textAlign: 'center', padding: 5, fontSize: 18}
-                        ]}
-                    >
-                    </Text>
-                </View>
                 {this.renderListView()}
-
             </View>
         );
     }

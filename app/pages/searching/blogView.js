@@ -16,9 +16,6 @@ import {
     WebView,
     Dimensions
 } from 'react-native';
-import store from 'react-native-simple-store';
-
-
 class BlogView extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: '作者的博客',
@@ -34,23 +31,11 @@ class BlogView extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text
-                        style={[
-                            styles.btnText,
-                            {color: 'black', textAlign: 'center', padding: 5, fontSize: 18}
-                        ]}
-                    >
-                    </Text>
-                </View>
-                <View style={styles.container}>
                     <WebView bounces={false}
                              scalesPageToFit={true}
                              source={{uri:"http://kangzw.com",method:'GET'}}
                             >
                     </WebView>
-                </View>
-
             </View>
         );
     }

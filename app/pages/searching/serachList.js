@@ -56,7 +56,7 @@ class SerachList extends React.Component {
                     <Icon
                         color={row.color}
                         name={row.icon}
-                        size={25}
+                        size={50}
                     />
                 </View>
                 <View style={styles.textView}>
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF"
     },
     image: {
-        width: 30,
-        height: 30,
+        width: 50,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 5,
@@ -112,9 +112,11 @@ const styles = StyleSheet.create({
     textView: {
         margin: 10,
         left: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     text: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 'bold'
     },
 });
