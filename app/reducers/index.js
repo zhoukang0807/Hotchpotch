@@ -10,6 +10,8 @@ import sendEmail from './sendEmail';
 import  forgetPassword from './user/forgetPassword';
 import  chat from './chat/chat';
 import  contact from './chat/contact';
+import  find from './user/find';
+
 
 const rootReducer = combineReducers({
     routes,
@@ -20,7 +22,8 @@ const rootReducer = combineReducers({
     sendEmail,
     forgetPassword,
     chat,
-    contact
+    contact,
+    find
 });
 
 export default rootReducer;

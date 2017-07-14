@@ -13,6 +13,8 @@ import Splash from '../pages/Splash';
 import ContactInfo from '../pages/user/contactInfo';
 import SearchList from '../pages/searching/serachList';
 import BlogView from '../pages/searching/blogView';
+import Find from '../containers/user/FindContainer';
+import FindResult from '../pages/user/findResult';
 const TabContainer = TabNavigator(
     {
         ChatList: { screen: ChatList },
@@ -66,6 +68,8 @@ const App = StackNavigator(
         ContactInfo: { screen: ContactInfo },
         Read: { screen: Read },
         BlogView: { screen: BlogView},
+        Find: { screen: Find},
+        FindResult: { screen: FindResult},
     },
     {
         headerMode: 'screen',

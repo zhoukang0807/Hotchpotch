@@ -21,9 +21,11 @@ const propTypes = {
 export default class Contact extends Component {
     constructor(props) {
         super(props);
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        var ds1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        var ds2 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+            dataSource1: ds1.cloneWithRows([]),
+            dataSource2: ds2.cloneWithRows([]),
         };
     }
 
@@ -88,13 +90,17 @@ export default class Contact extends Component {
             >
                 <View tabLabel="好友">
                     <ListView
-                        dataSource={this.state.dataSource.cloneWithRows(contact.contacts)}
+                        dataSource={this.state.dataSource1.cloneWithRows(contact.contacts)}
                         renderRow={this._renderRow.bind(this)}
                         enableEmptySections={true}
                     />
                 </View>
                 <View tabLabel="群组">
-
+                    <ListView
+                        dataSource={this.state.dataSource2}
+                        renderRow={this._renderRow.bind(this)}
+                        enableEmptySections={true}
+                    />
                 </View>
             </ScrollableTabView>
         </View>
@@ -204,6 +210,7 @@ const styles = StyleSheet.create({
     rowView: {
         marginTop: 20,
         marginBottom:20,
+        alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: "#FFF"
     },
@@ -219,6 +226,7 @@ const styles = StyleSheet.create({
     textView: {
         margin: 10,
         left: 10,
+        marginLeft: 0,
     },
     text: {
         fontSize: 16,

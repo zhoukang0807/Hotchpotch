@@ -50,7 +50,9 @@ class SerachList extends React.Component {
     }
 
     renderIteam(row) {
-        return( <TouchableHighlight  key={row.tag} onPress={()=>this.onReadTap(row)}>
+        return(
+            <View  key={row.tag}  style={{marginTop:20}}>
+            <TouchableHighlight onPress={()=>this.onReadTap(row)}>
             <View style={styles.rowView}>
                 <View style={styles.image}>
                     <Icon
@@ -64,7 +66,9 @@ class SerachList extends React.Component {
                         style={styles.text}>{row.tabLable}</Text>
                 </View>
             </View>
-        </TouchableHighlight>);
+        </TouchableHighlight>
+            </View>
+                );
 
     }
 
@@ -97,7 +101,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     rowView: {
-        marginTop: 10,
         flexDirection: 'row',
         backgroundColor: "#FFF"
     },

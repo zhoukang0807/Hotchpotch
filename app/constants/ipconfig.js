@@ -1,5 +1,5 @@
 export const ipSever={
-    server:"http://kangz.win:8089",
-    socketIp:"kangz.win"
+    server:"http://192.168.1.2:8089",
+    socketIp:"192.168.1.2"
     //192.168.1.2（zk）
 }

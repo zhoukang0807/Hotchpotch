@@ -12,7 +12,7 @@ class ContactContainer extends React.Component {
         tabBarIcon: ({tintColor}) => (
             <Icon name="md-contacts" size={25} color={tintColor} />
         ),
-        headerRight:<ContactSelect/>
+        headerRight:<ContactSelect navigation={navigation}/>
     });
 
     render() {

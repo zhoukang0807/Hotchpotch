@@ -9,19 +9,21 @@ import {
 import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 const RIGHT_OPTIONS = [
-    {"name": "添加联系人", "tag": "addfriend",icon:"md-person-add"},
-    {"name": "新建群组", "tag": "",icon:"md-people"},
+    {"name": "搜索", "tag": "Find",icon:"md-person-add"},
+    {"name": "新建群组", "tag": "Find",icon:"md-people"},
     {"name": "扫一扫", "tag": "sweep",icon:"md-qr-scanner"},
 ];
-const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
-export default class Example extends Component {
+export default class ContactSelect extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isVisible: false,
         };
     }
-
+    _optionSelect(data){
+        const {navigate} = this.props.navigation;;
+        navigate(RIGHT_OPTIONS[data].tag);
+    }
     _dropdown_2_renderRow(rowData, rowID, highlighted) {
         return (
             <TouchableHighlight underlayColor='cornflowerblue'>
@@ -45,6 +47,7 @@ export default class Example extends Component {
                            textStyle={styles.dropdown_2_text}
                            dropdownStyle={styles.dropdown_2_dropdown}
                            options={RIGHT_OPTIONS}
+                           onSelect={this._optionSelect.bind(this)}
                            renderRow={this._dropdown_2_renderRow.bind(this)}
             >
                 <View style={{paddingRight: 10}}>
