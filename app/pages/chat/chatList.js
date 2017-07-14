@@ -34,26 +34,27 @@ export default class ChatList extends Component {
     componentDidMount() {
         let data = [
             {
-                name:"江超",
                 room:false,
-                id:"1499084091067978",
+                userId:"1499084091067978",
+                nickName:"霜龙？。。。",
                 userName:"jiang",
+                remark:"江超",
                 time:"2017/01/01",
                 unreadCount:1,
                 content:"最近可好啊"
             },{
-                name:"周康",
                 room:false,
-                id:"1499083182572912",
+                userId:"1499083182572912",
+                nickName:"霜龙？。。。",
+                remark:"周康",
                 userName:"kangz",
                 time:"2017/01/01",
                 unreadCount:1,
                 content:"最近可好啊"
             },{
-                name:"群聊天",
                 room:true,
-                userName:"qun",
-                id:"14990831822",
+                roomName:"群聊天",
+                roomId:"14990831822",
                 time:"2017/01/01",
                 unreadCount:1,
                 content:"最近可好啊"
@@ -80,7 +81,7 @@ export default class ChatList extends Component {
                         <Image style={styles.logo} source={{uri:"https://facebook.github.io/react/img/logo_og.png"}} />
                         <View style={styles.content}>
                             <View style={[styles.crow]}>
-                                <Text style={styles.title} numberOfLines={1}>{data.name}</Text>
+                                <Text style={styles.title} numberOfLines={1}>{data.room?data.roomName:data.remark?data.remark:data.nickName}</Text>
 
                                 <Text style={styles.time}> {data.time}</Text>
                             </View>

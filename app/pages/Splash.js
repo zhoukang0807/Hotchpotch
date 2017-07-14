@@ -35,7 +35,7 @@ class Splash extends React.Component {
                             userName: loginInfo.userName,
                             password: loginInfo.password
                         })).then(function (data) {
-                            enterWebScoket(data.loginInfo.userId,data.loginInfo.userId,data.loginInfo.userName);
+                            enterWebScoket(data.loginInfo.userId,"home",data.loginInfo.userName);
                             NavigationUtil.reset(navigation, 'Home');
                         }).catch(function () {
                             store.delete('loginInfo')

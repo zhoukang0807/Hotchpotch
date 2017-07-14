@@ -9,7 +9,8 @@ import {
 import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 const RIGHT_OPTIONS = [
-    {"name": "添加好友", "tag": "addfriend",icon:"md-person-add"},
+    {"name": "添加联系人", "tag": "addfriend",icon:"md-person-add"},
+    {"name": "新建群组", "tag": "",icon:"md-people"},
     {"name": "扫一扫", "tag": "sweep",icon:"md-qr-scanner"},
 ];
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     },
     dropdown_2_dropdown: {
         width: 150,
-        height:83,
+        height:123,
         backgroundColor:"#4c4c4c",
         borderColor: '#4c4c4c',
         borderWidth: 1,

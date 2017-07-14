@@ -111,7 +111,7 @@ class Read extends React.Component {
                     <Text
                         style={[
                             styles.btnText,
-                            {color: 'black', align: 'center', padding: 5, fontSize: 18}
+                            {color: 'black', textAlign: 'center', padding: 5, fontSize: 18}
                         ]}
                     >
                     </Text>

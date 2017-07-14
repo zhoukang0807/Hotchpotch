@@ -11,11 +11,7 @@ import Read from '../pages/Read';
 
 class ReadContainer extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-        headerTitle: '阅读',
-        tabBarLabel: '阅读',
-        tabBarIcon: ({tintColor}) => (
-            <Icon name="ios-book" size={25} color={tintColor} />
-        ),
+        headerTitle: '新闻',
     });
     render() {
         return <Read {...this.props} />;

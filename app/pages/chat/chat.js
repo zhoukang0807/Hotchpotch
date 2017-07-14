@@ -10,6 +10,7 @@ import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
+import NavigationUtil from '../../utils/NavigationUtil';
 const propTypes = {
     chatActions: PropTypes.object,
     chat: PropTypes.object.isRequired
@@ -33,6 +34,7 @@ export default class Chat extends React.Component {
         this.onLoadEarlier = this.onLoadEarlier.bind(this);
         this.goBack = this.goBack.bind(this);
         this._isAlright = null;
+        this.props.navigation.goBack=this.goBack;
     }
     componentWillMount() {
         this._isMounted = true;
@@ -63,12 +65,13 @@ export default class Chat extends React.Component {
         }.bind(this));
         if(sessionData.room){
             const { chatActions } = this.props;
-            chatActions.requestUserList(sessionData.id);
+            chatActions.requestUserList(sessionData.roomId);
         }
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
     goBack() {
        Pomelo.disconnect();
+       NavigationUtil.reset(this.props.navigation, 'Home');
     }
 
     onLoadEarlier() {
@@ -101,7 +104,7 @@ export default class Chat extends React.Component {
         const {loginInfo,sessionData} = this.props.navigation.state.params;
         const {chat} = this.props;
         if(chat.users.length==0){
-            users.push({userId:sessionData.id,userName:sessionData.userName});
+            users.push({userId:sessionData.userId,userName:sessionData.userName});
         }else{
             users = chat.users;
         }
@@ -110,7 +113,7 @@ export default class Chat extends React.Component {
             Pomelo.request("chat.chatHandler.send", {
                 content: messages,
                 from: loginInfo.userName,
-               receivers: users
+                receivers: users
             }, function (data) {
                 for(var i = 0;i<messages.length;i++){
                    messages[i].sent = true;

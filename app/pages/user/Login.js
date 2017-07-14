@@ -48,7 +48,7 @@ class Login extends React.Component {
             // ...耗时较长的同步的任务...避免影响动画
             store.get('loginInfo').then((loginInfo) => {
                 if(loginInfo){
-                    NavigationUtil.reset(this.props.navigation, 'Home',{loginInfo});
+                    NavigationUtil.reset(this.props.navigation, 'Home');
                 }})
         });
 

@@ -11,13 +11,13 @@ import ContactContainer from '../containers/chat/ContactContainer';
 import ChatList from '../pages/chat/chatList';
 import Splash from '../pages/Splash';
 import ContactInfo from '../pages/user/contactInfo';
-
-
+import SearchList from '../pages/searching/serachList';
+import BlogView from '../pages/searching/blogView';
 const TabContainer = TabNavigator(
     {
         ChatList: { screen: ChatList },
         Contact: { screen: ContactContainer },
-        Read: { screen: Read },
+        SearchList: { screen: SearchList },
         About: { screen: About },
     },
     {
@@ -64,6 +64,8 @@ const App = StackNavigator(
         Article: { screen: ArticleView },
         Chat: { screen: ChatContainer },
         ContactInfo: { screen: ContactInfo },
+        Read: { screen: Read },
+        BlogView: { screen: BlogView},
     },
     {
         headerMode: 'screen',

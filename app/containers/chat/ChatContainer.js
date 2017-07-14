@@ -7,7 +7,8 @@ import Chat from '../../pages/chat/chat';
 
 class ChatContainer extends React.Component {
     static navigationOptions = ({ navigation }) => ({
-        headerTitle: navigation.state.params.sessionData.name,
+        headerTitle: navigation.state.params.sessionData.room?navigation.state.params.sessionData.roomName:navigation.state.params.sessionData.remark?
+            navigation.state.params.sessionData.remark:navigation.state.params.sessionData.nickName,
     });
     render() {
         return <Chat {...this.props} />;
