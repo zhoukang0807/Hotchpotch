@@ -9,23 +9,16 @@ export function* requestChat(userName,friendName) {
     try {
         yield put(fetchChat())
         const chats = yield call(store.get, 'chats');
-        const chat = chats[userName][friendName].chats;
-        if(chat){
+        if(chats){
+            const chat = chats[userName][friendName].chats;
             yield put(receiveChat(chat))
         }else{
-            const chat = yield call(request,CHAT_LIST,'post',JSON.stringify({userName, friendName}));
-            yield put(receiveChat(chat))
-            const chats ={}
-            chats[userName]={};
-            chats[userName][friendName]={}
-            chats[userName][friendName].chat = chat
-            yield call(store.save, 'chats',chats); //将数据存储到store中
+            yield put(receiveChat([]))
         }
-        //将数据存储到store中
 
     } catch (error) {
         console.log(error)
-        yield put(receiveChat(null));
+        yield put(receiveChat([]));
         yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }

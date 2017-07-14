@@ -8,6 +8,9 @@ import login from './user/login';
 import register from './user/register';
 import sendEmail from './sendEmail';
 import  forgetPassword from './user/forgetPassword';
+import  addFriend from './user/addFriend';
+import  chat from './chat/chat';
+import  newFriend from './chat/newFriend';
 import  friend from './chat/friend';
 const rootReducer = combineReducers({
     routes,
@@ -17,7 +20,10 @@ const rootReducer = combineReducers({
     register,
     sendEmail,
     forgetPassword,
-    friend
+    friend,
+    addFriend,
+    newFriend,
+    chat
 });
 
 export default rootReducer;

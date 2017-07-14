@@ -2,19 +2,20 @@ import * as types from '../../constants/ActionTypes';
 
 const initialState = {
     loading: false,
-    registerInfo:{}
+    friendNames:[]
 };
 
-export default function register(state = initialState, action) {
+export default function addFriend(state = initialState, action) {
     switch (action.type) {
-        case  types.FETCH_REGISTER:
+        case  types.FETCH_QUERY_USER:
             return Object.assign({}, state, {
-                loading: true
+                loading: true,
+                friendNames:[]
             });
-        case types.RECEUVE_REGISTER:
+        case types.RECEIVE_QUERY_USER:
             return Object.assign({}, state, {
                 loading: false,
-                registerInfo: action.registerInfo
+                friendNames: action.friendNames
             });
         default:
             return state;

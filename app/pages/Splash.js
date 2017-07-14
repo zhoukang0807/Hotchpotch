@@ -30,6 +30,8 @@ class Splash extends React.Component {
                 if (loginInfo) {
                     request(USER_LOGIN, 'post', JSON.stringify({userName:loginInfo.userName,password:loginInfo.password})).then(function (data) {
                         if(data.resultCode=="0000"){
+                            store.save('loginInfo',data.loginInfo);
+                            global.socketStore.socket.emit('login', {userName: loginInfo.userName});
                             routes.tabbar({loginInfo:loginInfo});
                         }else{
                             store.delete('loginInfo');

@@ -1,5 +1,5 @@
 const {ipSever} = require("./ipconfig")
-
+export const QUERY_USERS = ipSever.server+'/user/queryFriend';
 export const FRIEND_LIST =ipSever.server+'/user/selectFriend';
 export const CHAT_LIST =ipSever.server+'/chat/selectChat';
 export const WEXIN_ARTICLE_LIST =ipSever.server+'/articles/read';

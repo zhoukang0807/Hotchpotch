@@ -53,8 +53,8 @@ export default class SocketStore {
         this.socket.on("connect_failed", function () {
             console.log("连接失败");
         })
-        this.socket.on("login", function (from, to, msg) {
-            toastShort(from + "对" + to + "说:" + msg);
+        this.socket.on("login", function (msg) {
+            toastShort(msg);
         })
     }
 }

@@ -9,7 +9,6 @@ export function requestArticleList() {
 export function fetchArticleList() {
     return {
         type: types.FETCH_ARTICLE_LIST,
-
     };
 }
 

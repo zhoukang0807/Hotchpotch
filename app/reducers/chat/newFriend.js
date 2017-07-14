@@ -2,19 +2,19 @@ import * as types from '../../constants/ActionTypes';
 
 const initialState = {
     success:false,
-    chat:[]
+    newFriend:[]
 };
-export default function chat(state = initialState, action) {
+export default function newFriend(state = initialState, action) {
     switch (action.type) {
-        case types.FETCH_CHAT:
+        case types.FETCH_NEW_FRIEND:
             return Object.assign({}, state, {
                 success:false,
-                chat:[]
+                newFriend:[]
             });
-        case types.RECEIVE_CHAT:
+        case types.RECEIVE_NEW_FRIEND:
             return Object.assign({}, state, {
                 success:true,
-                chat:action.chat
+                newFriend:action.newFriend,
             });
         default:
             return state;

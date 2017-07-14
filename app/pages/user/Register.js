@@ -66,10 +66,6 @@ class Register extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.goBack);
     }
 
-    onSelectLogin() {
-        const {loginActions} = this.props;
-        loginActions.requestLogin(this.state.userName, this.state.password);
-    }
 
     goBack() {
     }
