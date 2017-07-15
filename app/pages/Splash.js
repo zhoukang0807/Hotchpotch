@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Dimensions, Animated} from 'react-native';
 import store from 'react-native-simple-store';
-import {request} from '../utils/RequestUtil';
+
 import {USER_LOGIN} from '../constants/Urls';
-import { enterWebScoket } from '../utils/RequestUtil';
+import { request,enterWebScoket } from '../utils/RequestUtil';
 import NavigationUtil from '../utils/NavigationUtil';
 
 const maxHeight = Dimensions.get('window').height;
@@ -35,8 +35,9 @@ class Splash extends React.Component {
                             userName: loginInfo.userName,
                             password: loginInfo.password
                         })).then(function (data) {
-                            enterWebScoket(data.loginInfo.userId,"home",data.loginInfo.userName);
-                            NavigationUtil.reset(navigation, 'Home');
+                            enterWebScoket(data.loginInfo.userId,"home",data.loginInfo.userName).then(function (data) {
+                                NavigationUtil.reset(navigation, 'Home');
+                            });
                         }).catch(function () {
                             store.delete('loginInfo')
                             NavigationUtil.reset(navigation, 'Login');

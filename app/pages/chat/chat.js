@@ -10,8 +10,8 @@ import {
     ActivityIndicator
 } from 'react-native';
 import {GiftedChat, Actions, Bubble,LoadEarlier} from 'react-native-gifted-chat';
-import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
+import { toastShort } from '../../utils/ToastUtil';
 import Pomelo from 'react-native-pomelo';
 import NavigationUtil from '../../utils/NavigationUtil';
 let Count=0;
@@ -32,7 +32,6 @@ export default class Chat extends React.Component {
         this._isMounted = false;
         this.onSend = this.onSend.bind(this);
         this.onReceive = this.onReceive.bind(this);
-        this.renderCustomActions = this.renderCustomActions.bind(this);
         this.renderBubble = this.renderBubble.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
         this.onLoadEarlier = this.onLoadEarlier.bind(this);
@@ -127,7 +126,7 @@ export default class Chat extends React.Component {
         const {loginInfo,sessionData} = this.props.navigation.state.params;
         const {chat} = this.props;
         if(chat.users.length==0){
-            users.push({userId:sessionData.userId,userName:sessionData.userName});
+            users.push(sessionData);
         }else{
             users = chat.users;
         }
@@ -155,30 +154,8 @@ export default class Chat extends React.Component {
         });
     }
 
-    renderCustomActions(props) {
-        if (Platform.OS === 'ios') {
-            return (
-                <CustomActions
-                    {...props}
-                />
-            );
-        }
-        const options = {
-            'Action 1': (props) => {
-                alert('option 1');
-            },
-            'Action 2': (props) => {
-                alert('option 2');
-            },
-            'Cancel': () => {
-            },
-        };
-        return (
-            <Actions
-                {...props}
-                options={options}
-            />
-        );
+    onPressActionButton (props){
+     toastShort("待开发")
     }
 
     renderBubble(props) {
@@ -229,7 +206,7 @@ export default class Chat extends React.Component {
                     name: loginInfo.userName,
                     avatar: 'https://facebook.github.io/react/img/logo_og.png',
                 }}
-                renderActions={this.renderCustomActions}
+                onPressActionButton ={this.onPressActionButton }
                 renderBubble={this.renderBubble}
                 renderCustomView={this.renderCustomView}
                 renderFooter={this.renderFooter}

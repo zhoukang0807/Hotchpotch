@@ -9,11 +9,13 @@ import {
     Dimensions,
     Platform,
     ListView,
+    InteractionManager,
     NativeAppEventEmitter
 } from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import store from 'react-native-simple-store';
+import Pomelo from 'react-native-pomelo';
 export default class ChatList extends Component {
     static navigationOptions = ({ navigation }) => ({
         headerTitle: '消息',
@@ -31,38 +33,22 @@ export default class ChatList extends Component {
         };
 
     }
+    componentWillMount() {
+
+    }
     componentDidMount() {
-        let data = [
-            {
-                room:false,
-                userId:"1499084091067978",
-                nickName:"霜龙？。。。",
-                userName:"jiang",
-                remark:"江超",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            },{
-                room:false,
-                userId:"1499083182572912",
-                nickName:"霜龙？。。。",
-                remark:"周康",
-                userName:"kangz",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            },{
-                room:true,
-                roomName:"群聊天",
-                roomId:"14990831822",
-                time:"2017/01/01",
-                unreadCount:1,
-                content:"最近可好啊"
-            }
-        ]
-        this.setState({
-            dataSource:this.state.dataSource.cloneWithRows(data)
+        InteractionManager.runAfterInteractions(() => {
+            store.get('loginInfo').then((loginInfo) => {
+                Pomelo.request("chat.chatHandler.getChatList", {
+                    from: loginInfo.userName,
+                }, function (data) {
+                    this.setState({
+                        dataSource:this.state.dataSource.cloneWithRows(data.chatList)
+                    });
+                }.bind(this));
+            });
         });
+
     }
     componentWillUnmount() {
         this.sessionListener && this.sessionListener.remove();

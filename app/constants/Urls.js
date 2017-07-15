@@ -9,3 +9,5 @@ export const REQUSET_FORGETPASSWORD = ipSever.server+'/user/forget/password';
 export const REQUSET_ROOM_USERS = ipSever.server+'/room/select/users';
 export const REQUSET_GET_CONTACTS = ipSever.server+'/contact/select';
 export const REQUSET_GET_FIND = ipSever.server+'/find';
+
+export const REQUSET_ADD_FRIEND = ipSever.server+'/contact/add';

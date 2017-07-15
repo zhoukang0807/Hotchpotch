@@ -14,6 +14,7 @@ import {
 import store from 'react-native-simple-store';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ScrollableTabView,{DefaultTabBar} from 'react-native-scrollable-tab-view';
+import Pomelo from 'react-native-pomelo';
 const propTypes = {
     contactActions: PropTypes.object,
     contact: PropTypes.object.isRequired
@@ -26,7 +27,10 @@ export default class Contact extends Component {
         this.state = {
             dataSource1: ds1.cloneWithRows([]),
             dataSource2: ds2.cloneWithRows([]),
+            hasTip:false
         };
+        this.renderNewFriendTip=this.renderNewFriendTip.bind(this);
+        this.onSureFriend=this.onSureFriend.bind(this);
     }
 
     componentDidMount() {
@@ -34,6 +38,11 @@ export default class Contact extends Component {
             const {contactActions} = this.props;
             contactActions.requestContactList(loginInfo.userId);
         });
+        Pomelo.on('onAddFriend', function (data) {
+            if(data.hasTip){
+                this.setState({hasTip:data.hasTip});
+            }
+        }.bind(this));
     }
 
     componentWillUnmount() {
@@ -43,7 +52,13 @@ export default class Contact extends Component {
         const {navigate} = this.props.navigation;
         navigate('ContactInfo', {contactInfo: data});
     }
-
+    onSureFriend(){
+        const {navigate} = this.props.navigation;
+        store.get('loginInfo').then((loginInfo) => {
+            navigate('SureFriend',{loginInfo});
+        });
+        this.setState({hasTip:false});
+    }
     _renderRow(data) {
         return (
             <View style={{paddingTop: 1}}>
@@ -61,26 +76,40 @@ export default class Contact extends Component {
             </View>
         )
     }
+    renderNewFriendTip(){
+        if(this.state.hasTip==true){
+            return (  <View style={styles.badge}>
+                <Icon
+                    color='#FE771E'
+                    name='md-notifications-outline'
+                    size={35}
+                />
+            </View>);
+        }else{
+            return <View/>;
+        }
 
+    }
     render() {
         const {contact} = this.props;
-
         return (
         <View style={{flex:1}}>
-            <View style={styles.rowView}>
-                <View style={styles.image}>
-                    <Icon
-                        color='#FFF'
-                        name='md-person-add'
-                        size={35}
-                    />
+            <TouchableOpacity onPress={() => this.onSureFriend()}>
+                <View style={styles.rowView}>
+                    <View style={styles.image}>
+                        <Icon
+                            color='#FFF'
+                            name='md-person-add'
+                            size={35}
+                        />
+                    </View>
+                    <View style={styles.textView}>
+                        <Text
+                            style={styles.text}>新的朋友</Text>
+                    </View>
+                    {this.renderNewFriendTip()}
                 </View>
-                <View style={styles.textView}>
-                    <Text
-                        style={styles.text}>新的朋友</Text>
-                </View>
-                <View style={styles.badge}/>
-            </View>
+            </TouchableOpacity>
             <ScrollableTabView
                 renderTabBar={() =>
                     <DefaultTabBar tabStyle={styles.tab} textStyle={styles.tabText} />}
@@ -191,13 +220,9 @@ const styles = StyleSheet.create({
         height: 26
     },
     badge: {
-        width: 10,
-        height: 10,
-        borderRadius: 10,
-        backgroundColor: 'red',
         position: 'absolute',
-        left: 57,
-        top: 3
+        right: 10,
+        top: 10
     },tab: {
         paddingBottom: 0
     },

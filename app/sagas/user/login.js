@@ -16,7 +16,7 @@ export function* requestLogin(userName,password) {
                 yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
             }else{
                 yield call(store.save, 'loginInfo', result.loginInfo); //将数据存储到store中
-                enterWebScoket(result.loginInfo.userId,"home",result.loginInfo.userName);
+                yield call(enterWebScoket, result.loginInfo.userId, "home", result.loginInfo.userName);
             }
     } catch (error) {
         console.log(error)

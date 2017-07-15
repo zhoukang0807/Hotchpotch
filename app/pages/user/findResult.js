@@ -11,7 +11,10 @@ import {
     Dimensions
 } from 'react-native';
 import Button from '../../components/Button';
-
+import Pomelo from 'react-native-pomelo';
+import { toastShort } from '../../utils/ToastUtil';
+import store from 'react-native-simple-store';
+import NavigationUtil from '../../utils/NavigationUtil';
 class FindResult extends React.Component {
     static navigationOptions = ({navigation}) => ({
         headerTitle: '查找结果',
@@ -44,8 +47,25 @@ class FindResult extends React.Component {
     }
 
     onAddFriend() {
+        const { result } = this.props.navigation.state.params;
+        store.get('loginInfo').then((loginInfo) => {
+            Pomelo.request("chat.chatHandler.addFriend", {
+                from: loginInfo.userName,
+                receiver:result.data.userName,
+                avatar:"https://facebook.github.io/react/img/logo_og.png"
+            }, function (data) {
+                  if(data.requets.length==0){
+                      toastShort("已经向对方发送过请求，请等待对方回复！");
+                  }else{
+                      toastShort("请求已发送");
+                      NavigationUtil.reset(this.props.navigation, 'Home');
+                  }
+            }.bind(this));
+        })
+       
     }
-
+    onAddRoom() {
+    }
     render() {
         const { result } = this.props.navigation.state.params;
         if(!result.room){
@@ -86,7 +106,7 @@ class FindResult extends React.Component {
                         containerStyle={styles.sureBtn}
                         style={styles.btnText}
                         text={'加入群组'}
-                        onPress={() => this.onAddFriend()}
+                        onPress={() => this.onAddRoom()}
                     />
                 </View>
             )

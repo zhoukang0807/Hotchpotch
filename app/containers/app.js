@@ -15,6 +15,8 @@ import SearchList from '../pages/searching/serachList';
 import BlogView from '../pages/searching/blogView';
 import Find from '../containers/user/FindContainer';
 import FindResult from '../pages/user/findResult';
+import SureFriend from '../pages/user/sureFriend';
+
 const TabContainer = TabNavigator(
     {
         ChatList: { screen: ChatList },
@@ -70,6 +72,7 @@ const App = StackNavigator(
         BlogView: { screen: BlogView},
         Find: { screen: Find},
         FindResult: { screen: FindResult},
+        SureFriend: { screen: SureFriend},
     },
     {
         headerMode: 'screen',

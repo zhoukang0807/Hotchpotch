@@ -44,7 +44,8 @@ class ContactInfo extends React.Component {
     }
 
     onClickChat() {
-        const {contactInfo} = this.props.navigation.state.params;
+        let {contactInfo} = this.props.navigation.state.params;
+        contactInfo.room= false;
         const {navigate} = this.props.navigation;
         store.get('loginInfo').then((loginInfo) => {
             navigate('Chat', {loginInfo: loginInfo, sessionData: contactInfo});
