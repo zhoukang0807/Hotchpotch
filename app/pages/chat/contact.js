@@ -79,6 +79,7 @@ export default class Contact extends Component {
                     <Text
                         style={styles.text}>新的朋友</Text>
                 </View>
+                <View style={styles.badge}/>
             </View>
             <ScrollableTabView
                 renderTabBar={() =>
@@ -192,11 +193,11 @@ const styles = StyleSheet.create({
     badge: {
         width: 10,
         height: 10,
-        borderRadius: 5,
+        borderRadius: 10,
         backgroundColor: 'red',
         position: 'absolute',
-        left: 55,
-        top: 7
+        left: 57,
+        top: 3
     },tab: {
         paddingBottom: 0
     },
@@ -208,8 +209,8 @@ const styles = StyleSheet.create({
         height: 2
     },
     rowView: {
-        marginTop: 20,
-        marginBottom:20,
+        marginTop: 5,
+        marginBottom:5,
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: "#FFF"
@@ -221,6 +222,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         margin: 5,
         marginLeft:10,
+        borderRadius: 8,
         backgroundColor:"#fe7218"
     },
     textView: {

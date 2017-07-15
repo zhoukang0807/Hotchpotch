@@ -70,7 +70,7 @@ class Find extends Component {
         return (
             <View style={{flex: 1}}>
                 <FetchLoading  showLoading={find.loading} tips="搜索中..."/>
-                <View style={[styles.rowView,{marginBottom:20}]}>
+                <View style={[styles.rowView,{marginBottom:5}]}>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Icon
                             color='#2eaaa4'

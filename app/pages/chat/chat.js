@@ -4,13 +4,17 @@ import {
     StyleSheet,
     Text,
     View,
-    BackHandler
+    BackHandler,
+    InteractionManager,
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
-import {GiftedChat, Actions, Bubble} from 'react-native-gifted-chat';
+import {GiftedChat, Actions, Bubble,LoadEarlier} from 'react-native-gifted-chat';
 import CustomActions from '../../components/CustomActions';
 import CustomView from '../../components/CustomView';
 import Pomelo from 'react-native-pomelo';
 import NavigationUtil from '../../utils/NavigationUtil';
+let Count=0;
 const propTypes = {
     chatActions: PropTypes.object,
     chat: PropTypes.object.isRequired
@@ -38,6 +42,25 @@ export default class Chat extends React.Component {
     }
     componentWillMount() {
         this._isMounted = true;
+        Count=0;
+        InteractionManager.runAfterInteractions(() => {
+            const { loginInfo,sessionData } =this.props.navigation.state.params;
+            //获取用户聊天记录,并显示
+            Pomelo.request("chat.chatHandler.getMessages", {
+                count:Count,
+                from: loginInfo.userName,
+                receiver: sessionData.room?sessionData.roomName:sessionData.userName
+            }, function (data) {
+                Count+=data.messages.length;
+                this.setState((previousState) => {
+                    return {
+                        messages: data.messages.reverse(),
+                        loadEarlier: data.loadMore,
+                    };
+                });
+            }.bind(this));
+        });
+
     }
     //销毁
     componentWillUnmount() {
@@ -67,13 +90,13 @@ export default class Chat extends React.Component {
             const { chatActions } = this.props;
             chatActions.requestUserList(sessionData.roomId);
         }
+
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
     }
     goBack() {
        Pomelo.disconnect();
        NavigationUtil.reset(this.props.navigation, 'Home');
     }
-
     onLoadEarlier() {
         this.setState((previousState) => {
             return {
@@ -81,25 +104,25 @@ export default class Chat extends React.Component {
             };
         });
 
-        setTimeout(() => {
-            if (this._isMounted === true) {
-                this.setState((previousState) => {
-                    return {
-                        messages: GiftedChat.prepend(previousState.messages, require('../data/old_messages.js')),
-                        loadEarlier: false,
-                        isLoadingEarlier: false,
-                    };
-                });
-            }
-        }, 1000); // simulating network
+        const { loginInfo,sessionData } =this.props.navigation.state.params;
+        //获取用户聊天记录,并显示
+        Pomelo.request("chat.chatHandler.getMessages", {
+            count:Count,
+            from: loginInfo.userName,
+            receiver: sessionData.room?sessionData.roomName:sessionData.userName
+        }, function (data) {
+            Count+=data.messages.length;
+            this.setState((previousState) => {
+                return {
+                    messages: GiftedChat.prepend(previousState.messages,data.messages.reverse()),
+                    loadEarlier: data.loadMore,
+                    isLoadingEarlier: false,
+                };
+            });
+        }.bind(this));
     }
 
     onSend(messages = []) {
-        this.setState((previousState) => {
-            return {
-                messages: GiftedChat.append(previousState.messages, messages),
-            };
-        });
         let users=[];
         const {loginInfo,sessionData} = this.props.navigation.state.params;
         const {chat} = this.props;
@@ -115,13 +138,9 @@ export default class Chat extends React.Component {
                 from: loginInfo.userName,
                 receivers: users
             }, function (data) {
-                for(var i = 0;i<messages.length;i++){
-                   messages[i].sent = true;
-                   messages[i].received = false;
-                }
                 this.setState((previousState) => {
                     return {
-                        messages: GiftedChat.append(previousState.messages, []),
+                        messages: GiftedChat.append(previousState.messages, messages),
                     };
                 });
             }.bind(this));
@@ -205,7 +224,6 @@ export default class Chat extends React.Component {
                 loadEarlier={this.state.loadEarlier}
                 onLoadEarlier={this.onLoadEarlier}
                 isLoadingEarlier={this.state.isLoadingEarlier}
-
                 user={{
                     _id: loginInfo.userId, // sent messages should have same user._id
                     name: loginInfo.userName,
@@ -231,6 +249,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#aaa',
     },
+
 });
 Chat.propTypes = propTypes;
 

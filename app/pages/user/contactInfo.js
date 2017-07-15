@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     rowView: {
-        marginTop: 20,
+        marginTop: 5,
         flexDirection: 'row',
         backgroundColor: "#FFF"
     },
     rowView2: {
         height:50,
-        marginTop: 20,
+        marginTop: 5,
         paddingLeft: 10,
         flexDirection: 'row',
         backgroundColor: "#FFF",

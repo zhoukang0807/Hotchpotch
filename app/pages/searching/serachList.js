@@ -51,7 +51,7 @@ class SerachList extends React.Component {
 
     renderIteam(row) {
         return(
-            <View  key={row.tag}  style={{marginTop:20}}>
+            <View  key={row.tag}  style={{marginTop:5}}>
             <TouchableHighlight onPress={()=>this.onReadTap(row)}>
             <View style={styles.rowView}>
                 <View style={styles.image}>
