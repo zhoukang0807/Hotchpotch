@@ -36,7 +36,9 @@ class Register extends React.Component {
             password: "",
             email: "",
             verifyCode: "",
-            repassword:""
+            repassword:"",
+            nickName:""
+
         };
         this.goBack = this.goBack.bind(this);
 
@@ -61,8 +63,8 @@ class Register extends React.Component {
 
     onSelectRegister() {
         const {registerActions} = this.props;
-        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword =="") {
-            toastShort("用户名、密码、验证码或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
+        if (this.state.userName == "" || this.state.password == "" || this.state.email == "" || this.state.verifyCode == ""||this.state.repassword ==""||this.state.nickName =="") {
+            toastShort("用户名、密码、验证码、昵称或邮箱不能为空!"); //toastShort安卓内提示用。提示错误信息
             return;
         }
         if(this.state.password !== this.state.repassword){
@@ -70,7 +72,7 @@ class Register extends React.Component {
             return;
         }
 
-        registerActions.requestRegister(this.state.userName, this.state.password, this.state.email, this.state.verifyCode);
+        registerActions.requestRegister(this.state.userName,this.state.nickName, this.state.password, this.state.email, this.state.verifyCode);
     }
 
     _requestSMSCode(shouldStartCountting) {
@@ -144,6 +146,23 @@ class Register extends React.Component {
                                    underlineColorAndroid='transparent'
                                    onChangeText={(text) => {
                                        this.state.userName = text;
+                                   }}
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowView}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon
+                            color='#595959'
+                            name='ios-leaf'
+                            size={25}
+                        />
+                    </View>
+                    <View style={{flex: 8}}>
+                        <TextInput placeholder='请输入昵称'
+                                   underlineColorAndroid='transparent'
+                                   onChangeText={(text) => {
+                                       this.state.nickName = text;
                                    }}
                         />
                     </View>

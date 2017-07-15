@@ -135,6 +135,7 @@ export default class Chat extends React.Component {
             Pomelo.request("chat.chatHandler.send", {
                 content: messages,
                 from: loginInfo.userName,
+                fromInfo: loginInfo,
                 receivers: users
             }, function (data) {
                 this.setState((previousState) => {

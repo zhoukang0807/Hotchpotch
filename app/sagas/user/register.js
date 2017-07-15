@@ -5,10 +5,10 @@ import { request } from '../../utils/RequestUtil';
 import { USER_REGISTER } from '../../constants/Urls';
 import store from 'react-native-simple-store';
 import {receiveRegister,fetchRegister } from '../../actions/user/register';
-export function* requestRegister(userName,password,email,verifyCode) {
+export function* requestRegister(userName,nickName,password,email,verifyCode) {
     try {
             yield put(fetchRegister());
-            const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({userName,password, email,verifyCode}));
+            const registerInfo = yield call(request, USER_REGISTER, 'post', JSON.stringify({userName,nickName,password, email,verifyCode}));
             console.log(registerInfo)
             yield put(receiveRegister(registerInfo));
             yield call(store.save, 'registerInfo', registerInfo);
@@ -25,10 +25,10 @@ export function* requestRegister(userName,password,email,verifyCode) {
 }
 export function* watchRequestRegister() {
     while (true) {
-        const { userName,password, email,verifyCode} = yield take(
+        const { userName,nickName,password, email,verifyCode} = yield take(
             types.REQUEST_REGISTER
         );
-        yield fork(requestRegister,userName,password, email,verifyCode);
+        yield fork(requestRegister,userName,nickName,password, email,verifyCode);
     }
 }
 

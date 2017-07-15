@@ -48,6 +48,11 @@ export default class ChatList extends Component {
                 }.bind(this));
             });
         });
+        Pomelo.on('onRefreshFriend', function (data) {
+            this.setState({
+                dataSource:this.state.dataSource.cloneWithRows(data)
+            });
+        }.bind(this));
 
     }
     componentWillUnmount() {

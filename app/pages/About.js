@@ -68,7 +68,7 @@ class About extends React.Component {
                     <Image style={styles.image} source={{uri: "https://facebook.github.io/react/img/logo_og.png"}}/>
                     <View style={styles.textView}>
                         <Text
-                            style={styles.text1}>昵称汕尾填写</Text>
+                            style={styles.text1}>{loginInfo.nickName}</Text>
                         <Text style={styles.text}>账号：{loginInfo.userName}</Text>
                     </View>
                 </View>
