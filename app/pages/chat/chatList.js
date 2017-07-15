@@ -119,7 +119,7 @@ export default class ChatList extends Component {
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow.bind(this)}
                     renderSeparator={this._renderSeparator.bind(this)}
-                    renderHiddenRow={this._renderHiddenRow.bind(this)}
+                    //renderHiddenRow={this._renderHiddenRow.bind(this)}
                     rightOpenValue={-75}
                     onRowOpen={()=>this.setState({rowOpen:true})}
                     onRowClose={()=>this.setState({rowOpen:false})}
