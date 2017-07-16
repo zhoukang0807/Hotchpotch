@@ -69,7 +69,7 @@ export default class ChatList extends Component {
             <View>
                 <TouchableHighlight  onPress={()=>this.onRowTap(data)}>
                     <View style={[styles.row,styles.last]}>
-                        <Image style={styles.logo} source={{uri:"https://facebook.github.io/react/img/logo_og.png"}} />
+                        <Image style={styles.logo} source={{uri:data.avatar}} />
                         <View style={styles.content}>
                             <View style={[styles.crow]}>
                                 <Text style={styles.title} numberOfLines={1}>{data.room?data.roomName:data.remark?data.remark:data.nickName}</Text>

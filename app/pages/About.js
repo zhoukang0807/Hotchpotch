@@ -8,14 +8,17 @@ import {
     Alert,
     TextInput,
     BackHandler,
+    TouchableOpacity,
     Dimensions
 } from 'react-native';
 import store from 'react-native-simple-store';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../components/Button';
-import FetchLoading from '../components/fetchLoading';
-import {toastShort} from '../utils/ToastUtil';
+import {uploadImage} from '../utils/RequestUtil';
+import {UPLOAD_AVATAR} from '../constants/Urls';
+import { toastShort } from '../utils/ToastUtil';
 import NavigationUtil from '../utils/NavigationUtil';
+import ImagePicker from 'react-native-image-crop-picker';
 
 class About extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -59,19 +62,44 @@ class About extends React.Component {
             store.delete("loginInfo")
             NavigationUtil.reset(this.props.navigation, 'Login');
     }
-
+    openPicker(){
+        ImagePicker.openPicker({
+            width: 200,
+            height: 200,
+            cropping: true
+        }).then(image => {
+            uploadImage(UPLOAD_AVATAR,image,this.state.loginInfo.userName).then(function (data) {
+                  let result = JSON.parse(data);
+                  if(result.resultCode=="0000"){
+                      let loginInfo = this.state.loginInfo;
+                      loginInfo.avatar = result.avatar;
+                      this.setState({loginInfo:loginInfo});
+                      alert(result.avatar);
+                      store.save('loginInfo',loginInfo).then(function (err,res) {
+                        console.log(arguments)
+                      });
+                  }else{
+                      toastShort(result.resultDesc)
+                  }
+            }.bind(this)).catch(function (err) {
+                toastShort(JSON.stringify(err))
+            })
+        });
+    }
     render() {
         const {loginInfo} = this.state;
         return (
             <View style={styles.container}>
+                <TouchableOpacity activeOpacity={1} onPress={()=>this.openPicker()}>
                 <View style={styles.rowView}>
-                    <Image style={styles.image} source={{uri: "https://facebook.github.io/react/img/logo_og.png"}}/>
+                    <Image style={styles.image} source={{uri: loginInfo.avatar}}/>
                     <View style={styles.textView}>
                         <Text
                             style={styles.text1}>{loginInfo.nickName}</Text>
                         <Text style={styles.text}>账号：{loginInfo.userName}</Text>
                     </View>
                 </View>
+                </TouchableOpacity>
                 <View style={styles.rowView2}>
                     <Text style={styles.text2}>个人签名:</Text>
                     <Text style={styles.text}>{loginInfo.sign}</Text>

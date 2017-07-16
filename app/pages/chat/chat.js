@@ -205,7 +205,7 @@ export default class Chat extends React.Component {
                 user={{
                     _id: loginInfo.userId, // sent messages should have same user._id
                     name: loginInfo.userName,
-                    avatar: 'https://facebook.github.io/react/img/logo_og.png',
+                    avatar: loginInfo.avatar,
                 }}
                 onPressActionButton ={this.onPressActionButton }
                 renderBubble={this.renderBubble}

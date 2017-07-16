@@ -31,6 +31,27 @@ export const request = (url, method, body) => {
     });
 };
 
+export const uploadImage = (URL,image,userName) => {
+    let formData = new FormData();
+    let file = {uri: image.path, type: 'multipart/form-data', name:userName};
+    formData.append("images",file);
+    let isOk;
+    return new Promise((resolve, reject) => {
+        fetch(URL, {
+            method:"POST",
+            headers: {
+                'Content-Type':'multipart/form-data',
+            },
+            body:formData
+        })
+            .then((response) => response.text() )
+            .then((responseData)=>{
+                resolve(responseData);
+            })
+            .catch((error)=>{  reject(error);});
+    });
+};
+
 export const enterWebScoket = (uid="",rid = "", username = "") => {
     return new Promise((resolve, reject) => {
                 Pomelo.init({

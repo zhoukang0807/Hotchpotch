@@ -11,3 +11,4 @@ export const REQUSET_GET_CONTACTS = ipSever.server+'/contact/select';
 export const REQUSET_GET_FIND = ipSever.server+'/find';
 
 export const REQUSET_ADD_FRIEND = ipSever.server+'/contact/add';
+export const UPLOAD_AVATAR = ipSever.server+'/user/update/avatar';

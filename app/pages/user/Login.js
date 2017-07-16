@@ -6,7 +6,9 @@ import {
     Text,
     Image,
     Alert,
-    TextInput
+    TextInput,
+    findNodeHandle,
+    ScrollView
 } from 'react-native';
 import store from 'react-native-simple-store';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -35,6 +37,14 @@ class Login extends React.Component {
     //官方的解释是组件被移除前执行
     componentWillUnmount() {
     }
+    scrollViewTo(e) {
+        let target = e.nativeEvent.target;
+        let scrollLength = 100;
+        if (target === findNodeHandle(this.refs.passwordInput)) {
+            scrollLength = 160;
+        }
+        this.refs.scroll.scrollTo({x:0,y:scrollLength,animated:false});
+    }
     onSelectLogin() {
         if(this.state.userName==""||this.state.password==""){
             toastShort("用户名或密码不能为空!");
@@ -56,51 +66,68 @@ class Login extends React.Component {
         return(
             <View style={styles.loginview}>
                 <FetchLoading  showLoading={login.loading} tips="登陆中..."/>
-                <View   style={styles.loginImage}>
-                    <Image source={require('../../img/login.png')}/>
-                </View>
-                <View style={{marginTop:80}}>
-                    <View style={styles.rowView}>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Icon
-                                color='#595959'
-                                name='md-person'
-                                size={25}
-                            />
-                        </View>
-                        <View style={{flex: 8}}>
-                            <TextInput placeholder='用户名/邮箱'
-                                       underlineColorAndroid='transparent'
-                                       onChangeText={(text) => {
-                                           this.state.userName = text;
-                                       }}
-                            />
-                        </View>
+                <ScrollView ref='scroll' keyboardShouldPersistTaps={'always'} showsVerticalScrollIndicator={false}>
+                    <View style={{flex:1}} onStartShouldSetResponderCapture={(e) => {
+                        const target = e.nativeEvent.target;
+                        if (target !== findNodeHandle(this.refs.passwordInput) && target !== findNodeHandle(this.refs.usernameInput)) {
+                            this.refs.passwordInput.blur();
+                            this.refs.usernameInput.blur();
+                        }}}>
+                    <View   style={styles.loginImage}>
+                        <Image source={require('../../img/login.png')}/>
                     </View>
-                    <View style={styles.rowView}>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Icon
-                                color='#595959'
-                                name='md-lock'
-                                size={25}
-                            />
+                    <View style={{marginTop:80}}>
+                        <View style={styles.rowView}>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <Icon
+                                    color='#595959'
+                                    name='md-person'
+                                    size={25}
+                                />
+                            </View>
+                            <View style={{flex: 8}}
+                                  ref = 'usernameInput'
+                                  onFocus={this.scrollViewTo.bind(this)}
+                                  onEndEditing={()=>{this.refs.scroll.scrollTo({})}}
+                            >
+                                <TextInput placeholder='用户名/邮箱'
+                                           underlineColorAndroid='transparent'
+                                           onChangeText={(text) => {
+                                               this.state.userName = text;
+                                           }}
+                                />
+                            </View>
                         </View>
-                        <View style={{flex: 8}}>
-                            <TextInput placeholder='登陆密码'
-                                       underlineColorAndroid='transparent'
-                                       secureTextEntry={true}
-                                       onChangeText={(text) => {
-                                           this.state.password = text;
-                                       }}
-                            />
+                        <View style={styles.rowView}>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <Icon
+                                    color='#595959'
+                                    name='md-lock'
+                                    size={25}
+                                />
+                            </View>
+                            <View style={{flex: 8}}
+                                  ref = 'passwordInput'
+                                  onFocus={this.scrollViewTo.bind(this)}
+                                  onEndEditing={()=>{this.refs.scroll.scrollTo({})}}
+                            >
+                                <TextInput placeholder='登陆密码'
+                                           underlineColorAndroid='transparent'
+                                           secureTextEntry={true}
+                                           onChangeText={(text) => {
+                                               this.state.password = text;
+                                           }}
+                                />
+                            </View>
                         </View>
+                        <Button
+                            containerStyle={styles.sureBtn}
+                            style={styles.btnText}
+                            text={'登录'}
+                            onPress={() => this.onSelectLogin()}/>
                     </View>
-                    <Button
-                        containerStyle={styles.sureBtn}
-                        style={styles.btnText}
-                        text={'登录'}
-                        onPress={() => this.onSelectLogin()}/>
-                  </View>
+                    </View>
+                </ScrollView>
             </View>
         )
     }

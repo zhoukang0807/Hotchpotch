@@ -64,7 +64,7 @@ export default class Contact extends Component {
             <View style={{paddingTop: 1}}>
                 <TouchableHighlight onPress={() => this.onRowTap(data)}>
                     <View style={[styles.row, styles.last]}>
-                        <Image style={styles.logo} source={{uri: "https://facebook.github.io/react/img/logo_og.png"}}/>
+                        <Image style={styles.logo} source={{uri: data.avatar}}/>
                         <View style={styles.content}>
                             <View style={[styles.crow]}>
                                 <Text style={styles.title}

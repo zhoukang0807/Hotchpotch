@@ -10,6 +10,7 @@ import {
     BackHandler,
     RefreshControl,
     Alert,
+    findNodeHandle,
     Modal,
     TextInput
 } from 'react-native';
@@ -60,6 +61,15 @@ class Register extends React.Component {
     }
     goBack() {
     }
+    scrollViewTo(e) {
+        let target = e.nativeEvent.target;
+        let scrollLength = 100;
+        if (target === findNodeHandle(this.refs.repasswordInput)) {
+            scrollLength = 160;
+        }
+        this.refs.scroll.scrollTo({x:0,y:scrollLength,animated:false});
+    }
+
 
     onSelectRegister() {
         const {registerActions} = this.props;
@@ -92,7 +102,13 @@ class Register extends React.Component {
         return (
             <View style={styles.loginview}>
                 <FetchLoading showLoading={loading} tips={tips}/>
-                <View style={styles.rowView}>
+                <ScrollView ref='scroll' keyboardShouldPersistTaps={'always'} showsVerticalScrollIndicator={false}>
+                <View style={styles.rowView} onStartShouldSetResponderCapture={(e) => {
+                    const target = e.nativeEvent.target;
+                    if (target !== findNodeHandle(this.refs.passwordInput) && target !== findNodeHandle(this.refs.repasswordInput)) {
+                        this.refs.passwordInput.blur();
+                        this.refs.repasswordInput.blur();
+                    }}}>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Icon
                             color='#595959'
@@ -175,7 +191,11 @@ class Register extends React.Component {
                             size={25}
                         />
                     </View>
-                    <View style={{flex: 8}}>
+                    <View style={{flex: 8}}
+                          ref = 'passwordInput'
+                          onFocus={this.scrollViewTo.bind(this)}
+                          onEndEditing={()=>{this.refs.scroll.scrollTo({})}}
+                    >
                         <TextInput placeholder='请输入密码'
                                    underlineColorAndroid='transparent'
                                    secureTextEntry={true}
@@ -193,7 +213,11 @@ class Register extends React.Component {
                             size={25}
                         />
                     </View>
-                    <View style={{flex: 8}}>
+                    <View style={{flex: 8}}
+                          ref = 'repasswordInput'
+                          onFocus={this.scrollViewTo.bind(this)}
+                          onEndEditing={()=>{this.refs.scroll.scrollTo({})}}
+                    >
                         <TextInput placeholder='请再次输入密码'
                                    underlineColorAndroid='transparent'
                                    secureTextEntry={true}
@@ -212,7 +236,7 @@ class Register extends React.Component {
                             onPress={() => this.onSelectRegister()}/>
                     </View>
                 </View>
-
+                </ScrollView>
             </View>
         )
     }

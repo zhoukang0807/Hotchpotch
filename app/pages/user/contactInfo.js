@@ -57,7 +57,7 @@ class ContactInfo extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.rowView}>
-                    <Image style={styles.image} source={{uri: "https://facebook.github.io/react/img/logo_og.png"}}/>
+                    <Image style={styles.image} source={{uri: contactInfo.avatar}}/>
                     <View style={styles.textView}>
                         <Text
                             style={styles.text1}>{contactInfo.remark ? contactInfo.remark : contactInfo.nickName}</Text>
