@@ -31,9 +31,6 @@ export default class Chat extends React.Component {
                 typingText: null,
                 isLoadingEarlier: false
             };
-            store.get('loginInfo').then((loginInfo) => {
-                chatActions.requestChat(loginInfo.userName,friendUserName);
-            })
         }else{
             this.state = {
                 friendName: "",
@@ -116,12 +113,13 @@ export default class Chat extends React.Component {
                                 store.save('chats',chats)
                                 console.log(chats);
                             }else{
-                                chats[loginInfo.userName][friendUserName]=[]
+                                chats[loginInfo.userName][friendUserName]=[];
                                 chats[loginInfo.userName][friendUserName]=newMessages;
                                 store.save('chats',chats)
                                 console.log(chats);
                             }
                         }else{
+                            chats[loginInfo.userName]={};
                             chats[loginInfo.userName][friendUserName]=[];
                             chats[loginInfo.userName][friendUserName]=newMessages;
                             store.save('chats',chats)
@@ -130,7 +128,6 @@ export default class Chat extends React.Component {
                     }else{
                         var newChats = {};
                         newChats[loginInfo.userName]={}
-                        newChats[loginInfo.userName][friendUserName]=[];
                         newChats[loginInfo.userName][friendUserName]=newMessages;
                         store.save('chats',newChats)
                         console.log(newChats);

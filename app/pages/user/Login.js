@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
         height:100,
         marginTop:1,
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom:10
     },
     sureBtn: {
         margin: 10,
