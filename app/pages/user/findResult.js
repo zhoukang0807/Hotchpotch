@@ -52,7 +52,7 @@ class FindResult extends React.Component {
             Pomelo.request("chat.chatHandler.addFriend", {
                 from: loginInfo.userName,
                 receiver:result.data.userName,
-                avatar:result.data.avatar
+                avatar:loginInfo.avatar
             }, function (data) {
                   if(data.requets.length==0){
                       toastShort("已经向对方发送过请求，请等待对方回复！");

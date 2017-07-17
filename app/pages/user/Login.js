@@ -74,7 +74,7 @@ class Login extends React.Component {
                             this.refs.usernameInput.blur();
                         }}}>
                     <View   style={styles.loginImage}>
-                        <Image source={require('../../img/login.png')}/>
+                        <Image style={{width:200,height:200}}  source={require('../../img/login2.png')}/>
                     </View>
                     <View style={{marginTop:80}}>
                         <View style={styles.rowView}>
