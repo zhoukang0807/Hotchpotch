@@ -74,7 +74,6 @@ class About extends React.Component {
                       let loginInfo = this.state.loginInfo;
                       loginInfo.avatar = result.avatar;
                       this.setState({loginInfo:loginInfo});
-                      alert(result.avatar);
                       store.save('loginInfo',loginInfo).then(function (err,res) {
                         console.log(arguments)
                       });

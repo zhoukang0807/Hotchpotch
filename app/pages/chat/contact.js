@@ -54,8 +54,9 @@ export default class Contact extends Component {
     }
     onSureFriend(){
         const {navigate} = this.props.navigation;
+        const {contactActions} = this.props;
         store.get('loginInfo').then((loginInfo) => {
-            navigate('SureFriend',{loginInfo});
+            navigate('SureFriend',{loginInfo,contactActions});
         });
         this.setState({hasTip:false});
     }

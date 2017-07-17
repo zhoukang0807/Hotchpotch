@@ -59,7 +59,7 @@ export default class SureFriend extends Component {
     }
 
     onSelectConfirm(row) {
-        const {loginInfo} = this.props.navigation.state.params;
+        const {loginInfo,contactActions} = this.props.navigation.state.params;
         let users=this.state.confirmUsers;
         request(REQUSET_ADD_FRIEND + "?form=" + loginInfo.userName + "&receiver=" + row.userName, 'get').then(function (data) {
             if (data.resultCode == "0000") {
@@ -70,6 +70,7 @@ export default class SureFriend extends Component {
                     users.push(data.userName);
                     this.setState({rejectUsers:users})
                 }.bind(this));
+                contactActions.requestContactList(loginInfo.userId);
             }
         }.bind(this))
     }

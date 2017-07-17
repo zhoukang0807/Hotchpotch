@@ -1,11 +1,11 @@
 import React, {PropTypes} from 'react';
-import {Dimensions, Animated} from 'react-native';
+import {Dimensions, Alert,Animated} from 'react-native';
 import store from 'react-native-simple-store';
 
 import {USER_LOGIN} from '../constants/Urls';
 import { request,enterWebScoket } from '../utils/RequestUtil';
 import NavigationUtil from '../utils/NavigationUtil';
-
+import Pomelo from 'react-native-pomelo';
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
 const splashImg = require('../img/splash.png');
@@ -37,7 +37,9 @@ class Splash extends React.Component {
                         })).then(function (data) {
                             enterWebScoket(data.loginInfo.userId,"home",data.loginInfo.userName).then(function (data) {
                                 NavigationUtil.reset(navigation, 'Home');
-                            });
+                            }).catch(function () {
+                                Alert.alert("提示","服务器连接失败请重启应用！")
+                             })
                         }).catch(function () {
                             store.delete('loginInfo')
                             NavigationUtil.reset(navigation, 'Login');
