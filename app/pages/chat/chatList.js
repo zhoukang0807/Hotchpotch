@@ -29,6 +29,7 @@ export default class ChatList extends Component {
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             rowOpen:false,
+            dataList:[],
             dataSource: ds.cloneWithRows([])
         };
 
@@ -43,14 +44,14 @@ export default class ChatList extends Component {
                     from: loginInfo.userName,
                 }, function (data) {
                     this.setState({
-                        dataSource:this.state.dataSource.cloneWithRows(data.chatList)
+                        dataList:data.chatList
                     });
                 }.bind(this));
             });
         });
         Pomelo.on('onRefreshFriend', function (data) {
             this.setState({
-                dataSource:this.state.dataSource.cloneWithRows(data)
+                dataList:data
             });
         }.bind(this));
 
@@ -116,7 +117,7 @@ export default class ChatList extends Component {
                     closeOnRowPress={true}
                     tension={-2}
                     friction={5}
-                    dataSource={this.state.dataSource}
+                    dataSource={this.state.dataSource.cloneWithRows(this.state.dataList)}
                     renderRow={this._renderRow.bind(this)}
                     renderSeparator={this._renderSeparator.bind(this)}
                     //renderHiddenRow={this._renderHiddenRow.bind(this)}

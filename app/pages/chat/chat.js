@@ -50,13 +50,11 @@ export default class Chat extends React.Component {
                 from: loginInfo.userName,
                 receiver: sessionData.room?sessionData.roomName:sessionData.userName
             }, function (data) {
+                if(Count == 0 ){
+                    this.state.messages=[];
+                }
                 Count+=data.messages.length;
-                this.setState((previousState) => {
-                    return {
-                        messages: data.messages.reverse(),
-                        loadEarlier: data.loadMore,
-                    };
-                });
+                this.setState({messages:data.messages.reverse(),loadEarlier:data.loadMore});
             }.bind(this));
         });
 
