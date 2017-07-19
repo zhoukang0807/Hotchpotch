@@ -73,7 +73,7 @@ export default class Chat extends React.Component {
         Pomelo.on('onChat', function (chatInfos) {
             let flag = false;
             for(var i=0;i<chatInfos.length;i++){
-                if(chatInfos[i].user._id == loginInfo.userId){
+                if(chatInfos[i].user._id == loginInfo.userId || (sessionData.room?chatInfos[i].roomName != sessionData.roomName:chatInfos[i].user.userName != sessionData.userName) ){
                     flag = true;
                     break;
                 }
