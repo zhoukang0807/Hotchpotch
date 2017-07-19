@@ -42,8 +42,8 @@ export default class Chat extends React.Component {
     componentWillMount() {
         this._isMounted = true;
         Count=0;
+        const { loginInfo,sessionData } =this.props.navigation.state.params;
         InteractionManager.runAfterInteractions(() => {
-            const { loginInfo,sessionData } =this.props.navigation.state.params;
             //获取用户聊天记录,并显示
             Pomelo.request("chat.chatHandler.getMessages", {
                 count:Count,
@@ -73,7 +73,7 @@ export default class Chat extends React.Component {
         Pomelo.on('onChat', function (chatInfos) {
             let flag = false;
             for(var i=0;i<chatInfos.length;i++){
-                if(chatInfos[i].user._id == loginInfo.userId || (sessionData.room?chatInfos[i].roomName != sessionData.roomName:chatInfos[i].user.userName != sessionData.userName) ){
+                if(chatInfos[i].user._id == loginInfo.userId || (chatInfos[i].roomName?chatInfos[i].roomName != sessionData.roomName:chatInfos[i].user.name != sessionData.userName) ){
                     flag = true;
                     break;
                 }
@@ -102,6 +102,7 @@ export default class Chat extends React.Component {
         });
 
         const { loginInfo,sessionData } =this.props.navigation.state.params;
+
         //获取用户聊天记录,并显示
         Pomelo.request("chat.chatHandler.getMessages", {
             count:Count,
