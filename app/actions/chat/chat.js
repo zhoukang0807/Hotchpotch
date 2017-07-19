@@ -1,9 +1,9 @@
 import * as types from '../../constants/ActionTypes';
 
-export function requestUserList(id) {
+export function requestUserList(roomName) {
     return {
         type: types.REQUSET_USERLIST,
-        id
+        roomName
     };
 }
 export function receiveUserList(users) {

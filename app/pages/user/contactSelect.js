@@ -10,7 +10,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 const RIGHT_OPTIONS = [
     {"name": "搜索", "tag": "Find",icon:"md-person-add"},
-    {"name": "新建群组", "tag": "Find",icon:"md-people"},
+    {"name": "新建群组", "tag": "RoomCreate",icon:"md-people"},
     {"name": "扫一扫", "tag": "sweep",icon:"md-qr-scanner"},
 ];
 export default class ContactSelect extends Component {

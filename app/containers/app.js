@@ -16,6 +16,7 @@ import BlogView from '../pages/searching/blogView';
 import Find from '../containers/user/FindContainer';
 import FindResult from '../pages/user/findResult';
 import SureFriend from '../pages/user/sureFriend';
+import RoomCreate from '../pages/chat/roomCreate';
 
 const TabContainer = TabNavigator(
     {
@@ -73,6 +74,7 @@ const App = StackNavigator(
         Find: { screen: Find},
         FindResult: { screen: FindResult},
         SureFriend: { screen: SureFriend},
+        RoomCreate: { screen:RoomCreate},
     },
     {
         headerMode: 'screen',

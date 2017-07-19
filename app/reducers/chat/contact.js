@@ -2,7 +2,8 @@ import * as types from '../../constants/ActionTypes';
 
 const initialState = {
     loading:false,
-    contacts: []
+    friends:[],
+    rooms:[]
 };
 
 export default function contact(state = initialState, action) {
@@ -14,7 +15,8 @@ export default function contact(state = initialState, action) {
         case  types.RECEIVE_CONTACT_LIST:
             return Object.assign({}, state, {
                 loading:false,
-                contacts: action.contacts
+                friends: action.contacts.friends,
+                rooms: action.contacts.rooms
             });
         default:
             return state;

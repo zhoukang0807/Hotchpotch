@@ -11,15 +11,15 @@ export function* requestGetContacts(userId) {
         const result = yield call(request,REQUSET_GET_CONTACTS+"?userId="+userId , 'get');
         console.log(result)
         if (result.resultCode != "0000") {
-            yield put(receiveContactList([]));
+            yield put(receiveContactList(null));
             yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
         }else{
-            yield put(receiveContactList(result.friends));
+            yield put(receiveContactList({friends:result.friends,rooms:result.rooms}));
             yield call(store.save,'friends', result.friends); //将数据存储到store中
         }
     } catch (error) {
         console.log(error)
-        yield put(receiveContactList([]));
+        yield put(receiveContactList(null));
         yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }

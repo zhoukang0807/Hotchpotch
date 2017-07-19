@@ -73,7 +73,7 @@ export default class ChatList extends Component {
                         <Image style={styles.logo} source={{uri:data.avatar}} />
                         <View style={styles.content}>
                             <View style={[styles.crow]}>
-                                <Text style={styles.title} numberOfLines={1}>{data.room?data.roomName:data.remark?data.remark:data.nickName}</Text>
+                                <Text style={styles.title} numberOfLines={1}>{data.room?data.roomTitle:data.remark?data.remark:data.nickName}</Text>
 
                                 <Text style={styles.time}> {data.time}</Text>
                             </View>

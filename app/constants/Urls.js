@@ -12,3 +12,6 @@ export const REQUSET_GET_FIND = ipSever.server+'/find';
 
 export const REQUSET_ADD_FRIEND = ipSever.server+'/contact/add';
 export const UPLOAD_AVATAR = ipSever.server+'/user/update/avatar';
+
+export const REQUSET_CREATE_ROOM = ipSever.server+'/room/create';
+export const REQUSET_ROOM_ADD = ipSever.server+'/room/add';

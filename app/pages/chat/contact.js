@@ -77,6 +77,23 @@ export default class Contact extends Component {
             </View>
         )
     }
+    _renderRooms(data){
+        return (
+            <View style={{paddingTop: 1}}>
+                <TouchableHighlight onPress={() => this.onRowTap(data)}>
+                    <View style={[styles.row, styles.last]}>
+                        <Image style={styles.logo} source={{uri: data.avatar}}/>
+                        <View style={styles.content}>
+                            <View style={[styles.crow]}>
+                                <Text style={styles.title}
+                                      numberOfLines={1}>{data.roomTitle}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        )
+    }
     renderNewFriendTip(){
         if(this.state.hasTip==true){
             return (  <View style={styles.badge}>
@@ -91,6 +108,8 @@ export default class Contact extends Component {
         }
 
     }
+
+
     render() {
         const {contact} = this.props;
         return (
@@ -121,15 +140,15 @@ export default class Contact extends Component {
             >
                 <View tabLabel="好友">
                     <ListView
-                        dataSource={this.state.dataSource1.cloneWithRows(contact.contacts)}
+                        dataSource={this.state.dataSource1.cloneWithRows(contact.friends)}
                         renderRow={this._renderRow.bind(this)}
                         enableEmptySections={true}
                     />
                 </View>
                 <View tabLabel="群组">
                     <ListView
-                        dataSource={this.state.dataSource2}
-                        renderRow={this._renderRow.bind(this)}
+                        dataSource={this.state.dataSource2.cloneWithRows(contact.rooms)}
+                        renderRow={this._renderRooms.bind(this)}
                         enableEmptySections={true}
                     />
                 </View>

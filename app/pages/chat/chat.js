@@ -85,7 +85,7 @@ export default class Chat extends React.Component {
         }.bind(this));
         if(sessionData.room){
             const { chatActions } = this.props;
-            chatActions.requestUserList(sessionData.roomId);
+            chatActions.requestUserList(sessionData.roomName);
         }
 
         BackHandler.addEventListener('hardwareBackPress', this.goBack);
@@ -121,19 +121,20 @@ export default class Chat extends React.Component {
 
     onSend(messages = []) {
         let users=[];
-        const {loginInfo,sessionData} = this.props.navigation.state.params;
         const {chat} = this.props;
-        if(chat.users.length==0){
-            users.push(sessionData);
-        }else{
+        const {loginInfo,sessionData} = this.props.navigation.state.params;
+        if(sessionData.room){
             users = chat.users;
+        }else{
+            users.push(sessionData);
         }
-
         if (messages.length > 0) {
             Pomelo.request("chat.chatHandler.send", {
                 content: messages,
                 from: loginInfo.userName,
                 fromInfo: loginInfo,
+                room:sessionData.room,
+                roomInfo:sessionData,
                 receivers: users
             }, function (data) {
                 this.setState((previousState) => {

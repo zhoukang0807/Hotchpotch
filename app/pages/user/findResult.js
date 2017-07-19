@@ -14,6 +14,8 @@ import Button from '../../components/Button';
 import Pomelo from 'react-native-pomelo';
 import { toastShort } from '../../utils/ToastUtil';
 import store from 'react-native-simple-store';
+import {request} from '../../utils/RequestUtil';
+import {REQUSET_ROOM_ADD} from '../../constants/Urls';
 import NavigationUtil from '../../utils/NavigationUtil';
 class FindResult extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -25,6 +27,7 @@ class FindResult extends React.Component {
         this.state = {
         };
         this.onAddFriend=this.onAddFriend.bind(this);
+        this.onAddRoom=this.onAddRoom.bind(this);
     }
 
 //组件出现前 就是dom还没有渲染到html文档里面
@@ -65,6 +68,15 @@ class FindResult extends React.Component {
        
     }
     onAddRoom() {
+        const { result } = this.props.navigation.state.params;
+        store.get('loginInfo').then((loginInfo) => {
+            request(REQUSET_ROOM_ADD ,'post' , JSON.stringify({roomName:result.data.roomName,userName:loginInfo.userName})).then(function (data) {
+                if (data.resultCode == "0000") {
+                    NavigationUtil.reset(this.props.navigation, 'Home');
+                }
+            }.bind(this))
+        });
+
     }
     render() {
         const { result } = this.props.navigation.state.params;
@@ -95,7 +107,7 @@ class FindResult extends React.Component {
             return (
                 <View style={styles.container}>
                     <View style={styles.rowView}>
-                        <Image style={styles.image} source={{uri: "https://facebook.github.io/react/img/logo_og.png"}}/>
+                        <Image style={styles.image} source={{uri: result.data.avatar}}/>
                         <View style={styles.textView}>
                             <Text
                                 style={styles.text1}>{result.data.roomTitle}</Text>
