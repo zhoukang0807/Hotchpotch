@@ -15,7 +15,6 @@ export function* requestChat(userName,friendName) {
         }else{
             yield put(receiveChat([]))
         }
-
     } catch (error) {
         console.log(error)
         yield put(receiveChat([]));

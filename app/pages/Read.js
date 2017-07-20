@@ -7,12 +7,15 @@ import {
     ScrollView,
     Image,
     ListView,
+    FlatList,
     Text,
     Linking,
     View,
     RefreshControl,
-    TouchableHighlight,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator,
+    Dimensions,
+    Animated
 } from 'react-native';
 import GridView from '../components/GridView';
 import { toastShort } from '../utils/ToastUtil';
@@ -23,85 +26,121 @@ const propTypes = {
     readActions: PropTypes.object,
     read: PropTypes.object.isRequired
 };
+var {
+    height: deviceHeight,
+    width: deviceWidth
+} = Dimensions.get('window');
 
+var pageNum = 1;
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
 class Read extends React.Component {
     constructor(props) {
         super(props);
         const {readActions} = this.props;
-        readActions.requestArticleList();
-        console.log(33);
-
+        readActions.requestArticleList(1);
+        this.state={
+            articleList:[]
+        }
+        this.next = true;
+        this.nextPage=this.nextPage.bind(this)
+        this.onRefresh=this.onRefresh.bind(this)
+        this.renderFooter=this.renderFooter.bind(this)
     }
-    //点击事件
-    _onPressList(rowData){
-        //toastShort(rowData.long);
-        const { routes } = this.context;
-        store.save('articleUrl', rowData.long);
-       routes.articleView();
-   }
-    renderListView() {
-
-        const {read} = this.props;
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: ds.cloneWithRows(read.articleList),
-        };
-        console.log(read.articleList);
-
-        if (read.articleList) {
+    _keyExtractor = (item, index) => item.id;
+    componentWillUnmount() {
+        this.next=false
+    }
+    onRefresh(){
+        console.log(this.props)
+        const {readActions} = this.props;
+        readActions.requestArticleList(1);
+    }
+    nextPage(){
+        if(this.next){
+            const {readActions} = this.props;
+            readActions.requestArticleList(pageNum++);
+        }
+    }
+    renderFooter() {
+        const { read } = this.props;
+        if (read.isLoadMore) {
             return (
-                <ScrollView
-                    automaticallyAdjustContentInsets={false}
-                    horizontal={false}
-                    contentContainerStyle={styles.no_data}
-                    style={styles.base}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={read.loading}
-                            onRefresh={this.onRefresh}
-                            title="Loading..."
-                            colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
-                        />
-                    }
-                >
-                    <View style={styles.gridLayout}>
-                        <ListView
-                            dataSource={this.state.dataSource}
-                            renderRow={(rowData, sectionID, rowID) =>
-                                <View >
-                                    <TouchableOpacity
-                                        onPress={()=>this._onPressList(rowData)}
-                                        underlayColor="rgb(210, 230,255)"
-                                        activeOpacity={0.5}
-                                        style={{borderRadius: 8, padding: 0, marginTop: 0}}>
-                                        <View>
-                                            <View style={styles.row}>
-                                                <Image style={styles.thumb} source={require('../img/about_logo.png')}/>
-                                                <Text style={{
-                                                    flex: 1,
-                                                    fontSize: 16,
-                                                    color: 'blue',
-                                                    borderBottomColor: 'red'
-                                                }}>{rowData.title}</Text>
-                                            </View>
-                                            <View style={styles.separator}/>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            }
-                        />
+                <View style={styles.footerContainer}>
+                    <ActivityIndicator size="small" color="#3e9ce9" />
+                    <Text style={styles.footerText}>数据加载中……</Text>
+                </View>
+            );
+        }
+        return <View />;
+    }
 
+    renderListView() {
+        const {read} = this.props;
+        if (read.articleList.length!=0) {
+            var oldArticleList = this.state.articleList;
+            var newArticleList  =read.articleList;
+            if(oldArticleList.length!=0){
+                newArticleList=oldArticleList.concat(newArticleList)
+            }else{
+                newArticleList=newArticleList.concat(oldArticleList)
+            }
+
+            newArticleList=newArticleList.unique();
+            this.state={
+                articleList:newArticleList
+            }
+            return (
+            <AnimatedFlatList
+                data={newArticleList}
+                onEndReached={this.nextPage}
+                onRefresh={this.onRefresh}
+                refreshing={false}
+                ListFooterComponent={this.renderFooter}
+                keyExtractor={this._keyExtractor}
+                renderItem={({item}) =>
+                    <View onPressItem={this._onPressItem}>
+                        <View>
+                            <View style={styles.row}>
+                                <TouchableOpacity onPress={()=>{
+                                    const { routes } = this.context;
+                                    store.save('articleUrl', item.link);
+                                    routes.articleView();
+                                } }
+                                >
+                                <Image style={styles.thumb}
+                                    source={{uri:item.imageurls.length==0?"http://pic33.nipic.com/20130921/432252_200249985000_2.jpg":item.imageurls[0].url}}
+                                />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{flex:4,flexDirection: 'column',marginLeft:10}} onPress={()=>{
+                                    const { routes } = this.context;
+                                    store.save('articleUrl', item.link);
+                                    routes.articleView();
+                                } } >
+                                    <Text style={{
+                                        flex: 1,
+                                        fontSize: 16,
+                                        color: 'blue',
+                                        flexWrap: 'nowrap',
+                                        borderBottomColor: 'red'
+                                    }}  >{item.title}({item.source})</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                            <View style={styles.separator}/>
+                        </View>
                     </View>
-                </ScrollView>
+                }
+            />
+
             );
         } else {
             return (
                 <View >
                     <Text>没有获取到文章列表！</Text>
-
                 </View>
             )
         }
@@ -111,17 +150,7 @@ class Read extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text
-                        style={[
-                            styles.btnText,
-                            {color: 'black', align: 'center', padding: 5, fontSize: 18}
-                        ]}
-                    >
-                    </Text>
-                </View>
                 {this.renderListView()}
-
             </View>
         );
     }
@@ -137,9 +166,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     row: {
+        padding:5,
+        flex: 1,
+        height:80,
         flexDirection: 'row',
         justifyContent: 'center',
-        padding: 10,
         backgroundColor: '#F6F6F6',
     },
     separator: {
@@ -147,6 +178,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#CCCCCC',
     },
     thumb: {
+        flex:1,
+        margin:5,
         width: 64,
         height: 64,
     },
@@ -156,7 +189,41 @@ const styles = StyleSheet.create({
         justifyContent: 'center',//  #垂直居中
         textAlign: 'center',  // #文字水平居中
     },
+    footerContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 5
+    },
+    footerText: {
+        textAlign: 'center',
+        fontSize: 16,
+        marginLeft: 10
+    },
 });
+
+
+Array.prototype.unique = function () {
+    var res = [this[0]];
+    for (var i = 1; i < this.length; i++) {
+        var repeat = false;
+        for (var j = 0; j < res.length; j++) {
+            var a = this[i].id;
+            var b = res[j].id
+            if (a==b) {
+                repeat = true;
+                break;
+            }
+        }
+        if (!repeat) {
+            res.push(this[i]);
+        }
+    }
+    return res;
+}
+
+
 Read.propTypes = propTypes;
 Read.contextTypes = contextTypes;
 export default Read;

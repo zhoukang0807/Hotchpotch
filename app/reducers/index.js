@@ -12,6 +12,8 @@ import  addFriend from './user/addFriend';
 import  chat from './chat/chat';
 import  newFriend from './chat/newFriend';
 import  friend from './chat/friend';
+import  info from './chat/info';
+import  chatList from './chat/chatList';
 const rootReducer = combineReducers({
     routes,
     read,
@@ -23,7 +25,9 @@ const rootReducer = combineReducers({
     friend,
     addFriend,
     newFriend,
-    chat
+    chat,
+    info,
+    chatList
 });
 
 export default rootReducer;

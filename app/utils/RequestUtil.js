@@ -43,6 +43,7 @@ export default class SocketStore {
     socket: object;
     constructor() {
         const io = require('socket.io-client');
+        //this.socket = io('http://169.254.173.140:3000');
         this.socket = io('http://103.74.175.131:3000');
         this.socket.on("connecting", function () {
             console.log("正在连接到服务器");

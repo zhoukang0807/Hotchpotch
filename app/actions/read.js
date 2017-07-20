@@ -1,8 +1,9 @@
 import * as types from '../constants/ActionTypes';
 
-export function requestArticleList() {
+export function requestArticleList(page) {
     return {
         type: types.REQUEST_ARTICLE_LIST,
+        page
     };
 }
 

@@ -45,9 +45,7 @@ class Splash extends React.Component {
         }, 1000);
     }
 
-    componentWillUnmount() {
-        clearTimeout(this.timer);
-    }
+    componentWillUnmount() {}
 
     render() {
         return (

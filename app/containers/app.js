@@ -10,7 +10,9 @@ import Main from '../pages/Main';
 import Read from '../containers/ReadContainer';
 import ArticleView from './read/ArticleViewContainer';
 import NewFriendContainer from './chat/NewFriendContainer';
+import ChatListContainer from './chat/ChatListContainer';
 import FriendContainer from './chat/FriendContainer';
+import InfoContainer from './chat/InfoContainer';
 import ChatContainer from './chat/ChatContainer';
 import AddFriend from './user/addFriend';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,8 +22,13 @@ import Color from '../Color';
 import FontSize from '../FontSize';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Friend from '../pages/chat/friend'
+import store from 'react-native-simple-store';
+
+
 const RouterWithRedux = connect()(Router);
 const backButton = require('../img/arrow_left.png');
+
+
 const getSceneStyle = (props, computedProps) => {
     const style = {
         flex: 1,
@@ -88,6 +95,11 @@ class App extends React.Component {
                         component={AddFriend}
                     />
                     <Scene
+                        key="info"
+                        hideTabBar
+                        component={InfoContainer}
+                    />
+                    <Scene
                         key="NewFriendContainer"
                         hideTabBar
                         component={NewFriendContainer}
@@ -121,7 +133,6 @@ class App extends React.Component {
                         component={ArticleView}
                         hideNavBar
                         hideTabBar
-                        type={ActionConst.REPLACE}
                     />
 
                     <Scene
@@ -131,14 +142,14 @@ class App extends React.Component {
                         type={ActionConst.REPLACE}
                     >
                         <Scene
-                            key="friend"
-                            component={FriendContainer}
+                            key="chatList"
+                            component={ChatListContainer}
                             title="聊天"
                             icon={TabIcon}
                             iconName="md-chatbubbles"
                             renderRightButton={() =>  <ModalDropdown
                                 defaultValue="+"
-                                options={['添加好友', '搜索']}
+                                options={['添加好友', '注销']}
                                 textStyle={{fontSize:35, color:"#bfee2e"}}
                                 dropdownStyle={{
                                     padding:0,
@@ -153,7 +164,44 @@ class App extends React.Component {
                                     if(idx==0){
                                         this.queryUser()
                                     }else if(idx==1){
-                                        alert("要搜索了")
+                                        store.delete("loginInfo");
+                                        Actions.login()
+                                    }
+                                    return false
+                                }
+                                }
+                            ><Icon
+                                color='#b7e9de'
+                                name='md-menu'
+                                size={25}
+                            /></ModalDropdown>
+                            }
+                        />
+                        <Scene
+                            key="friend"
+                            component={FriendContainer}
+                            title="好友"
+                            icon={TabIcon}
+                            iconName="md-contacts"
+                            renderRightButton={() =>  <ModalDropdown
+                                defaultValue="+"
+                                options={['添加好友', '注销']}
+                                textStyle={{fontSize:35, color:"#bfee2e"}}
+                                dropdownStyle={{
+                                    padding:0,
+                                    marginTop:-16,
+                                    width: 150,
+                                    height: 75,
+                                    borderColor: 'cornflowerblue',
+                                    borderWidth: 2,
+                                    borderRadius: 3
+                                }}
+                                onSelect={(idx, value) =>{
+                                    if(idx==0){
+                                        this.queryUser()
+                                    }else if(idx==1){
+                                        store.delete("loginInfo");
+                                        Actions.login()
                                     }
                                     return false
                                 }
@@ -168,7 +216,7 @@ class App extends React.Component {
                         <Scene
                             key="main"
                             component={Main}
-                            title="阅读"
+                            title="朋友圈"
                             icon={TabIcon}
                             iconName="md-home"
                         />

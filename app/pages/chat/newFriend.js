@@ -168,9 +168,6 @@ class NewFriend extends React.Component {
             />
         );
     }
-    //官方的解释是组件被移除前执行
-    componentWillUnmount() {
-    }
     render() {
         return(
             <View style={{ flex:1}}>

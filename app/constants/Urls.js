@@ -1,4 +1,6 @@
 const {ipSever} = require("./ipconfig")
+
+export const QUERY_USERINFO = ipSever.server+'/user/queryUserInfo';
 export const QUERY_USERS = ipSever.server+'/user/queryFriend';
 export const FRIEND_LIST =ipSever.server+'/user/selectFriend';
 export const CHAT_LIST =ipSever.server+'/chat/selectChat';

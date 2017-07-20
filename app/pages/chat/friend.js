@@ -29,17 +29,13 @@ const propTypes = {
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
-class Friend extends React.Component {
+export default class Friend extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
             }),
-            friendUserName:"",
-            count:"",
-            time:"",
-            lastMsg:"",
             animationType: 'none',
             modalVisible: false,
             transparent: false,
@@ -49,10 +45,14 @@ class Friend extends React.Component {
         const { friendActions } = this.props;
         store.get('loginInfo').then((loginInfo) => {
             friendActions.requestFriend(loginInfo.userName);
+            global.socketStore.socket.emit("undone",{userName:loginInfo.userName})
+            global.socketStore.socket.on("addFriend", function (obj) {
+                this.onReceive(obj);
+            }.bind(this))
+            global.socketStore.socket.on("reply", function () {
+                friendActions.requestFriend(loginInfo.userName);
+            }.bind(this))
         })
-        global.socketStore.socket.on("addFriend", function (obj) {
-            this.onReceive(obj);
-        }.bind(this))
     }
 
     onReceive(obj){
@@ -88,11 +88,10 @@ class Friend extends React.Component {
     componentDidMount() {
         store.get('newFriend').then((newFriend) => {
             this.setState({
-                newFriendCount:newFriend.newFriendCount,
-                newFriends:newFriend.newFriends
+                newFriendCount:newFriend&&newFriend.newFriendCount?newFriend.newFriendCount:0,
+                newFriends:newFriend&&newFriend.newFriends?newFriend.newFriends:[]
             })
         })
-        Actions.pop()
     }
 
 
@@ -100,7 +99,7 @@ class Friend extends React.Component {
 
     renderContent(dataSource, typeId) {
         const {friend} = this.props;
-        if(friend.length==0){
+        if(friend.friend.length==0){
             return (
                 <Text></Text>
             );
@@ -113,7 +112,7 @@ class Friend extends React.Component {
                     return (
                         <View >
                             <TouchableOpacity
-                                onPress={() =>{this.privateChat(rowData)}}
+                                onPress={() =>{this.selectUserInfo(rowData.userName)}}
                                 underlayColor="rgb(210,230,255)"
                                 activeOpacity={0.5}
                                 style={{borderRadius: 8, padding: 0, marginTop: 0}}>
@@ -126,17 +125,7 @@ class Friend extends React.Component {
                                                     marginLeft:3,
                                                     flex: 2,
                                                     fontSize: 16,
-                                                }}>{rowData}</Text>
-                                                <Text style={{
-                                                    flex: 1,
-                                                    fontSize: 16,
-                                                }}>{rowData.time}</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row',}}>
-                                                <Text style={{
-                                                    flex: 1,
-                                                    fontSize: 16,
-                                                }}>{rowData.lastMsg}</Text>
+                                                }}>{rowData.nick}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -187,7 +176,7 @@ class Friend extends React.Component {
                     </View>
                     <View style={{flex: 6 , flexDirection: 'row',justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{flex:8,fontSize:20}} onPress={()=>this.newFriend()} >新的朋友</Text>
-                        {this.state.newFriendCount!=0?
+                        {this.state&&this.state.newFriendCount&&this.state.newFriendCount!=0?
                             <Text style={{flex:1,fontSize:20}} onPress={()=>this.newFriend()}>
                                 {this.state.newFriendCount}
                                 </Text>
@@ -198,14 +187,15 @@ class Friend extends React.Component {
             </View>
         )
     }
-    privateChat = (friendUserName) => {
-        const { routes } = this.context;
-        const { loginInfo } = this.props;
-        const chatInfo = {
-            friendUserName:friendUserName,
-            loginInfo:loginInfo
-        }
-        routes.ChatContainer(chatInfo);
+    selectUserInfo = (friendUserName) => {
+        store.get('loginInfo').then((loginInfo) => {
+            const { routes } = this.context;
+            const info = {
+                loginInfo:loginInfo,
+                userName:friendUserName
+            }
+            routes.info(info);
+        })
     }
 }
 
@@ -258,5 +248,3 @@ const styles = StyleSheet.create({
 });
 Friend.propTypes = propTypes;
 Friend.contextTypes = contextTypes;
-
-export default Friend;

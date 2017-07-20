@@ -8,7 +8,8 @@ import { watchRequestForgetPassword} from './user/forgetPassword';
 import { watchRequestFriend} from './chat/friend';
 import { watchRequestChat} from './chat/chat';
 import { watchRequestNewFriend} from './chat/newFriend';
-
+import { watchRequestInfo} from './chat/info';
+import { watchRequestChatList} from './chat/chatList';
 
 export default function* rootSaga() {
     yield [ fork(watchRequestLogin),
@@ -19,7 +20,11 @@ export default function* rootSaga() {
              fork(watchRequestArticleList),
              fork(watchRequestFriend),
             fork(watchRequestChat),
-        fork(watchRequestNewFriend)
+        fork(watchRequestNewFriend),
+        fork(watchRequestInfo),
+        fork(watchRequestChatList)
+
+
     ];
 }
 

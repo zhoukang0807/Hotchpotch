@@ -14,13 +14,15 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     WebView,
-    Dimensions
+    Dimensions,
+    BackHandler
 } from 'react-native';
 import GridView from '../../components/GridView';
 import { toastShort } from '../../utils/ToastUtil';
 import Button from '../../components/Button';
 import * as readActions from '../../actions/read'
 import store from 'react-native-simple-store';
+import {Actions} from 'react-native-router-flux';
 const propTypes = {
     readActions: PropTypes.object,
     read: PropTypes.object.isRequired
@@ -38,41 +40,44 @@ var articleUrl="http://www.baidu.com";
 class ArticleView extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             Url: articleUrl
         };
-
+        this.goBack = this.goBack.bind(this);
+    }
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
     }
     componentWillMount() {
         store.get('articleUrl').then((url) =>{
             articleUrl=url
-           // toastShort(articleUrl);
             this.setState({
                 url
             });
         })
     }
+    goBack(){}
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text
-                        style={[
-                            styles.btnText,
-                            {color: 'black', textAlign: 'center', padding: 5, fontSize: 18}
-                        ]}
-                    >
+                <View >
+                    <Text style={{color: 'black', textAlign: 'center', padding: 5, fontSize: 18}}>
+                        新闻详情
                     </Text>
                 </View>
                 <View style={styles.container}>
-                    <WebView bounces={false}
+                    <WebView bounces={true}
+                             startInLoadingState={true}
+                             domStorageEnabled={true}
+                             javaScriptEnabled={true}
                              scalesPageToFit={true}
-                             source={{uri:articleUrl,method:'GET'}}
+                             source={{uri:articleUrl}}
                              style={{width:deviceWidth, height:deviceHeight}}>
                     </WebView>
                 </View>
-
             </View>
         );
     }
