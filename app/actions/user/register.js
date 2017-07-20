@@ -4,14 +4,16 @@ export function requestRegister(
     userName,
     password,
     email,
-    verifyCode
+    verifyCode,
+    nick
 ) {
     return {
         type: types.REQUEST_REGISTER,
         userName,
         password,
         email,
-        verifyCode
+        verifyCode,
+        nick
     };
 }
 export function fetchRegister() {

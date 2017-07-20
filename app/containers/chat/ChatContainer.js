@@ -5,10 +5,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as chatCreators from '../../actions/chat/chat';
-
 import Chat from '../../pages/chat/chat';
 
-class ChatRoomContainer extends React.Component {
+class ChatContainer extends React.Component {
     render() {
         return <Chat {...this.props} />;
     }
@@ -28,5 +27,5 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatRoomContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer);
 //第一个（）是用来改变组件prop的方法，第二个（）是React组件，接受该组件的属性重绘

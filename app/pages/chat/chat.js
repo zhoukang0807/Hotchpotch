@@ -1,240 +1,305 @@
-import React, {PropTypes} from 'react';
+import React , { PropTypes } from 'react';
 import {
-    InteractionManager,
+    Platform,
     StyleSheet,
-    View,
     Text,
-    Image,
-    Alert,
-    TextInput,
-    ListView
+    View,
+    BackHandler
 } from 'react-native';
 import store from 'react-native-simple-store';
-import {isNull} from '../../utils/utils';
+import CustomView from '../../components/CustomView';
+import CustomActions from '../../components/CustomActions';
 import Button from '../../components/Button';
-import FetchLoading from '../../components/fetchLoading';
 import {toastShort} from '../../utils/ToastUtil';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Pomelo from 'react-native-pomelo';
+import {
+    Actions
+} from 'react-native-router-flux';
+import {GiftedChat, Actions as GiftedAction, Bubble} from 'react-native-gifted-chat';
+
 const propTypes = {
     chatActions: PropTypes.object,
 };
-
-const contextTypes = {
-    routes: PropTypes.object.isRequired
-};
-class Chat extends React.Component {
+export default class Chat extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2
-            }),
-            msg:"",
-            userName:"",
-            userId:""
-        };
-        Pomelo.on('onAdd', function (data) {
-            console.log(data.user + "ONADD")
-            let userName = data.user;
-            const {chatActions} = props;
-            chatActions.onAddChat(userName);
-        });
-        Pomelo.on('onChat', function (chatInfo) {
-            console.log(JSON.stringify(chatInfo))
-            const {chatActions} = props;
-            chatActions.onChatChat(chatInfo);
-        });
-        this.renderItem = this.renderItem.bind(this);
-    }
-
-//组件出现前 就是dom还没有渲染到html文档里面
-    componentWillMount() {
-        store.get('loginInfo').then((loginInfo) => {
-          this.setState({ userName:loginInfo.userName})
-        })
-    }
-
-//组件渲染完成 已经出现在dom文档里
-    componentDidMount() {
-        const {chatActions} = this.props;
-        store.get('loginInfo').then((loginInfo) => {
-            chatActions.requestChat(loginInfo.userId, loginInfo.userName);
-        })
-    }
-
-    //官方的解释是组件被移除前执行
-    componentWillUnmount() {
-    }
-
-    renderTips() {
-        const {chat} = this.props;
-        return (
-            <View style={styles.rowView}>
-                <Text style={styles.tipsText}>{chat.userName}进入聊天室</Text>
-            </View>
-        )
-    }
-
-    renderItem(rowData) {
-        let userPersonal=this.state.userName==rowData.from;
-        let flexstyle=userPersonal?"row-reverse":"row";
-        let rowBackColor=userPersonal?"#99f1fe":"#FFF";
-        return (
-            <View style={styles.containerItem}>
-                <View style={{flex:1, flexDirection: flexstyle, alignItems: 'center'}}>
-                    <Image style={styles.itemImg} source={require("../../img/share_icon_wechat.png")} />
-                    <View style={{backgroundColor:rowBackColor,padding:5}}>
-                        <Text> {rowData.msg}</Text>
-                    </View>
-                    <Text style={{fontSize:10}}> {rowData.from}</Text>
-                </View>
-            </View>
-        )
-    }
-
-    renderContent(dataSource, typeId) {
-        const {chat} = this.props;
-        if(chat.chatInfos.length==0){
-            return (
-                <Text></Text>
-            );
+        super(props); //在子类constructor中，super代表父类的constructor.bind(this)。是个函数。
+        const { chatActions,friendUserName,chat} = this.props;
+        if (friendUserName) {
+            this.state = {
+                friendName: friendUserName,
+                messages: [],
+                loadEarlier: true,
+                typingText: null,
+                isLoadingEarlier: false
+            };
+        }else{
+            this.state = {
+                friendName: "",
+                messages: [],
+                loadEarlier: true,
+                typingText: null,
+                isLoadingEarlier: false
+            };
         }
-        return (
-            <ListView
-                initialListSize={1}
-                dataSource={dataSource}
-                renderRow={this.renderItem}
-                style={styles.listView}
-            />
-        );
+        this._isMounted = false;
+        this.onSend = this.onSend.bind(this);
+        this.onReceive = this.onReceive.bind(this);
+        this.renderBubble = this.renderBubble.bind(this);
+        this.renderFooter = this.renderFooter.bind(this);
+        this.onLoadEarlier = this.onLoadEarlier.bind(this);
+        this.goBack = this.goBack.bind(this);
+        this._isAlright = null;
+        this.renderCustomActions = this.renderCustomActions.bind(this);
+
+        global.socketStore.socket.on('message', function (chatInfos) {
+            console.log(chatInfos);
+            let flag = false;
+            for(var i=0;i<chatInfos.length;i++){
+                if(chatInfos[i].user.userName != this.state.userName){
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag){
+                return;
+            }
+            this.onReceive(chatInfos);
+        }.bind(this))
+
     }
-    onSendMessage(){
+    onReceive(msg) {
+        this.setState((previousState) => {
+            return {
+                messages: GiftedChat.append(previousState.messages, msg),
+            };
+        });
+        this.save(msg)
+    }
+    //组件出现前 就是dom还没有渲染到html文档里面
+    componentWillMount() {
+        this._isMounted = true;
+    }
+    onSend(messages = []) {
+        console.log(messages);
+        this.setState((previousState) => {
+            return {
+                messages: GiftedChat.append(previousState.messages,messages),
+            };
+        });
+        this.save(messages)
+    }
+    save(messages){
         store.get('loginInfo').then((loginInfo) => {
-            var route = "chat.chatHandler.send";
-            var target = "*";
-            var msg = this.state.msg;
-            if(!isNull(msg)) {
-                Pomelo.request(route, {
-                    rid: "admin",
-                    content: msg,
-                    from: loginInfo.userName,
-                    target: target
-                }, function(data) {
+            const {friendUserName} = this.props;
+            const newMessages =this.state.messages;
+            if (messages.length > 0) {
+                for(var i = 0;i<messages.length;i++){
+                    if(newMessages.indexOf(messages[i])==-1){
+                        newMessages.push(messages[i])
+                    }
+                    global.socketStore.socket.emit('message', {from: loginInfo.userName, target: friendUserName,msg:messages[i].text});
+                    messages[i].sent = true;
+                    messages[i].received = false;
+                }
+                this.setState((previousState) => {
+                    return {
+                        messages: GiftedChat.append(previousState.messages, []),
+                    };
                 });
+                store.get('chats').then((chats) => {
+                    if(chats) {
+                        if(chats[loginInfo.userName]){
+                            if(chats[loginInfo.userName][friendUserName]&&chats[loginInfo.userName][friendUserName].length!=0){
+                                chats[loginInfo.userName][friendUserName]=newMessages;
+                                store.save('chats',chats)
+                                console.log(chats);
+                            }else{
+                                chats[loginInfo.userName][friendUserName]=[];
+                                chats[loginInfo.userName][friendUserName]=newMessages;
+                                store.save('chats',chats)
+                                console.log(chats);
+                            }
+                        }else{
+                            chats[loginInfo.userName]={};
+                            chats[loginInfo.userName][friendUserName]=[];
+                            chats[loginInfo.userName][friendUserName]=newMessages;
+                            store.save('chats',chats)
+                            console.log(chats);
+                        }
+                    }else{
+                        var newChats = {};
+                        newChats[loginInfo.userName]={}
+                        newChats[loginInfo.userName][friendUserName]=newMessages;
+                        store.save('chats',newChats)
+                        console.log(newChats);
+                    }
+                })
             }
         })
     }
-    renderSendText(){
-        return (
-            <View style={styles.rowBottom}>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Icon
-                        color='#000'
-                        name='ios-mail-outline'
-                        size={30}
-                    />
-                </View>
-                <View style={{flex: 8}}>
-                    <TextInput placeholder=''
-                               onChangeText={(text) => {
-                                   this.state.msg = text;
-                               }}
-                    />
-                </View>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Button
-                    containerStyle={styles.sureBtn}
-                    style={styles.btnText}
-                    text={'发送'}
-                    onPress={() => this.onSendMessage()}
+    renderCustomActions(props) {
+        if (Platform.OS === 'ios') {
+            return (
+                <CustomActions
+                    {...props}
                 />
-                </View>
-            </View>
+            );
+        }
+        const options = {
+            'Action 1': (props) => {
+                alert('option 1');
+            },
+            'Action 2': (props) => {
+                alert('option 2');
+            },
+            'Cancel': () => {
+            },
+        };
+        return (
+            <GiftedAction
+                {...props}
+                options={options}
+            />
         );
     }
-    render() {
-        InteractionManager.runAfterInteractions(() => {
-            // ...耗时较长的同步的任务...避免影响动画
-            store.get('loginInfo').then((loginInfo) => {
-            })
+    onLoadEarlier() {
+        this.setState((previousState) => {
+            return {
+                isLoadingEarlier: true,
+            };
         });
-        const {chat} = this.props;
-        return (
-            <View style={styles.continer}>
-                {this.renderTips()}
-                {this.renderContent(this.state.dataSource.cloneWithRows(chat.chatInfos))}
-                <View style={styles.BottomView}>
-                    {this.renderSendText()}
-                </View>
+        store.get("chats").then((chats)=>{
+            store.get('loginInfo').then((loginInfo) => {
+                setTimeout(() => {
+                    if(chats&&chats[loginInfo.userName]
+                        &&chats[loginInfo.userName][this.state.friendName]
+                        &&chats[loginInfo.userName][this.state.friendName].length!=0
+                    ){
+                        var sentChats = [];
+                        var thisChats = chats[loginInfo.userName][this.state.friendName]
+                        for(var i = 0 ; i<thisChats.length;i++){
+                            if(sentChats.indexOf(thisChats[i])==-1){
+                                sentChats.push(thisChats[i]);
+                                console.log(thisChats[i])
+                                if (this._isMounted === true) {
+                                    this.setState((previousState) => {
+                                        return {
+                                            messages: GiftedChat.prepend(previousState.messages,thisChats[i]),
+                                            loadEarlier: false,
+                                            isLoadingEarlier: false,
+                                        };
+                                    });
+                                }
+                            }else{
+                                this.setState((previousState) => {
+                                    return {
+                                        messages: GiftedChat.prepend(previousState.messages,[]),
+                                        loadEarlier: false,
+                                        isLoadingEarlier: false,
+                                    };
+                                });
+                            }
+                        }
+                    }else{
+                        this.setState((previousState) => {
+                            return {
+                                messages: GiftedChat.prepend(previousState.messages,[]),
+                                loadEarlier: false,
+                                isLoadingEarlier: false,
+                            };
+                        });
+                    }
 
-            </View>
-        )
+
+                }, 1000); // simulating network
+            })
+        })
+
+
+    }
+    //组件渲染完成 已经出现在dom文档里
+    componentDidMount() {
+        setTimeout(()=> {
+            Actions.refresh({
+                title:"正在和"+this.state.friendName+"聊天",
+                titleStyle: {color: '#fff', fontSize: 20},
+                navigationBarStyle: {backgroundColor: "#340F19"}
+            });
+        }, 10)
+
+        BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
+        BackHandler.removeEventListener('hardwareBackPress', this.goBack);
+    }
+    goBack(){}
+    renderCustomView(props) {
+        return (
+            <CustomView
+                {...props}
+            />
+        );
+    }
+    renderFooter(props) {
+        if (this.state.typingText) {
+            return (
+                <View style={styles.footerContainer}>
+                    <Text style={styles.footerText}>
+                        {this.state.typingText}
+                    </Text>
+                </View>
+            );
+        }
+        return null;
     }
 
+
+
+    renderBubble(props) {
+        return (
+            <Bubble
+                {...props}
+                wrapperStyle={{
+                    left: {
+                        backgroundColor: '#f0f0f0',
+                    }
+                }}
+            />
+        );
+    }
+
+    render() {
+        const { loginInfo } = this.props;
+        return (
+            <GiftedChat
+                messages={this.state.messages}
+                onSend={this.onSend}
+                loadEarlier={this.state.loadEarlier}
+                onLoadEarlier={this.onLoadEarlier}
+                isLoadingEarlier={this.state.isLoadingEarlier}
+                user={{
+                    _id:loginInfo.userName ,
+                    name: loginInfo.nick,
+                    avatar: 'https://facebook.github.io/react/img/logo_og.png',
+                }}
+                renderActions={this.renderCustomActions}
+                renderBubble={this.renderBubble}
+                renderCustomView={this.renderCustomView}
+                renderFooter={this.renderFooter}
+            />
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-    continer: {
-        flex: 1,
-        backgroundColor: "#f3f3f3",
+    footerContainer: {
+        marginTop: 5,
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10,
     },
-    rowView: {
-        marginTop: 10,
-        flexDirection: 'row',
-        backgroundColor: "#ffffff",
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    BottomView: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    rowBottom: {
-        flexDirection: 'row',
-        backgroundColor: "#f0f0f0",
-        alignItems: 'center',
-        justifyContent: 'flex-end'
-    },
-    tipsText: {
-        textAlign: 'center',
-        color: "#a0e9b7",
-        fontSize: 12
-    },
-    itemImg: {
-        width: 40,
-        height: 30,
-        marginRight: 5
-    },
-    no_data: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 100
-    },
-    base: {
-        flex: 1
-    },
-    listView: {
-        backgroundColor: '#f3f3f3',
-    },
-
-    containerItem: {
-        marginTop:10,
-        flexDirection: 'row',
-    },
-    sureBtn: {
-        backgroundColor: '#40b5e9',
-        borderWidth:2,
-        borderColor:"#99f1fe"
-    },
-    btnText: {
-        fontSize: 16,
-        textAlign: 'center',
-        color: '#fff'
+    footerText: {
+        fontSize: 14,
+        color: '#aaa',
     },
 });
-Chat.propTypes = propTypes;
-Chat.contextTypes = contextTypes;
-
-export default Chat;

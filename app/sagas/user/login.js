@@ -1,6 +1,6 @@
 import { put, take, call, fork } from 'redux-saga/effects';
 import * as types from '../../constants/ActionTypes';
-import { request } from '../../utils/RequestUtil';
+import { request,scoketio } from '../../utils/RequestUtil';
 import { USER_LOGIN } from '../../constants/Urls';
 import {  fetchLogin,receiveLogin } from '../../actions/user/login';
 import store from 'react-native-simple-store';
@@ -15,6 +15,7 @@ export function* requestLogin(userName,password) {
             if (result.resultCode != "0000") {
                 yield toastShort(result.resultDesc); //toastShort安卓内提示用。提示错误信息
             }
+        yield call(loginSocket,userName);
     } catch (error) {
         console.log(error)
         yield put(receiveLogin(null));
@@ -33,4 +34,8 @@ export function* watchRequestLogin() {
             password
         );
     }
+}
+
+function loginSocket(username) {
+    global.socketStore.socket.emit('login', {userName: username});
 }

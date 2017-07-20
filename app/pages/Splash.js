@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
 import {Dimensions, Animated} from 'react-native';
+import { USER_LOGIN } from '../constants/Urls';
+import { request } from '../utils/RequestUtil';
 import store from 'react-native-simple-store';
-
 const contextTypes = {
     routes: PropTypes.object.isRequired
 };
@@ -25,18 +26,20 @@ class Splash extends React.Component {
             duration: 1000
         }).start();
         this.timer = setTimeout(() => {
-            store.get('isInit').then((isInit) => {
-                if (!isInit) {
-                    store.get('loginInfo').then((loginInfo) => {
-                        if (loginInfo) {
-                            const {routes} = this.context;
-                            routes.initCategory({isFirst: true});
-                        } else {
-                            routes.login({isFirst: true});
+            store.get('loginInfo').then((loginInfo) => {
+                if (loginInfo) {
+                    request(USER_LOGIN, 'post', JSON.stringify({userName:loginInfo.userName,password:loginInfo.password})).then(function (data) {
+                        if(data.resultCode=="0000"){
+                            store.save('loginInfo',data.loginInfo);
+                            global.socketStore.socket.emit('login', {userName: loginInfo.userName});
+                            routes.tabbar({loginInfo:loginInfo});
+                        }else{
+                            store.delete('loginInfo');
+                            routes.login();
                         }
                     })
                 } else {
-                    routes.tabbar();
+                    routes.login();
                 }
             });
         }, 1000);

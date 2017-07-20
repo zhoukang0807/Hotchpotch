@@ -11,6 +11,7 @@ middlewares.push(sagaMiddleware);
 /* global __DEV__  */
 if (__DEV__) {
   middlewares.push(logger);
+  console.log("debug")
 }
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 export default function configureStore(initialState) {

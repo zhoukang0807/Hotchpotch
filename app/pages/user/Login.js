@@ -60,7 +60,7 @@ class Login extends React.Component {
             store.get('loginInfo').then((loginInfo) => {
                 if(loginInfo){
                         const { routes } = this.context;
-                        routes.initCategory({ isFirst: true });
+                        routes.tabbar({loginInfo:loginInfo});
                 } })
         });
 
@@ -108,9 +108,7 @@ class Login extends React.Component {
                         </View>
                     </View>
                     <Button
-                        containerStyle={styles.sureBtn}
-                        style={styles.btnText}
-                        text={'登录'}
+                        children={'登录'}
                         onPress={() => this.onSelectLogin()}/>
                   </View>
                   <View  style={styles.bottomView}>
@@ -151,7 +149,8 @@ const styles = StyleSheet.create({
         height:100,
         marginTop:1,
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom:10
     },
     sureBtn: {
         margin: 10,
@@ -165,11 +164,11 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     loginLeftText: {
-        color:"#b7e9de",
+        color:"#e9920e",
         textAlign:'left'
     },
     loginRightText: {
-        color:"#b7e9de",
+        color:"#e9920e",
         textAlign:'right'
     },
     bottomView: {

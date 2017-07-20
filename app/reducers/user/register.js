@@ -5,7 +5,7 @@ const initialState = {
     registerInfo:{}
 };
 
-export default function login(state = initialState, action) {
+export default function register(state = initialState, action) {
     switch (action.type) {
         case  types.FETCH_REGISTER:
             return Object.assign({}, state, {

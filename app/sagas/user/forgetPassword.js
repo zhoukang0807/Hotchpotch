@@ -11,7 +11,6 @@ export function* requestForgetPassword(password,email,verifyCode) {
         const forgetInfo = yield call(request, REQUSET_FORGETPASSWORD, 'post', JSON.stringify({password, email,verifyCode}));
         console.log(forgetInfo)
         yield put(receiveForgetPassword(forgetInfo));
-        yield call(store.save, 'registerInfo', forgetInfo);
         if (forgetInfo.resultCode == "0000") {
             yield toastShort("密码修改成功！");
         }else{
