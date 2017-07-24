@@ -51,6 +51,8 @@ class App extends React.Component {
     queryUser = () => {
         Actions.addFriend()
     }
+
+
     render() {
         return (
             <RouterWithRedux

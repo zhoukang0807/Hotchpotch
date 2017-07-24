@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
 import { toastShort } from '../../utils/ToastUtil';
+import { monitorMessage } from '../../utils/RequestUtil';
 
 import {
     Actions
@@ -26,6 +27,7 @@ class Info extends React.Component {
         this.goBack = this.goBack.bind(this);
         const { infoActions ,userName} = this.props;
         infoActions.requestInfo(userName);
+        monitorMessage()
     }
     goBack(){}
 

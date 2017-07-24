@@ -23,6 +23,8 @@ import Button from '../../components/Button';
 import * as readActions from '../../actions/read'
 import store from 'react-native-simple-store';
 import {Actions} from 'react-native-router-flux';
+import { monitorMessage } from '../../utils/RequestUtil';
+
 const propTypes = {
     readActions: PropTypes.object,
     read: PropTypes.object.isRequired
@@ -43,6 +45,7 @@ class ArticleView extends React.Component {
         this.state = {
             Url: articleUrl
         };
+        monitorMessage()
         this.goBack = this.goBack.bind(this);
     }
     componentDidMount() {

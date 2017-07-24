@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
 import { toastShort } from '../../utils/ToastUtil';
+import { monitorMessage } from '../../utils/RequestUtil';
 
 import {
     Actions
@@ -37,7 +38,7 @@ class NewFriend extends React.Component {
             friends:friends?friends:[]
         }
         this.goBack = this.goBack.bind(this);
-
+        monitorMessage()
        global.socketStore.socket.on("reply", function (obj) {
             var friends =this.state.friends;
             var newFriends = []

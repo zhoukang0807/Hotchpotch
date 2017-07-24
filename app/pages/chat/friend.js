@@ -14,10 +14,9 @@ import {
 } from 'react-native';
 import store from 'react-native-simple-store';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
 import { toastShort } from '../../utils/ToastUtil';
-
+import { monitorMessage } from '../../utils/RequestUtil';
 
 import {
     Actions
@@ -53,6 +52,7 @@ export default class Friend extends React.Component {
                 friendActions.requestFriend(loginInfo.userName);
             }.bind(this))
         })
+        monitorMessage
     }
 
     onReceive(obj){
@@ -118,7 +118,7 @@ export default class Friend extends React.Component {
                                 style={{borderRadius: 8, padding: 0, marginTop: 0}}>
                                 <View style={{height:52}}>
                                     <View style={styles.row}>
-                                        <Image style={styles.thumb} source={require('../../img/about_logo.png')}/>
+                                        <Image style={styles.thumb} source={{uri: rowData.avatar}}/>
                                         <View style={{flex: 1, flexDirection: 'column',}}>
                                             <View style={{flexDirection: 'row',}}>
                                                 <Text style={{

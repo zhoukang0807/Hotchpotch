@@ -12,6 +12,8 @@ import CustomView from '../../components/CustomView';
 import CustomActions from '../../components/CustomActions';
 import Button from '../../components/Button';
 import {toastShort} from '../../utils/ToastUtil';
+import { monitorMessage } from '../../utils/RequestUtil';
+
 import {
     Actions
 } from 'react-native-router-flux';
@@ -59,6 +61,8 @@ export default class Chat extends React.Component {
                 var chatInfos = [];
                 chatInfos.push(chatInfo)
                 this.onReceive(chatInfos);
+            }else{
+                monitorMessage()
             }
         }.bind(this))
     }

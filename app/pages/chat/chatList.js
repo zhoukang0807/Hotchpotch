@@ -15,8 +15,8 @@ import store from 'react-native-simple-store';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
+import { monitorMessage } from '../../utils/RequestUtil';
 import { toastShort } from '../../utils/ToastUtil';
-
 import {
     Actions
 } from 'react-native-router-flux';
@@ -33,18 +33,21 @@ export default class ChatList extends React.Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
             }),
-            loginInfo:{}
+            loginInfo:{},
+            newChat:{}
         };
         const {chatListActions} = this.props;
         store.get("loginInfo").then((loginInfo)=>{
             chatListActions.requestChatList(loginInfo.userName);
-            this.setState({
-                loginInfo:loginInfo
+            store.get("newChat").then((newChat)=>{
+                this.setState({
+                    loginInfo:loginInfo,
+                    newChat:newChat
+                })
+                monitorMessage(this,chatListActions,"requestChatList",loginInfo.userName)
             })
         })
-        global.socketStore.socket.on('message', function (chatInfo) {
 
-        })
     }
 
 //组件出现前 就是dom还没有渲染到html文档里面
@@ -77,36 +80,43 @@ export default class ChatList extends React.Component {
                     return (
                         <View >
                             <TouchableOpacity
-                                onPress={() =>{this.privateChat(rowData)}}
+                                onPress={() => {
+                                    this.privateChat(rowData)
+                                }}
                                 underlayColor="rgb(210,230,255)"
                                 activeOpacity={0.5}
                                 style={{borderRadius: 8, padding: 0, marginTop: 0}}>
-                                <View style={{height:60,marginTop: 5}}>
+                                <View style={{height: 60, marginTop: 5}}>
                                     <View style={styles.row}>
                                         <Image style={styles.thumb} source={{uri: rowData.avatar}}/>
                                         <View style={{flex: 2, flexDirection: 'column',}}>
                                             <View style={{flexDirection: 'row',}}>
                                                 <Text style={{
-                                                    marginLeft:3,
+                                                    marginLeft: 3,
                                                     flex: 2,
                                                     fontSize: 16,
                                                 }}>{rowData.nick}</Text>
                                             </View>
                                             <View style={{flexDirection: 'row',}}>
                                                 <Text style={{
-                                                    marginLeft:3,
+                                                    marginLeft: 3,
                                                     flex: 2,
                                                     fontSize: 16,
                                                 }}>{rowData.text}</Text>
                                             </View>
                                         </View>
                                         <View style={{flex: 1, flexDirection: 'column',}}>
-                                            <View style={{flexDirection: 'row',}}>
+                                            <View style={{flexDirection: 'row'}}>
                                                 <Text style={{
-                                                    marginLeft:3,
+                                                    marginLeft: 3,
                                                     flex: 2,
                                                     fontSize: 16,
                                                 }}>{rowData.createdAt}</Text>
+                                                <Text style={{
+                                                    marginLeft: 3,
+                                                    flex: 2,
+                                                    fontSize: 16,
+                                                }}>{this.state.newChat[rowData.userName]?this.state.newChat[rowData.userName]:null}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -156,11 +166,16 @@ export default class ChatList extends React.Component {
 
     privateChat(rowData){
         const { routes } = this.context;
+        const {chatListActions} = this.props;
         const {loginInfo} = this.state;
         const chatInfo = {
             friend:rowData,
             loginInfo:loginInfo
         }
+        var newChat =  this.state.newChat
+        newChat[rowData.userName]=0
+        store.save("newChat",newChat)
+        chatListActions.requestChatList(loginInfo.userName);
         routes.ChatContainer(chatInfo);
     }
 

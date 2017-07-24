@@ -22,6 +22,8 @@ import { toastShort } from '../utils/ToastUtil';
 import Button from '../components/Button';
 import * as readActions from '../actions/read'
 import store from 'react-native-simple-store';
+import { monitorMessage } from '../utils/RequestUtil';
+
 const propTypes = {
     readActions: PropTypes.object,
     read: PropTypes.object.isRequired
@@ -49,6 +51,7 @@ class Read extends React.Component {
         this.nextPage=this.nextPage.bind(this)
         this.onRefresh=this.onRefresh.bind(this)
         this.renderFooter=this.renderFooter.bind(this)
+        monitorMessage()
     }
     _keyExtractor = (item, index) => item.id;
     componentWillUnmount() {

@@ -21,6 +21,7 @@ import FetchLoading from '../../components/fetchLoading';
 import {toastShort} from '../../utils/ToastUtil';
 import store from 'react-native-simple-store';
 import { FRIEND_LIST } from '../../constants/Urls';
+import { monitorMessage } from '../../utils/RequestUtil';
 
 import {
     Actions
@@ -48,6 +49,7 @@ class AddFriend extends React.Component {
         };
         this.goBack = this.goBack.bind(this);
         this.search = this.search.bind(this);
+        monitorMessage()
     }
 
     //组件出现前 就是dom还没有渲染到html文档里面

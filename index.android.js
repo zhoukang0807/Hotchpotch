@@ -7,6 +7,9 @@ import SocketStore from './app/utils/RequestUtil';
 global.socketStore = new SocketStore();
 console.ignoredYellowBox = [ 'Setting a timer' ]
 
+
+
+
 AppRegistry.registerComponent('Hotchpotch', () => Root); //reading 为应用的名称需要和项目名一样
 
 Date.prototype.Format = function (fmt) { //author: meizz

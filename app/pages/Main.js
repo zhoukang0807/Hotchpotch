@@ -1,6 +1,13 @@
 import React from 'react';
 import { StyleSheet, Image, Text, Linking, View } from 'react-native';
+import { monitorMessage } from '../utils/RequestUtil';
+
 class Main extends React.Component {
+    constructor(props) {
+        super(props);
+        monitorMessage()
+    }
+
     render() {
         return (
             <View style={styles.container}>

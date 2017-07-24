@@ -1,4 +1,5 @@
 import {toastShort} from './ToastUtil';
+import store from 'react-native-simple-store';
 
 const getUrl = (url) => {
     if (url.indexOf('?') === -1) {
@@ -58,4 +59,83 @@ export default class SocketStore {
             toastShort(msg);
         })
     }
+}
+
+export const uploadImage = (URL,image,userName) => {
+    let formData = new FormData();
+    let file = {uri: image.path, type: 'multipart/form-data', name:userName};
+    formData.append("images",file);
+    let isOk;
+    return new Promise((resolve, reject) => {
+        fetch(URL, {
+            method:"POST",
+            headers: {
+                'Content-Type':'multipart/form-data',
+            },
+            body:formData
+        })
+            .then((response) => response.text() )
+            .then((responseData)=>{
+                resolve(responseData);
+            })
+            .catch((error)=>{  reject(error);});
+    });
+};
+
+
+
+export const monitorMessage=(page,actions,event,arg)=> {
+        global.socketStore.socket.on('message', function (chatInfo) {
+            const friendUserName =chatInfo.user._id;
+            var newMessages = []
+            newMessages.push(chatInfo)
+            store.get('newChat').then((newChat) => {
+                if(!newChat){
+                    newChat={}
+                }
+                if(newChat[friendUserName]){
+                    newChat[friendUserName] = newChat[friendUserName]+1
+                }else{
+                    newChat[friendUserName] =1
+                }
+                store.save("newChat",newChat);
+                store.get('loginInfo').then((loginInfo) => {
+                    store.get('chats').then((chats) => {
+                        if(chats){
+                            if(chats[loginInfo.userName]){
+                                if(chats[loginInfo.userName][friendUserName]&&chats[loginInfo.userName][friendUserName].length!=0){
+                                    newMessages= newMessages.concat(chats[loginInfo.userName][friendUserName])
+                                    chats[loginInfo.userName][friendUserName]=newMessages;
+                                    store.save('chats',chats)
+                                    console.log(chats);
+                                }else{
+                                    chats[loginInfo.userName][friendUserName]=[];
+                                    chats[loginInfo.userName][friendUserName]=newMessages;
+                                    store.save('chats',chats)
+                                    console.log(chats);
+                                }
+                            }else{
+                                chats[loginInfo.userName]={};
+                                chats[loginInfo.userName][friendUserName]=[];
+                                chats[loginInfo.userName][friendUserName]=newMessages;
+                                store.save('chats',chats)
+                                console.log(chats);
+                            }
+                        }else{
+                            var newChats = {};
+                            newChats[loginInfo.userName]={}
+                            newChats[loginInfo.userName][friendUserName]=newMessages;
+                            store.save('chats',newChats)
+                            console.log(newChats);
+                        }
+                        if(page){
+                            page.Setstate={ newChat:newChat}
+                        }
+                       if(actions){
+                           actions[event](arg);
+                       }
+                    })
+                })
+            })
+        })
 }

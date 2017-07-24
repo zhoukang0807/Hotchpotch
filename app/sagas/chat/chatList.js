@@ -11,10 +11,14 @@ export function* requestChatList(userName) {
     try {
         yield put(fetchChatList())
         const chats = yield call(store.get, 'chats');
-        yield put(receiveChatList(chats[userName]?chats[userName]:[]))
+        if(chats){
+            yield put(receiveChatList(chats[userName]?chats[userName]:{}))
+        }else{
+            yield put(receiveChatList({}));
+        }
     } catch (error) {
         console.log(error)
-        yield put(receiveChatList(null));
+        yield put(receiveChatList({}));
         yield toastShort(error); //toastShort安卓内提示用。提示错误信息
     }
 }

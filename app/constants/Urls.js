@@ -1,5 +1,8 @@
 const {ipSever} = require("./ipconfig")
 
+
+export const UPLOAD_AVATAR = ipSever.server+'/user/update/avatar';
+export const UPDATE = ipSever.server+'/user/update';
 export const QUERY_USERINFO = ipSever.server+'/user/queryUserInfo';
 export const QUERY_USERS = ipSever.server+'/user/queryFriend';
 export const FRIEND_LIST =ipSever.server+'/user/selectFriend';
