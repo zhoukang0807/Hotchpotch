@@ -83,7 +83,8 @@ export default class Chat extends React.Component {
     }
     onSend(messages = []) {
         const {friend} = this.props;
-        const friendUserName = friend.userName
+        const friendUserName = friend.userName;
+
         console.log(messages);
         this.setState((previousState) => {
             return {

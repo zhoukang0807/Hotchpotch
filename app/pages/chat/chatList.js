@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import store from 'react-native-simple-store';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { request } from '../../utils/RequestUtil';
+import { QUERY_USERINFO } from '../../constants/Urls';
+
 import Button from '../../components/Button';
 import FetchLoading from '../../components/fetchLoading';
 import { monitorMessage } from '../../utils/RequestUtil';
@@ -34,7 +37,10 @@ export default class ChatList extends React.Component {
                 rowHasChanged: (row1, row2) => row1 !== row2
             }),
             loginInfo:{},
-            newChat:{}
+            newChat:{},
+            modalVisible:false,
+            selectChatInfo:{},
+            newChatList:[]
         };
         const {chatListActions} = this.props;
         store.get("loginInfo").then((loginInfo)=>{
@@ -42,12 +48,14 @@ export default class ChatList extends React.Component {
             store.get("newChat").then((newChat)=>{
                 this.setState({
                     loginInfo:loginInfo,
-                    newChat:newChat
+                    newChat:newChat,
                 })
                 monitorMessage(this,chatListActions,"requestChatList",loginInfo.userName)
             })
         })
-
+        this.setModalVisible=this.setModalVisible.bind(this)
+        this.delectChat=this.delectChat.bind(this)
+        this.chatList=this.chatList.bind(this)
     }
 
 //组件出现前 就是dom还没有渲染到html文档里面
@@ -68,7 +76,9 @@ export default class ChatList extends React.Component {
         const {chatList} = this.props;
         if(chatList.success&&this.isEmptyObject(chatList.chatList)){
             return (
-                <Text>暂时没有聊天哟,快去聊天吧</Text>
+                <View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
+                    <Text style={{fontSize:22}}>暂时没有聊天哟,快去聊天吧</Text>
+                </View>
             );
         }
         return (
@@ -83,6 +93,7 @@ export default class ChatList extends React.Component {
                                 onPress={() => {
                                     this.privateChat(rowData)
                                 }}
+                                onLongPress={() =>{ this.setModalVisible(true,rowData) }}
                                 underlayColor="rgb(210,230,255)"
                                 activeOpacity={0.5}
                                 style={{borderRadius: 8, padding: 0, marginTop: 0}}>
@@ -116,7 +127,7 @@ export default class ChatList extends React.Component {
                                                     marginLeft: 3,
                                                     flex: 2,
                                                     fontSize: 16,
-                                                }}>{this.state.newChat[rowData.userName]?this.state.newChat[rowData.userName]:null}</Text>
+                                                }}>{this.state.newChat&&this.state.newChat[rowData.userName]?this.state.newChat[rowData.userName]:null}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -131,39 +142,142 @@ export default class ChatList extends React.Component {
             />
         );
     }
-
+    setModalVisible(visible,selectChatInfo) {
+        this.setState({modalVisible: visible,selectChatInfo:selectChatInfo});
+    }
     render() {
-        const {loginInfo} = this.state
-        const {chatList} = this.props;
-        const chatInfos = chatList.chatList;
-        var newChatList = []
-        for(var i in chatInfos){
-            var chatInfo = chatInfos[i]
-            var chat ={}
-            for(var j = 0;j<chatInfo.length;j++){
-                if(chatInfo[j].user._id!=loginInfo.userName){
-                    chat={
-                        userName:chatInfo[j].user._id,
-                        nick:chatInfo[j].user.name,
-                        avatar:chatInfo[j].user.avatar
+        const loginInfo = this.state.loginInfo
+        if (JSON.stringify(loginInfo) == "{}") {
+            return <View></View>
+        } else {
+            if(this.state.newChatList.length==0){
+                this.chatList().then(function (newChatList) {
+                    if(newChatList){
+                        this.setState({newChatList:newChatList})
                     }
-                    break;
-                }
+                }.bind(this))
             }
-            chatInfo.sort(this.compare('createdAt'))
-            chat.text= chatInfo[0].text;
-            var time =new Date(chatInfo[0].createdAt)
-            time = time.Format("MM-dd hh:mm")
-            chat.createdAt=time;
-            newChatList.push(chat)
+            return (
+                <View style={{flex:1}}>
+                    {this.renderContent(this.state.dataSource.cloneWithRows(this.state.newChatList))}
+                    <Modal
+                        animationType="slide"
+                        visible={this.state.modalVisible}
+                        transparent={true}
+                        onRequestClose={() => {
+                            this.setModalVisible(false, "")
+                        }}
+                    >
+                        <View style={styles.loading}>
+                            <View style={styles.modalTitle}>
+                                <Icon
+                                    color='#b7e9de'
+                                    name='md-close'
+                                    size={20}
+                                    onPress={() =>
+                                        this.setModalVisible(false, "")}
+                                />
+                            </View>
+                            <View style={styles.modalView}>
+                                <View style={styles.rowView}>
+                                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                        <Icon
+                                            color='#b7e9de'
+                                            name='md-person-add'
+                                            size={25}
+                                        />
+                                    </View>
+                                    <View style={{flex: 6, flexDirection: 'row',}}>
+                                        <Text style={{flex: 8}} onPress={() => {
+                                            this.delectChat()
+                                        }}>删除对话</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+            )
         }
-        return(
-            <View>
-                {this.renderContent(this.state.dataSource.cloneWithRows(newChatList))}
-            </View>
-        )
     }
 
+    chatList() {
+        return new Promise(function (resolve, reject){
+            const loginInfo = this.state.loginInfo
+            const {chatList} = this.props;
+            const chatInfos = chatList.chatList;
+
+            var newChatList = [];
+            var friendNames = []
+            for (var i in chatInfos) {
+                friendNames.push(i)
+            }
+            var a = 0;
+
+            function compare(property){
+                return function(a,b){
+                    var value1 = a[property];
+                    var value2 = b[property];
+                    return value2 - value1;
+                }
+            }
+
+            function addChat() {
+                var friendName = friendNames[a];
+                a++
+                var chats = chatList.chatList[friendName];
+                var chat = {userName:friendName}
+                chats.sort(compare('createdAt'))
+                chat.text= chats[0].text;
+                var time =new Date(chats[0].createdAt)
+                time = time.Format("MM-dd hh:mm")
+                chat.createdAt=time;
+                for (var j = 0; j < chats.length; j++) {
+                    if (chats[j].user._id != loginInfo.userName) {
+                        chat.nick = chats[j].user.name;
+                        chat.avatar = chats[j].user.avatar
+                        break;
+                    }
+                }
+                if(!chat.nick||!chat.avatar){
+                    request(QUERY_USERINFO,"post",JSON.stringify({userName:friendName})).then(function (result) {
+                        console.log(result)
+                        chat.nick = result.data.nick;
+                        chat.avatar=result.data.avatar;
+                        newChatList.push(chat)
+                        if(a==friendNames.length){
+                            resolve(newChatList)
+                        }else{
+                            addChat()
+                        }
+                    })
+                }else{
+                    newChatList.push(chat)
+                    if(a==friendNames.length){
+                        resolve(newChatList)
+                    }else{
+                        addChat()
+                    }
+                }
+            }
+            addChat()
+        }.bind(this))
+
+    }
+
+    delectChat(){
+        const {chatListActions} = this.props;
+        const loginInfo = this.state.loginInfo;
+        const selectUserName = this.state.selectChatInfo.userName;
+        store.get("chats").then((chats)=>{
+            const newChats = chats;
+            delete  newChats[loginInfo.userName][selectUserName];
+            store.save("chats",newChats).then(function () {
+                chatListActions.requestChatList(loginInfo.userName);
+                this.setModalVisible(false)
+            }.bind(this))
+        })
+    }
     privateChat(rowData){
         const { routes } = this.context;
         const {chatListActions} = this.props;
@@ -173,19 +287,16 @@ export default class ChatList extends React.Component {
             loginInfo:loginInfo
         }
         var newChat =  this.state.newChat
-        newChat[rowData.userName]=0
+        if(newChat){
+            newChat[rowData.userName]=0
+            this.setState({newChat})
+        }
         store.save("newChat",newChat)
-        chatListActions.requestChatList(loginInfo.userName);
         routes.ChatContainer(chatInfo);
+
     }
 
-    compare(property){
-        return function(a,b){
-            var value1 = a[property];
-            var value2 = b[property];
-            return value2 - value1;
-        }
-    }
+
     isEmptyObject(e) {
         var t;
         for (t in e)
@@ -208,6 +319,34 @@ const styles = StyleSheet.create({
     separator: {
         height: 1,
         backgroundColor: '#CCCCCC',
+    },
+    loading: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:'rgba(0, 0, 0, 0.5)',
+        flex: 1,
+    },
+    modalTitle:{
+        paddingRight:4,
+        alignItems:"flex-end",
+        justifyContent: 'center',
+        backgroundColor:"#99c3ac",
+        width:200,
+        height:20,
+    },
+    rowView: {
+        flexDirection: 'row',
+        marginTop: 10,
+        borderBottomColor: "#f1f1f1",
+        borderBottomWidth: 1
+    },
+    modalView: {
+        width:200,
+        height:40,
+        marginBottom: 10,
+        backgroundColor:"#fff",
+        borderColor:"#e1e1e1",
+        borderWidth:1
     },
 });
 
